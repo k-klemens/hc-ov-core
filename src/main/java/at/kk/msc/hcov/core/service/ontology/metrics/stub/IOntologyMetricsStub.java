@@ -1,6 +1,6 @@
-package at.kk.msc.hcov.core.ontology.metrics.stub;
+package at.kk.msc.hcov.core.service.ontology.metrics.stub;
 
-import at.kk.msc.hcov.core.ontology.metrics.IOntologyMetrics;
+import at.kk.msc.hcov.core.service.ontology.metrics.IOntologyMetrics;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Component;

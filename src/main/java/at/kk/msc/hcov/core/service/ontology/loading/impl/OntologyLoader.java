@@ -1,6 +1,6 @@
-package at.kk.msc.hcov.core.ontology.loading.impl;
+package at.kk.msc.hcov.core.service.ontology.loading.impl;
 
-import at.kk.msc.hcov.core.ontology.loading.IOntologyLoader;
+import at.kk.msc.hcov.core.service.ontology.loading.IOntologyLoader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;

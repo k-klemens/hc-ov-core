@@ -1,4 +1,4 @@
-package at.kk.msc.hcov.core.ontology.metrics;
+package at.kk.msc.hcov.core.service.ontology.metrics;
 
 import java.util.Map;
 

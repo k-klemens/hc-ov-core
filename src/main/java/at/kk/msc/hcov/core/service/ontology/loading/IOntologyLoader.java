@@ -1,4 +1,4 @@
-package at.kk.msc.hcov.core.ontology.loading;
+package at.kk.msc.hcov.core.service.ontology.loading;
 
 import java.io.FileNotFoundException;
 import org.apache.jena.ontology.OntModel;

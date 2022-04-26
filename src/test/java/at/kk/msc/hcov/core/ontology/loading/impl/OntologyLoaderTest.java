@@ -3,7 +3,8 @@ package at.kk.msc.hcov.core.ontology.loading.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import at.kk.msc.hcov.core.ontology.loading.IOntologyLoader;
+import at.kk.msc.hcov.core.service.ontology.loading.IOntologyLoader;
+import at.kk.msc.hcov.core.service.ontology.loading.impl.OntologyLoader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import org.apache.jena.ext.com.google.common.collect.Iterators;
