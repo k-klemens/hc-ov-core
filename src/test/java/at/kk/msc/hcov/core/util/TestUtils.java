@@ -1,9 +1,14 @@
 package at.kk.msc.hcov.core.util;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import org.apache.jena.ontology.ObjectProperty;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
+import org.apache.jena.ontology.OntProperty;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.RDFDataMgr;
 
 public class TestUtils {
@@ -12,6 +17,37 @@ public class TestUtils {
     OntModel movieModel = ModelFactory.createOntologyModel();
     RDFDataMgr.read(movieModel, "src/test/resources/movie.ttl");
     return movieModel;
+  }
+
+  public static Function<OntModel, List<OntModel>> getSampleMovieModelExtrator() {
+    return ontModel -> {
+      // Sample data extractor finding all subclasses of persons and their declared properties
+      List<OntModel> returnModels = new ArrayList<>();
+
+      Resource resource = ontModel.getOntClass("http://xmlns.com/foaf/0.1/Person");
+      List<OntClass> personSubclasses = ontModel.listClasses().filterKeep(
+          ontClass -> ontClass.hasSuperClass(resource)
+      ).toList();
+
+      personSubclasses.forEach(personSubclass -> {
+            OntModel elementsToBeVerified = ModelFactory.createOntologyModel();
+            OntClass classCopy = elementsToBeVerified.createClass(personSubclass.getURI());
+            personSubclass.listDeclaredProperties().filterKeep(OntProperty::isObjectProperty).forEach(
+                objectProperty -> {
+                  ObjectProperty objectPropertyCopy = elementsToBeVerified.createObjectProperty(objectProperty.getURI());
+                  objectPropertyCopy.addDomain(classCopy);
+                  objectPropertyCopy.addRange(objectProperty.getRange());
+                }
+            );
+            returnModels.add(elementsToBeVerified);
+          }
+      );
+      return returnModels;
+    };
+  }
+
+  public static List<OntModel> getSampleMovieModelExtractedElements() {
+    return getSampleMovieModelExtrator().apply(getMovieModel());
   }
 
   public static OntModel getPizzaModel() {
