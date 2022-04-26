@@ -10,6 +10,9 @@ import at.kk.msc.hcov.core.service.ontology.loading.impl.FileOntologyLoader;
 import at.kk.msc.hcov.core.util.TestUtils;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 import org.apache.jena.ext.com.google.common.io.Files;
 import org.apache.jena.ontology.OntModel;
@@ -125,6 +128,40 @@ public class FileTripleStoreRepositoryTest {
 
     // when - then
     assertThatThrownBy(() -> target.load(nonExistingOntologyName))
+        .isInstanceOf(OntologyNotFoundException.class);
+  }
+
+  @Test
+  void testPersistExtractedSubOntologies() throws IOException, OntologyNotFoundException {
+    // given
+    String givenOntologyName = "pizza";
+    String givenVerificationName = "Topping-Verification";
+    File pizzaOntoloyFile = new File("src/test/resources/pizza.owl.xml");
+    // provide an ontology in the repo directory
+    FileUtils.copyFile(pizzaOntoloyFile, new File(storagePath + File.separator + givenOntologyName, "pizza.owl.xml"));
+    List<OntModel> givenSubModels = TestUtils.getPizzaSubModels();
+
+    // when
+    Map<UUID, OntModel> actual = target.persistExtractedSubOntologies(givenOntologyName, givenVerificationName, givenSubModels);
+
+    // then
+    File expectedLocation = new File(storagePath + File.separator + givenOntologyName + File.separator + givenVerificationName);
+    assertThat(expectedLocation).exists();
+
+    assertThat(actual).hasSize(23);
+    List<File> expectedCreatedFiles =
+        actual.entrySet().stream().map(entry -> new File(expectedLocation, entry.getKey() + ".owl.xml")).toList();
+    assertThat(expectedCreatedFiles).allMatch(File::exists);
+  }
+
+  @Test
+  void testPersistExtractedSubOntologies_givenOntologyDoesNotExist() {
+    // given
+    String givenOntologyName = "not_existent";
+    String givenVerificationName = "verification1";
+
+    // when - then
+    assertThatThrownBy(() -> target.persistExtractedSubOntologies(givenOntologyName, givenVerificationName, List.of()))
         .isInstanceOf(OntologyNotFoundException.class);
   }
 

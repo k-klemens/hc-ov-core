@@ -3,6 +3,9 @@ package at.kk.msc.hcov.core.persistence.triples;
 import at.kk.msc.hcov.core.persistence.triples.exception.OntologyNameAlreadyInUseException;
 import at.kk.msc.hcov.core.persistence.triples.exception.OntologyNotFoundException;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import org.apache.jena.ontology.OntModel;
 
 /**
@@ -19,6 +22,19 @@ public interface ITripleStoreRepository {
    * @throws OntologyNameAlreadyInUseException if a triple store already has an ontology stored with the given name.
    */
   void persist(OntModel ontModel, String name) throws IOException, OntologyNameAlreadyInUseException;
+
+  /**
+   * Persists extracted sub-ontologies (= data for one hit / units of verification) of one ontology used for a verification.
+   *
+   * @param ontologyName      name of the ontology to be verified.
+   * @param verificationName  name of the verification conducted.
+   * @param extractedElements elements extracted from the ontology
+   * @return a Map of UUIDs and OntModels, where the uuids are used for storing the OntModels.
+   * @throws OntologyNotFoundException if no ontology with the given name is found in the repository.
+   */
+  Map<UUID, OntModel> persistExtractedSubOntologies(
+      String ontologyName, String verificationName, List<OntModel> extractedElements
+  ) throws OntologyNotFoundException, IOException;
 
   /**
    * Loads an existing ontology with the given name from the triple store.
