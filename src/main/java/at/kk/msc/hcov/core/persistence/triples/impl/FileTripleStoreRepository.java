@@ -42,7 +42,7 @@ public class FileTripleStoreRepository implements ITripleStoreRepository {
 
   @Override
   public void persist(OntModel ontModel, String name) throws IOException, OntologyNameAlreadyInUseException {
-    File pathToOntology = createFileInstanceOrThrowIfExists(name);
+    File pathToOntology = createRequiredStorageDirsOrThrowIfExists(name);
     try (OutputStream fileWriter = new FileOutputStream(pathToOntology, false)) {
       LOGGER.info("Started writing ontology {} to {}. This might take some time ...", name, pathToOntology.getAbsolutePath());
       RDFDataMgr.write(fileWriter, ontModel, Lang.RDFXML);
@@ -63,16 +63,22 @@ public class FileTripleStoreRepository implements ITripleStoreRepository {
     }
   }
 
-  private File createFileInstanceOrThrowIfExists(String name) throws OntologyNameAlreadyInUseException {
-    File pathToOntology = new File(createStorePathFromName(name));
-    if (pathToOntology.exists()) {
-      throw new OntologyNameAlreadyInUseException(name, pathToOntology);
+  private File createRequiredStorageDirsOrThrowIfExists(String name) throws OntologyNameAlreadyInUseException {
+    File pathToStoreDir = new File(createStoreDirFromName(name));
+    if (pathToStoreDir.exists()) {
+      throw new OntologyNameAlreadyInUseException(name, pathToStoreDir);
+    } else {
+      pathToStoreDir.mkdirs();
     }
-    return pathToOntology;
+    return new File(pathToStoreDir, name + ".owl.xml");
   }
 
   private String createStorePathFromName(String name) {
-    return storageDirectory + File.separator + name + ".owl.xml";
+    return createStoreDirFromName(name) + File.separator + name + ".owl.xml";
+  }
+
+  private String createStoreDirFromName(String name) {
+    return storageDirectory + File.separator + name;
   }
 
   private void setStorageBasePathOrDefault(String storagePath) {

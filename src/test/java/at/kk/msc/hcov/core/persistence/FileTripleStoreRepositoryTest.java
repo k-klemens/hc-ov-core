@@ -11,6 +11,7 @@ import at.kk.msc.hcov.core.util.TestUtils;
 import java.io.File;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
+import org.apache.jena.ext.com.google.common.io.Files;
 import org.apache.jena.ontology.OntModel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -77,6 +78,7 @@ public class FileTripleStoreRepositoryTest {
     // given
     String givenAlreadyInUseOntologyName = "already_existing";
     File file = createOntologyFile(givenAlreadyInUseOntologyName);
+    Files.createParentDirs(file);
     file.createNewFile();
 
     // when - then
@@ -104,7 +106,7 @@ public class FileTripleStoreRepositoryTest {
     // given
     File pizzaOntoloyFile = new File("src/test/resources/pizza.owl.xml");
     // provide an ontology in the repo directory
-    FileUtils.copyFile(pizzaOntoloyFile, new File(storagePath, "pizza.owl.xml"));
+    FileUtils.copyFile(pizzaOntoloyFile, new File(storagePath + File.separator + "pizza", "pizza.owl.xml"));
 
     // when
     OntModel actual = target.load("pizza");
@@ -127,6 +129,6 @@ public class FileTripleStoreRepositoryTest {
   }
 
   private File createOntologyFile(String name) {
-    return new File(storagePath, name + ".owl.xml");
+    return new File(storagePath + File.separator + name, name + ".owl.xml");
   }
 }
