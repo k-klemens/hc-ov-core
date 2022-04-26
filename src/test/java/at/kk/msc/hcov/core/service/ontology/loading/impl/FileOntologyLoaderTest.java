@@ -30,8 +30,8 @@ public class FileOntologyLoaderTest {
 
     // then
     assertThat(actual).isNotNull();
-    assertThat(Iterators.size(actual.listClasses())).isPositive();
-    assertThat(Iterators.size(actual.listAllOntProperties())).isPositive();
+    assertThat(Iterators.size(actual.listClasses())).isEqualTo(331);
+    assertThat(Iterators.size(actual.listAllOntProperties())).isEqualTo(30);
   }
 
   @Test
