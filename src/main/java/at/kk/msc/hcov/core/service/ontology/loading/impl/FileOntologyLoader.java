@@ -1,6 +1,6 @@
 package at.kk.msc.hcov.core.service.ontology.loading.impl;
 
-import at.kk.msc.hcov.core.service.ontology.loading.IOntologyLoader;
+import at.kk.msc.hcov.core.service.ontology.loading.IExternalOntologyLoader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -10,10 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * Implementation of {@link IExternalOntologyLoader} to load intially load an ontology from a file.
+ */
 @Component
-public class OntologyLoader implements IOntologyLoader {
+public class FileOntologyLoader implements IExternalOntologyLoader {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(OntologyLoader.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(FileOntologyLoader.class);
 
   @Override
   public OntModel loadOntology(String path) throws FileNotFoundException {
@@ -23,7 +26,7 @@ public class OntologyLoader implements IOntologyLoader {
     InputStream inputStream = new FileInputStream(path);
     ontModel.read(inputStream, null);
     LOGGER.info("Loaded ontology from: {}", path);
-    
+
     return ontModel;
   }
 

@@ -1,10 +1,9 @@
-package at.kk.msc.hcov.core.ontology.loading.impl;
+package at.kk.msc.hcov.core.service.ontology.loading.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import at.kk.msc.hcov.core.service.ontology.loading.IOntologyLoader;
-import at.kk.msc.hcov.core.service.ontology.loading.impl.OntologyLoader;
+import at.kk.msc.hcov.core.service.ontology.loading.IExternalOntologyLoader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import org.apache.jena.ext.com.google.common.collect.Iterators;
@@ -12,13 +11,13 @@ import org.apache.jena.ontology.OntModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class OntologyLoaderTest {
+public class FileOntologyLoaderTest {
 
-  IOntologyLoader target;
+  IExternalOntologyLoader target;
 
   @BeforeEach
   void setUp() {
-    target = new OntologyLoader();
+    target = new FileOntologyLoader();
   }
 
   @Test
