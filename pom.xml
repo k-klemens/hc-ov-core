@@ -50,11 +50,30 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.plugin</groupId>
+            <artifactId>spring-plugin-core</artifactId>
+            <version>2.0.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.plugin</groupId>
+            <artifactId>spring-plugin-metadata</artifactId>
+            <version>2.0.0.RELEASE</version>
+        </dependency>
+
+
         <!-- ONTOLOGY LIBRARIES -->
         <dependency>
             <groupId>org.apache.jena</groupId>
             <artifactId>apache-jena-libs</artifactId>
             <version>4.4.0</version>
+        </dependency>
+
+        <!-- PLUGIN DEVELOPMENT SDK -->
+        <dependency>
+            <groupId>at.kk.msc</groupId>
+            <artifactId>hc-ov-sdk</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
