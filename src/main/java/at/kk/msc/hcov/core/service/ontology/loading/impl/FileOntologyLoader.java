@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.riot.Lang;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,7 @@ public class FileOntologyLoader implements IExternalOntologyLoader {
     OntModel ontModel = ModelFactory.createOntologyModel();
 
     InputStream inputStream = new FileInputStream(path);
-    ontModel.read(inputStream, null);
+    ontModel.read(inputStream, Lang.RDFXML.getLabel());
     LOGGER.info("Loaded ontology from: {}", path);
 
     return ontModel;

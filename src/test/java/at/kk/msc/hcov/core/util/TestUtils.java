@@ -15,7 +15,7 @@ public class TestUtils {
 
   public static OntModel getMovieModel() {
     OntModel movieModel = ModelFactory.createOntologyModel();
-    RDFDataMgr.read(movieModel, "src/test/resources/movie.ttl");
+    RDFDataMgr.read(movieModel, "src/test/resources/movie.owl.xml");
     return movieModel;
   }
 

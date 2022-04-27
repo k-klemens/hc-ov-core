@@ -113,7 +113,7 @@ public class RestOntologyProviderIntegrationTest {
 
   private static Stream<Arguments> provideTestPostUploadOntologyFaultyData() {
     return Stream.of(
-        Arguments.of("{\"ontologyName\":\"\",\"filePathToOntology\":\"src\\/test\\/resources\\/movie.ttl\"}"),
+        Arguments.of("{\"ontologyName\":\"\",\"filePathToOntology\":\"src\\/test\\/resources\\/movie.owl.xml\"}"),
         Arguments.of("{\"ontologyName\":\"movie\",\"filePathToOntology\":\"\"}")
     );
   }

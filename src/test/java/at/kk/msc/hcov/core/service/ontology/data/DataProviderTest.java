@@ -48,7 +48,7 @@ public class DataProviderTest {
   @Test
   public void testUploadOntologyFromFile() throws IOException, OntologyNameAlreadyInUseException {
     // given
-    String givenPath = "src/test/resources/movie.ttl";
+    String givenPath = "src/test/resources/movie.owl.xml";
     String givenOntologyName = "movie";
     OntModel mockedOntModel = TestUtils.getMovieModel();
     when(ontologyLoaderMock.loadOntology(givenPath)).thenReturn(mockedOntModel);
@@ -81,7 +81,7 @@ public class DataProviderTest {
   @Test
   public void testUploadOntologyFromFile_givenOntologyNameAlreadInUse() throws IOException, OntologyNameAlreadyInUseException {
     // given
-    String givenPath = "src/test/resources/movie.ttl";
+    String givenPath = "src/test/resources/movie.owl.xml";
     String givenOntologyName = "movie";
     OntModel mockedOntModel = TestUtils.getMovieModel();
     when(ontologyLoaderMock.loadOntology(givenPath)).thenReturn(mockedOntModel);
