@@ -1,0 +1,2 @@
+fileTripleStore:
+  storageBasePath: src/test/resources/integration-filestore

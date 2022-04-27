@@ -1,0 +1,560 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://semantics.id/ns/example/movie#"
+     xml:base="http://semantics.id/ns/example/movie"
+     xmlns:ex="http://semantics.id/ns/example#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:foaf="http://xmlns.com/foaf/0.1/"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://semantics.id/ns/example/movie">
+        <owl:versionIRI rdf:resource="http://semantics.id/ns/example/movie/1.0.1"/>
+        <rdfs:comment>An ontology about movie and related concepts.</rdfs:comment>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#minCardinality -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2002/07/owl#minCardinality"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.w3.org/2001/XMLSchema#date -->
+
+    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#date"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#friendOf -->
+
+    <owl:ObjectProperty rdf:about="http://semantics.id/ns/example/movie#friendOf">
+        <rdfs:subPropertyOf rdf:resource="http://xmlns.com/foaf/0.1/knows"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+        <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#hasActor -->
+
+    <owl:ObjectProperty rdf:about="http://semantics.id/ns/example/movie#hasActor">
+        <rdfs:domain rdf:resource="http://semantics.id/ns/example/movie#Movie"/>
+        <rdfs:range rdf:resource="http://semantics.id/ns/example/movie#Actor"/>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#hasCrew -->
+
+    <owl:ObjectProperty rdf:about="http://semantics.id/ns/example/movie#hasCrew">
+        <rdfs:domain rdf:resource="http://semantics.id/ns/example/movie#Movie"/>
+        <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#hasFilmStudio -->
+
+    <owl:ObjectProperty rdf:about="http://semantics.id/ns/example/movie#hasFilmStudio">
+        <rdfs:domain rdf:resource="http://semantics.id/ns/example/movie#Movie"/>
+        <rdfs:range rdf:resource="http://semantics.id/ns/example/movie#FilmStudio"/>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#hasGenre -->
+
+    <owl:ObjectProperty rdf:about="http://semantics.id/ns/example/movie#hasGenre">
+        <rdfs:domain rdf:resource="http://semantics.id/ns/example/movie#Movie"/>
+        <rdfs:range rdf:resource="http://semantics.id/ns/example/movie#Genre"/>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#hasMovieDirector -->
+
+    <owl:ObjectProperty rdf:about="http://semantics.id/ns/example/movie#hasMovieDirector">
+        <rdfs:subPropertyOf rdf:resource="http://semantics.id/ns/example/movie#hasCrew"/>
+        <rdfs:domain rdf:resource="http://semantics.id/ns/example/movie#Movie"/>
+        <rdfs:range rdf:resource="http://semantics.id/ns/example/movie#MovieDirector"/>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#hasWriter -->
+
+    <owl:ObjectProperty rdf:about="http://semantics.id/ns/example/movie#hasWriter">
+        <rdfs:subPropertyOf rdf:resource="http://semantics.id/ns/example/movie#hasCrew"/>
+        <rdfs:domain rdf:resource="http://semantics.id/ns/example/movie#Movie"/>
+        <rdfs:range rdf:resource="http://semantics.id/ns/example/movie#Writer"/>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#prequel -->
+
+    <owl:ObjectProperty rdf:about="http://semantics.id/ns/example/movie#prequel">
+        <owl:inverseOf rdf:resource="http://semantics.id/ns/example/movie#sequel"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:domain rdf:resource="http://semantics.id/ns/example/movie#Movie"/>
+        <rdfs:range rdf:resource="http://semantics.id/ns/example/movie#Movie"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#sequel -->
+
+    <owl:ObjectProperty rdf:about="http://semantics.id/ns/example/movie#sequel">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:domain rdf:resource="http://semantics.id/ns/example/movie#Movie"/>
+        <rdfs:range rdf:resource="http://semantics.id/ns/example/movie#Movie"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://xmlns.com/foaf/0.1/knows -->
+
+    <owl:ObjectProperty rdf:about="http://xmlns.com/foaf/0.1/knows">
+        <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+        <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#hasDateOfBirth -->
+
+    <owl:DatatypeProperty rdf:about="http://semantics.id/ns/example/movie#hasDateOfBirth">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#hasEstablishedDate -->
+
+    <owl:DatatypeProperty rdf:about="http://semantics.id/ns/example/movie#hasEstablishedDate">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://semantics.id/ns/example/movie#FilmStudio"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#hasGender -->
+
+    <owl:DatatypeProperty rdf:about="http://semantics.id/ns/example/movie#hasGender">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#hasName -->
+
+    <owl:DatatypeProperty rdf:about="http://semantics.id/ns/example/movie#hasName">
+        <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#hasReleaseYear -->
+
+    <owl:DatatypeProperty rdf:about="http://semantics.id/ns/example/movie#hasReleaseYear">
+        <rdfs:domain rdf:resource="http://semantics.id/ns/example/movie#Movie"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#Actor -->
+
+    <owl:Class rdf:about="http://semantics.id/ns/example/movie#Actor">
+        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    </owl:Class>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#FilmStudio -->
+
+    <owl:Class rdf:about="http://semantics.id/ns/example/movie#FilmStudio"/>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#Genre -->
+
+    <owl:Class rdf:about="http://semantics.id/ns/example/movie#Genre"/>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#Movie -->
+
+    <owl:Class rdf:about="http://semantics.id/ns/example/movie#Movie"/>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#MovieDirector -->
+
+    <owl:Class rdf:about="http://semantics.id/ns/example/movie#MovieDirector">
+        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    </owl:Class>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#Writer -->
+
+    <owl:Class rdf:about="http://semantics.id/ns/example/movie#Writer">
+        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    </owl:Class>
+    
+
+
+    <!-- http://xmlns.com/foaf/0.1/Person -->
+
+    <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Person"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://semantics.id/ns/example#EntertainmentOne -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#EntertainmentOne">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#FilmStudio"/>
+        <hasEstablishedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">1973-01-01</hasEstablishedDate>
+        <rdfs:label>Entertainment One</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#MandevilleFilms -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#MandevilleFilms">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#FilmStudio"/>
+        <hasEstablishedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">1955-01-01</hasEstablishedDate>
+        <rdfs:label>Mandeville Films</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#WaltDisneyPictures -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#WaltDisneyPictures">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#FilmStudio"/>
+        <hasEstablishedDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">1985-06-21</hasEstablishedDate>
+        <rdfs:label>Walt Disney Pictures</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#alicia_vikander -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#alicia_vikander">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Actor"/>
+        <hasGender>female</hasGender>
+        <hasName>Alicia Vikander</hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#bill_condon -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#bill_condon">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#MovieDirector"/>
+        <hasGender>male</hasGender>
+        <hasName>Bill Condon</hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#dan_stevens -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#dan_stevens">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Actor"/>
+        <hasDateOfBirth rdf:datatype="http://www.w3.org/2001/XMLSchema#date">1982-10-10</hasDateOfBirth>
+        <hasGender>male</hasGender>
+        <hasName>Dan Stevens</hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#emma_watson -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#emma_watson">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Actor"/>
+        <hasDateOfBirth rdf:datatype="http://www.w3.org/2001/XMLSchema#date">1990-04-15</hasDateOfBirth>
+        <hasGender>female</hasGender>
+        <hasName>Emma Watson</hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#ewan_mcgregor -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#ewan_mcgregor">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Actor"/>
+        <hasDateOfBirth rdf:datatype="http://www.w3.org/2001/XMLSchema#date">1971-03-31</hasDateOfBirth>
+        <hasGender>male</hasGender>
+        <hasName>Ewan McGregor</hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#hayley_atwell -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#hayley_atwell">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Actor"/>
+        <hasDateOfBirth rdf:datatype="http://www.w3.org/2001/XMLSchema#date">1982-04-05</hasDateOfBirth>
+        <hasGender>female</hasGender>
+        <hasName>Hayley Atwell</hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#julius_avery -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#julius_avery">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#MovieDirector"/>
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Writer"/>
+        <hasGender>male</hasGender>
+        <hasName>Julius Avery</hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#marc_forster -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#marc_forster">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#MovieDirector"/>
+        <hasGender>male</hasGender>
+        <hasName>Marc Forster</hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#movie_1 -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#movie_1">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Movie"/>
+        <hasActor rdf:resource="http://semantics.id/ns/example#ewan_mcgregor"/>
+        <hasActor rdf:resource="http://semantics.id/ns/example#hayley_atwell"/>
+        <hasFilmStudio rdf:resource="http://semantics.id/ns/example#WaltDisneyPictures"/>
+        <hasGenre rdf:resource="http://semantics.id/ns/example/movie#genre_animation"/>
+        <hasGenre rdf:resource="http://semantics.id/ns/example/movie#genre_family"/>
+        <hasMovieDirector rdf:resource="http://semantics.id/ns/example#marc_forster"/>
+        <hasWriter rdf:resource="http://semantics.id/ns/example#writer_1"/>
+        <hasWriter rdf:resource="http://semantics.id/ns/example#writer_2"/>
+        <hasReleaseYear rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2018</hasReleaseYear>
+        <rdfs:label>Christopher Robin</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#movie_2 -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#movie_2">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Movie"/>
+        <hasActor rdf:resource="http://semantics.id/ns/example#alicia_vikander"/>
+        <hasActor rdf:resource="http://semantics.id/ns/example#ewan_mcgregor"/>
+        <hasFilmStudio rdf:resource="http://semantics.id/ns/example#EntertainmentOne"/>
+        <hasGenre rdf:resource="http://semantics.id/ns/example/movie#genre_action"/>
+        <hasGenre rdf:resource="http://semantics.id/ns/example/movie#genre_drama"/>
+        <hasMovieDirector rdf:resource="http://semantics.id/ns/example#julius_avery"/>
+        <hasWriter rdf:resource="http://semantics.id/ns/example#julius_avery"/>
+        <hasWriter rdf:resource="http://semantics.id/ns/example#writer_3"/>
+        <hasReleaseYear rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2014</hasReleaseYear>
+        <rdfs:label>Son of a Gun</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#movie_3 -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#movie_3">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Movie"/>
+        <hasActor rdf:resource="http://semantics.id/ns/example#dan_stevens"/>
+        <hasActor rdf:resource="http://semantics.id/ns/example#emma_watson"/>
+        <hasActor rdf:resource="http://semantics.id/ns/example#ewan_mcgregor"/>
+        <hasFilmStudio rdf:resource="http://semantics.id/ns/example#WaltDisneyPictures"/>
+        <hasGenre rdf:resource="http://semantics.id/ns/example/movie#genre_family"/>
+        <hasGenre rdf:resource="http://semantics.id/ns/example/movie#genre_romance"/>
+        <hasMovieDirector rdf:resource="http://semantics.id/ns/example#bill_condon"/>
+        <hasWriter rdf:resource="http://semantics.id/ns/example#writer_4"/>
+        <hasWriter rdf:resource="http://semantics.id/ns/example#writer_5"/>
+        <hasReleaseYear rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2017</hasReleaseYear>
+        <rdfs:label>Beauty and the Beast</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#writer_1 -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#writer_1">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Writer"/>
+        <hasDateOfBirth rdf:datatype="http://www.w3.org/2001/XMLSchema#date">1966-06-07</hasDateOfBirth>
+        <hasGender>male</hasGender>
+        <hasName>Tom McCarthy</hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#writer_2 -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#writer_2">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Writer"/>
+        <hasName>Alex Ross</hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#writer_3 -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#writer_3">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Writer"/>
+        <hasGender>male</hasGender>
+        <hasName>John Collee</hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#writer_4 -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#writer_4">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Writer"/>
+        <hasGender>male</hasGender>
+        <hasName>Stephen Chbosky</hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example#writer_5 -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example#writer_5">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Writer"/>
+        <hasName>Evan Spiliotopoulos</hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#genre_action -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example/movie#genre_action">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Genre"/>
+        <rdfs:label>Action</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#genre_animation -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example/movie#genre_animation">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Genre"/>
+        <rdfs:label>Animation</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#genre_drama -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example/movie#genre_drama">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Genre"/>
+        <rdfs:label>Drama</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#genre_family -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example/movie#genre_family">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Genre"/>
+        <rdfs:label>Family</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://semantics.id/ns/example/movie#genre_romance -->
+
+    <owl:NamedIndividual rdf:about="http://semantics.id/ns/example/movie#genre_romance">
+        <rdf:type rdf:resource="http://semantics.id/ns/example/movie#Genre"/>
+        <rdfs:label>Romance</rdfs:label>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+
