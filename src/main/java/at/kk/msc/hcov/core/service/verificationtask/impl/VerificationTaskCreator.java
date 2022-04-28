@@ -45,7 +45,10 @@ public class VerificationTaskCreator implements IVerificationTaskCreator {
     IVerificationTaskPlugin verificationTaskPlugin = (IVerificationTaskPlugin) pluginLoader.loadPluginOrThrow(
         IPluginLoader.PluginType.VERIFICATION_TASK_CREATOR, specification.getVerificationTaskPluginId()
     );
-    verificationTaskPlugin.setConfiguration(specification.getVerificationTaskPluginConfiguration());
+    verificationTaskPlugin.setConfiguration(
+        specification.getVerificationTaskPluginConfiguration() == null ?
+            new HashMap<>() : specification.getVerificationTaskPluginConfiguration()
+    );
 
     Map<UUID, OntModel> extractedModelElements = extractModelElementsOrThrow(verificationTaskPlugin, specification);
     LOGGER.debug("Extracted model elements of size: {}", extractedModelElements.size());

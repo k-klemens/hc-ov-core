@@ -2,6 +2,7 @@ package at.kk.msc.hcov.core.util;
 
 import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
 
+import at.kk.msc.hcov.core.endpoint.dto.VerificationTaskDto;
 import at.kk.msc.hcov.sdk.verificationtask.model.ProvidedContext;
 import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTask;
 import java.util.ArrayList;
@@ -68,6 +69,10 @@ public class VerificationTaskMockData {
       .verificationName(MOCKED_VERIFICATION_TASK_SPECIFICATION().getVerificationName())
       .ontologyName(MOCKED_VERIFICATION_TASK_SPECIFICATION().getOntologyName());
 
+  private static final VerificationTaskDto.VerificationTaskDtoBuilder VERIFICATION_TASK_DTO_BUILDER = VerificationTaskDto.builder()
+      .verificationName(MOCKED_VERIFICATION_TASK_SPECIFICATION().getVerificationName())
+      .ontologyName(MOCKED_VERIFICATION_TASK_SPECIFICATION().getOntologyName());
+
 
   public static final List<VerificationTask> EXPECTED_TASKS_WITH_CONTEXT() {
     List<VerificationTask> expectedTasksWithContext = new ArrayList<>();
@@ -82,14 +87,25 @@ public class VerificationTaskMockData {
   }
 
   public static final List<VerificationTask> EXPECTED_TASKS_WITHOUT_CONTEXT() {
-    List<VerificationTask> EXPECTED_TASKS_WITHOUT_CONTEXT = new ArrayList<>();
-    EXPECTED_TASKS_WITHOUT_CONTEXT.add(
+    List<VerificationTask> expectedTasksWithoutContext = new ArrayList<>();
+    expectedTasksWithoutContext.add(
         VERIFICATION_TASK_BUILDER.ontologyElementId(FIRST_MOCK_UUID).taskHtml(EXPECTED_FIRST_TEMPLATE_WITHOUT_CONTEXT).build()
     );
-    EXPECTED_TASKS_WITHOUT_CONTEXT.add(
+    expectedTasksWithoutContext.add(
         VERIFICATION_TASK_BUILDER.ontologyElementId(SECOND_MOCK_UUID).taskHtml(EXPECTED_SECOND_TEMPLATE_WITHOUT_CONTEXT).build()
     );
-    return EXPECTED_TASKS_WITHOUT_CONTEXT;
+    return expectedTasksWithoutContext;
+  }
+
+  public static List<VerificationTaskDto> EXPECTED_TASKS_WITHOUT_CONTEXT_DTOS() {
+    List<VerificationTaskDto> expectedTaskDtosWithoutContext = new ArrayList<>();
+    expectedTaskDtosWithoutContext.add(
+        VERIFICATION_TASK_DTO_BUILDER.ontologyElementId(FIRST_MOCK_UUID).taskHtml(EXPECTED_FIRST_TEMPLATE_WITHOUT_CONTEXT).build()
+    );
+    expectedTaskDtosWithoutContext.add(
+        VERIFICATION_TASK_DTO_BUILDER.ontologyElementId(SECOND_MOCK_UUID).taskHtml(EXPECTED_SECOND_TEMPLATE_WITHOUT_CONTEXT).build()
+    );
+    return expectedTaskDtosWithoutContext;
   }
 
 }
