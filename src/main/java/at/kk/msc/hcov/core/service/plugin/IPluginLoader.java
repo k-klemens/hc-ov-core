@@ -5,7 +5,7 @@ import at.kk.msc.hcov.core.service.exception.PluginLoadingError;
 /**
  * Interface to specify the how plugins can be loaded.
  *
- * @param <P>
+ * @param <P> class describing the implementaiton mechanism of the plugin (e.g. by Spring using {@link org.springframework.plugin.core.Plugin})
  */
 public interface IPluginLoader<P> {
 

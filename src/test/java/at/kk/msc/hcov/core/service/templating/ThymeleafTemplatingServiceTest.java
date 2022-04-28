@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import at.kk.msc.hcov.core.service.templating.impl.ThymeleafTemplatingService;
+import at.kk.msc.hcov.core.util.VerificationTaskMockData;
 import at.kk.msc.hcov.core.util.VerificationTaskPluginMock;
-import at.kk.msc.hcov.core.util.VerificationTaskPluginMockData;
 import at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData;
 import at.kk.msc.hcov.sdk.plugin.PluginConfigurationNotSetException;
 import at.kk.msc.hcov.sdk.verificationtask.IVerificationTaskPlugin;
@@ -34,9 +34,9 @@ public class ThymeleafTemplatingServiceTest {
   @Test
   void testPopulateTemplate_withContext() throws PluginConfigurationNotSetException {
     // given - for more information see VerificationTaskPluginMock
-    Map<UUID, OntModel> givenExtractedModelElements = VerificationTaskPluginMockData.MOCKED_EXTRACTED_MODEL_ELEMENTS;
-    Map<UUID, ProvidedContext> givenProvidedContexts = VerificationTaskPluginMockData.MOCKED_PROVIDED_CONTEXTS;
-    VerificationTaskSpecification givenTaskSpecification = VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
+    Map<UUID, OntModel> givenExtractedModelElements = VerificationTaskMockData.MOCKED_EXTRACTED_MODEL_ELEMENTS();
+    Map<UUID, ProvidedContext> givenProvidedContexts = VerificationTaskMockData.MOCKED_PROVIDED_CONTEXTS();
+    VerificationTaskSpecification givenTaskSpecification = VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION();
     IVerificationTaskPlugin givenVerificationTaskPlugin = new VerificationTaskPluginMock(true);
 
 
@@ -46,15 +46,15 @@ public class ThymeleafTemplatingServiceTest {
     );
 
     // then
-    assertThat(actual).containsAllEntriesOf(VerificationTaskPluginMockData.EXPECTED_WITH_CONTEXT);
+    assertThat(actual).containsAllEntriesOf(VerificationTaskMockData.EXPECTED_TEMPLATES_WITH_CONTEXT());
   }
 
   @Test
   void testPopulateTemplate_withoutContext() throws PluginConfigurationNotSetException {
     // given - for more information see VerificationTaskPluginMock
-    Map<UUID, OntModel> givenExtractedModelElements = VerificationTaskPluginMockData.MOCKED_EXTRACTED_MODEL_ELEMENTS;
+    Map<UUID, OntModel> givenExtractedModelElements = VerificationTaskMockData.MOCKED_EXTRACTED_MODEL_ELEMENTS();
     Map<UUID, ProvidedContext> givenProvidedContexts = new HashMap<>();
-    VerificationTaskSpecification givenTaskSpecification = VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
+    VerificationTaskSpecification givenTaskSpecification = VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION();
     IVerificationTaskPlugin givenVerificationTaskPlugin = new VerificationTaskPluginMock(false);
 
 
@@ -64,16 +64,16 @@ public class ThymeleafTemplatingServiceTest {
     );
 
     // then
-    assertThat(actual).containsAllEntriesOf(VerificationTaskPluginMockData.EXPECTED_WITHOUT_CONTEXT);
+    assertThat(actual).containsAllEntriesOf(VerificationTaskMockData.EXPECTED_TEMPLATES_WITHOUT_CONTEXT());
   }
 
   @Test
   void testPopulateTemplate_faultyContextMap_expectException() {
     // given - see VerificationTaskPluginMock
-    Map<UUID, OntModel> givenExtractedModelElements = VerificationTaskPluginMockData.MOCKED_EXTRACTED_MODEL_ELEMENTS;
-    Map<UUID, ProvidedContext> givenProvidedContexts = VerificationTaskPluginMockData.MOCKED_PROVIDED_CONTEXTS;
-    givenProvidedContexts.remove(VerificationTaskPluginMockData.FIRST_MOCK_UUID);
-    VerificationTaskSpecification givenTaskSpecification = VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
+    Map<UUID, OntModel> givenExtractedModelElements = VerificationTaskMockData.MOCKED_EXTRACTED_MODEL_ELEMENTS();
+    Map<UUID, ProvidedContext> givenProvidedContexts = VerificationTaskMockData.MOCKED_PROVIDED_CONTEXTS();
+    givenProvidedContexts.remove(VerificationTaskMockData.FIRST_MOCK_UUID);
+    VerificationTaskSpecification givenTaskSpecification = VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION();
     IVerificationTaskPlugin givenVerificationTaskPlugin = new VerificationTaskPluginMock(false);
 
     // when - then

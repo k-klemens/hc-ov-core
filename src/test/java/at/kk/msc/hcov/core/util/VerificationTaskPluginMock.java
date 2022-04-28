@@ -1,6 +1,7 @@
 package at.kk.msc.hcov.core.util;
 
-import static at.kk.msc.hcov.core.util.VerificationTaskPluginMockData.FIRST_MOCK_EXTRACTED_ELEMENTS;
+import static at.kk.msc.hcov.core.util.VerificationTaskMockData.FIRST_MOCK_EXTRACTED_ELEMENTS;
+import static at.kk.msc.hcov.core.util.VerificationTaskMockData.SECOND_MOCK_EXTRACTED_ELEMENTS;
 
 import at.kk.msc.hcov.sdk.verificationtask.IVerificationTaskPlugin;
 import at.kk.msc.hcov.sdk.verificationtask.model.ProvidedContext;
@@ -18,7 +19,7 @@ public class VerificationTaskPluginMock implements IVerificationTaskPlugin {
   /**
    * withContext controls which template is being returned, necessary for testing and mocking
    */
-  private final boolean withContext;
+  private boolean withContext;
 
   public VerificationTaskPluginMock(boolean withContext) {
     this.withContext = withContext;
@@ -28,6 +29,8 @@ public class VerificationTaskPluginMock implements IVerificationTaskPlugin {
   public Function<OntModel, List<OntModel>> getElementExtractor() {
     return ontModel -> {
       List<OntModel> extractedModelElements = new ArrayList<>();
+      extractedModelElements.add(FIRST_MOCK_EXTRACTED_ELEMENTS);
+      extractedModelElements.add(SECOND_MOCK_EXTRACTED_ELEMENTS);
       return extractedModelElements;
     };
   }
@@ -70,4 +73,9 @@ public class VerificationTaskPluginMock implements IVerificationTaskPlugin {
   public Map<String, Object> getConfiguration() {
     return new HashMap<>();
   }
+
+  public void setWithContext(boolean withContext) {
+    this.withContext = withContext;
+  }
+
 }
