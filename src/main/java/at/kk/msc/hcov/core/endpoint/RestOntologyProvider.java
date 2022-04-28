@@ -3,6 +3,9 @@ package at.kk.msc.hcov.core.endpoint;
 import at.kk.msc.hcov.core.endpoint.dto.UploadOntologyRequestDto;
 import at.kk.msc.hcov.core.persistence.triples.exception.OntologyNameAlreadyInUseException;
 import at.kk.msc.hcov.core.service.ontology.data.IDataProvider;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.io.IOException;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -25,6 +28,12 @@ public class RestOntologyProvider {
 
   private IDataProvider dataProvider;
 
+  @Operation(summary = "Endpoint to upload and persist and ontology on the platform.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "The ontology was uploaded successfully."),
+      @ApiResponse(responseCode = "409", description = "The ontology name is already used for this or another ontology."),
+      @ApiResponse(responseCode = "500", description = "A problem when processing the ontology upload request occured.")
+  })
   @PostMapping("/upload")
   public ResponseEntity<Void> postUploadOntology(@Valid @RequestBody UploadOntologyRequestDto request) {
     try {
