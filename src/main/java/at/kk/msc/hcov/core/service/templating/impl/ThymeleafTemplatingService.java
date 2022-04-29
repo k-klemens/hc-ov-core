@@ -1,11 +1,13 @@
 package at.kk.msc.hcov.core.service.templating.impl;
 
 import at.kk.msc.hcov.core.service.templating.ITemplatingService;
+import at.kk.msc.hcov.core.service.templating.model.ResolvedVariablesWrapper;
 import at.kk.msc.hcov.sdk.plugin.PluginConfigurationNotSetException;
 import at.kk.msc.hcov.sdk.verificationtask.IVerificationTaskPlugin;
 import at.kk.msc.hcov.sdk.verificationtask.model.ProvidedContext;
 import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTaskSpecification;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -34,27 +36,43 @@ public class ThymeleafTemplatingService implements ITemplatingService {
       UUID currentElementId = extractedModelElements.getKey();
       OntModel currentModelElements = extractedModelElements.getValue();
       ProvidedContext currentProvidedContext = providedContextMap.getOrDefault(currentElementId, new ProvidedContext(currentElementId));
+      Map<String, Object> resolvedVariables = verificationTaskPlugin.getTemplateVariableValueResolver()
+          .apply(currentModelElements, currentProvidedContext);
 
-      String populatedTemplate = populateTemplate(verificationTaskPlugin, currentModelElements, currentProvidedContext);
-      populatedTemplates.put(currentElementId, populatedTemplate);
+      populatedTemplates.put(
+          currentElementId,
+          populateTemplateFor(new ResolvedVariablesWrapper(currentElementId, resolvedVariables), verificationTaskPlugin)
+      );
     }
     return populatedTemplates;
   }
 
-  private String populateTemplate(
-      IVerificationTaskPlugin verificationTaskPlugin,
-      OntModel currentModelElements,
-      ProvidedContext providedContext
+  @Override
+  public Map<UUID, String> populateTemplatesWithResolvedVariables(
+      List<ResolvedVariablesWrapper> templateVariableWrappers,
+      IVerificationTaskPlugin verificationTaskPlugin
+  ) throws PluginConfigurationNotSetException {
+    Map<UUID, String> populatedTemplates = new HashMap<>();
+    for (ResolvedVariablesWrapper wrapper : templateVariableWrappers) {
+      populatedTemplates.put(
+          wrapper.getExtractedModelElementsId(),
+          populateTemplateFor(wrapper, verificationTaskPlugin)
+      );
+    }
+    return populatedTemplates;
+  }
+
+  private String populateTemplateFor(
+      ResolvedVariablesWrapper templateVariables,
+      IVerificationTaskPlugin verificationTaskPlugin
   ) throws PluginConfigurationNotSetException {
     Context thymeleafContext = new org.thymeleaf.context.Context();
-    thymeleafContext.setVariables(
-        verificationTaskPlugin.getTemplateVariableValueResolver().apply(currentModelElements, providedContext)
-    );
+    thymeleafContext.setVariables(templateVariables.getResolvedVariables());
     return thymeleafTemplateEngine.process(
         verificationTaskPlugin.getTemplate(), thymeleafContext
     );
   }
-
+  
   private void validateProvidedContextMapOrThrow(
       Map<UUID, ProvidedContext> providedContextMap,
       Map<UUID, OntModel> extractedModelElementsMap

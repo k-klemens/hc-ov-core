@@ -1,4 +1,4 @@
-package at.kk.msc.hcov.core.service.verificationtask.exception;
+package at.kk.msc.hcov.core.service.verificationtask.task.exception;
 
 public class VerificationTaskCreationFailedException extends Exception {
 

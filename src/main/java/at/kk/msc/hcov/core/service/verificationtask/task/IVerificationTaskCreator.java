@@ -1,7 +1,7 @@
-package at.kk.msc.hcov.core.service.verificationtask;
+package at.kk.msc.hcov.core.service.verificationtask.task;
 
 import at.kk.msc.hcov.core.service.exception.PluginLoadingError;
-import at.kk.msc.hcov.core.service.verificationtask.exception.VerificationTaskCreationFailedException;
+import at.kk.msc.hcov.core.service.verificationtask.task.exception.VerificationTaskCreationFailedException;
 import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTask;
 import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTaskSpecification;
 import java.util.List;

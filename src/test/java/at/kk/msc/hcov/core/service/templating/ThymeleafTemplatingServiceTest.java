@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import at.kk.msc.hcov.core.service.templating.impl.ThymeleafTemplatingService;
+import at.kk.msc.hcov.core.service.templating.model.ResolvedVariablesWrapper;
 import at.kk.msc.hcov.core.util.VerificationTaskMockData;
 import at.kk.msc.hcov.core.util.VerificationTaskPluginMock;
 import at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData;
@@ -12,6 +13,7 @@ import at.kk.msc.hcov.sdk.verificationtask.IVerificationTaskPlugin;
 import at.kk.msc.hcov.sdk.verificationtask.model.ProvidedContext;
 import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTaskSpecification;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.apache.jena.ontology.OntModel;
@@ -82,6 +84,22 @@ public class ThymeleafTemplatingServiceTest {
             givenExtractedModelElements, givenProvidedContexts, givenVerificationTaskPlugin, givenTaskSpecification
         )
     ).isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void testPopulateTemplatesWithResolvedVariables() throws PluginConfigurationNotSetException {
+    // given - for more information see VerificationTaskPluginMock
+    List<ResolvedVariablesWrapper> givenResolvedVariables = VerificationTaskMockData.MOCKED_RESOLVED_VARIABLE_WRAPPERS_WITHOUT_CONTEXT();
+    IVerificationTaskPlugin givenVerificationTaskPlugin = new VerificationTaskPluginMock(false);
+
+    // when
+    Map<UUID, String> actual = target.populateTemplatesWithResolvedVariables(
+        givenResolvedVariables,
+        givenVerificationTaskPlugin
+    );
+
+    // then
+    assertThat(actual).containsAllEntriesOf(VerificationTaskMockData.EXPECTED_TEMPLATES_WITHOUT_CONTEXT());
   }
 
 }

@@ -1,12 +1,12 @@
-package at.kk.msc.hcov.core.service.verificationtask.impl;
+package at.kk.msc.hcov.core.service.verificationtask.task.impl;
 
 import at.kk.msc.hcov.core.persistence.triples.exception.OntologyNotFoundException;
 import at.kk.msc.hcov.core.service.exception.PluginLoadingError;
 import at.kk.msc.hcov.core.service.ontology.data.IDataProvider;
 import at.kk.msc.hcov.core.service.plugin.IPluginLoader;
 import at.kk.msc.hcov.core.service.templating.ITemplatingService;
-import at.kk.msc.hcov.core.service.verificationtask.IVerificationTaskCreator;
-import at.kk.msc.hcov.core.service.verificationtask.exception.VerificationTaskCreationFailedException;
+import at.kk.msc.hcov.core.service.verificationtask.task.IVerificationTaskCreator;
+import at.kk.msc.hcov.core.service.verificationtask.task.exception.VerificationTaskCreationFailedException;
 import at.kk.msc.hcov.sdk.plugin.PluginConfigurationNotSetException;
 import at.kk.msc.hcov.sdk.verificationtask.IContextProviderPlugin;
 import at.kk.msc.hcov.sdk.verificationtask.IVerificationTaskPlugin;

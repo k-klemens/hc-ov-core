@@ -3,6 +3,7 @@ package at.kk.msc.hcov.core.util;
 import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
 
 import at.kk.msc.hcov.core.endpoint.dto.VerificationTaskDto;
+import at.kk.msc.hcov.core.service.templating.model.ResolvedVariablesWrapper;
 import at.kk.msc.hcov.sdk.verificationtask.model.ProvidedContext;
 import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTask;
 import java.util.ArrayList;
@@ -106,6 +107,27 @@ public class VerificationTaskMockData {
         VERIFICATION_TASK_DTO_BUILDER.ontologyElementId(SECOND_MOCK_UUID).taskHtml(EXPECTED_SECOND_TEMPLATE_WITHOUT_CONTEXT).build()
     );
     return expectedTaskDtosWithoutContext;
+  }
+
+  public static List<ResolvedVariablesWrapper> MOCKED_RESOLVED_VARIABLE_WRAPPERS_WITHOUT_CONTEXT() {
+    List<ResolvedVariablesWrapper> givenVariables = new ArrayList<>();
+    givenVariables.add(
+        new ResolvedVariablesWrapper(FIRST_MOCK_UUID,
+            Map.of(
+                "ontologyName", "ONTOLOGY-TEST-NAME",
+                "element", "FIRST-ELEMENT"
+            )
+        )
+    );
+    givenVariables.add(
+        new ResolvedVariablesWrapper(SECOND_MOCK_UUID,
+            Map.of(
+                "ontologyName", "ONTOLOGY-TEST-NAME",
+                "element", "SECOND-ELEMENT"
+            )
+        )
+    );
+    return givenVariables;
   }
 
 }
