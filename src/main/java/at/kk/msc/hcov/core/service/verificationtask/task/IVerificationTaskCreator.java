@@ -3,8 +3,8 @@ package at.kk.msc.hcov.core.service.verificationtask.task;
 import at.kk.msc.hcov.core.service.exception.PluginLoadingError;
 import at.kk.msc.hcov.core.service.templating.model.ResolvedVariablesWrapper;
 import at.kk.msc.hcov.core.service.verificationtask.task.exception.VerificationTaskCreationFailedException;
+import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
 import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTask;
-import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTaskSpecification;
 import java.util.List;
 
 /**

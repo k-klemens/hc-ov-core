@@ -5,7 +5,7 @@ import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.MOC
 import static org.assertj.core.api.Assertions.assertThat;
 
 import at.kk.msc.hcov.core.endpoint.dto.VerificationTaskSpecificationRequestDto;
-import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTaskSpecification;
+import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 

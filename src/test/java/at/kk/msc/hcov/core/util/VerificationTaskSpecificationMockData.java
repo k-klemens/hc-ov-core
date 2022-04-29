@@ -1,7 +1,7 @@
 package at.kk.msc.hcov.core.util;
 
 import at.kk.msc.hcov.core.endpoint.dto.VerificationTaskSpecificationRequestDto;
-import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTaskSpecification;
+import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
 import java.util.ArrayList;
 import java.util.HashMap;
 

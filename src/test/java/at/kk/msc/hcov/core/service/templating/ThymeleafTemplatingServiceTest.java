@@ -5,13 +5,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import at.kk.msc.hcov.core.service.templating.impl.ThymeleafTemplatingService;
 import at.kk.msc.hcov.core.service.templating.model.ResolvedVariablesWrapper;
+import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
 import at.kk.msc.hcov.core.util.VerificationTaskMockData;
 import at.kk.msc.hcov.core.util.VerificationTaskPluginMock;
 import at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData;
 import at.kk.msc.hcov.sdk.plugin.PluginConfigurationNotSetException;
 import at.kk.msc.hcov.sdk.verificationtask.IVerificationTaskPlugin;
 import at.kk.msc.hcov.sdk.verificationtask.model.ProvidedContext;
-import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTaskSpecification;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -2,10 +2,10 @@ package at.kk.msc.hcov.core.service.templating.impl;
 
 import at.kk.msc.hcov.core.service.templating.ITemplatingService;
 import at.kk.msc.hcov.core.service.templating.model.ResolvedVariablesWrapper;
+import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
 import at.kk.msc.hcov.sdk.plugin.PluginConfigurationNotSetException;
 import at.kk.msc.hcov.sdk.verificationtask.IVerificationTaskPlugin;
 import at.kk.msc.hcov.sdk.verificationtask.model.ProvidedContext;
-import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTaskSpecification;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +72,7 @@ public class ThymeleafTemplatingService implements ITemplatingService {
         verificationTaskPlugin.getTemplate(), thymeleafContext
     );
   }
-  
+
   private void validateProvidedContextMapOrThrow(
       Map<UUID, ProvidedContext> providedContextMap,
       Map<UUID, OntModel> extractedModelElementsMap
