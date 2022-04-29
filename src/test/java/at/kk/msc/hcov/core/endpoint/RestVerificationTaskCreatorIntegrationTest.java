@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import org.apache.commons.io.FileUtils;
+import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,8 +73,74 @@ public class RestVerificationTaskCreatorIntegrationTest {
 
     // then
     assertThat(responseEntity.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
-    // TODO check if the correct object is returned
+    VerificationTaskResponseDto actual = responseEntity.getBody();
+    assertThat(actual).isNotNull();
+    assertThat(actual.getVerificationName()).isEqualTo("movie-person-verification");
+    assertThat(actual.getOntologyName()).isEqualTo("movie");
+    assertThat(actual.getVerificationTasks())
+        .hasSize(4)
+        .areExactly(1, new Condition<>(task -> task.getTaskHtml().contains("<p>Is <span>Writer</span> a type of Person?</p>"), null))
+        .areExactly(1, new Condition<>(task -> task.getTaskHtml().contains("<p>Is <span>Person</span> a type of Person?</p>"), null))
+        .areExactly(1, new Condition<>(task -> task.getTaskHtml().contains("<p>Is <span>MovieDirector</span> a type of Person?</p>"), null))
+        .areExactly(1, new Condition<>(task -> task.getTaskHtml().contains("<p>Is <span>Actor</span> a type of Person?</p>"), null));
+  }
 
+  @Test
+  void testCreateVerificationTasks_givenOntologyNotUploaded_expect520() throws IOException, URISyntaxException {
+    // given
+    HttpHeaders jsonHeader = new HttpHeaders();
+    jsonHeader.setContentType(MediaType.APPLICATION_JSON);
+
+    VerificationTaskSpecificationRequestDto givenRequest = VerificationTaskSpecificationRequestDto.builder()
+        .ontologyName("movie")
+        .verificationName("movie-person-verification")
+        .verificationTaskPluginId("MOVIE_VERIFICATION")
+        .build();
+    String givenRequestJson = jacksonObjectMapper.writeValueAsString(givenRequest);
+
+    // when
+    ResponseEntity<VerificationTaskResponseDto> responseEntity = restTemplate.exchange(
+        new URI("http://localhost:" + port + "/verification-task/create"),
+        HttpMethod.POST,
+        new HttpEntity<>(givenRequestJson, jsonHeader),
+        VerificationTaskResponseDto.class
+    );
+
+    // then
+    assertThat(responseEntity.getStatusCodeValue()).isEqualByComparingTo(500);
+    VerificationTaskResponseDto actual = responseEntity.getBody();
+    assertThat(actual).isNotNull();
+  }
+
+  @Test
+  void testCreateVerificationTasks_givenPluginNotInstalled_expect521() throws IOException, URISyntaxException {
+    // given
+    File movieOntologyFile = new File("src/test/resources/movie.owl.xml");
+    // provide an ontology in the repo directory
+    FileUtils.copyFile(movieOntologyFile, new File("src/test/resources/integration-filestore/.hcov-triplestore/movie/movie.owl.xml"));
+
+    HttpHeaders jsonHeader = new HttpHeaders();
+    jsonHeader.setContentType(MediaType.APPLICATION_JSON);
+
+    VerificationTaskSpecificationRequestDto givenRequest = VerificationTaskSpecificationRequestDto.builder()
+        .ontologyName("movie")
+        .verificationName("movie-person-verification")
+        .verificationTaskPluginId("MOVIE_VERIFICATION_NOTFOUND")
+        .build();
+    String givenRequestJson = jacksonObjectMapper.writeValueAsString(givenRequest);
+
+    // when
+    ResponseEntity<VerificationTaskResponseDto> responseEntity = restTemplate.exchange(
+        new URI("http://localhost:" + port + "/verification-task/create"),
+        HttpMethod.POST,
+        new HttpEntity<>(givenRequestJson, jsonHeader),
+        VerificationTaskResponseDto.class
+    );
+
+    // then
+    assertThat(responseEntity.getStatusCodeValue()).isEqualByComparingTo(500);
+    VerificationTaskResponseDto actual = responseEntity.getBody();
+    assertThat(actual).isNotNull();
   }
 
 

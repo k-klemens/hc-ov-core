@@ -3,6 +3,7 @@ package at.kk.msc.hcov.core.endpoint;
 import at.kk.msc.hcov.core.endpoint.dto.VerificationTaskResponseDto;
 import at.kk.msc.hcov.core.endpoint.dto.VerificationTaskSpecificationRequestDto;
 import at.kk.msc.hcov.core.service.exception.PluginLoadingError;
+import at.kk.msc.hcov.core.service.mapper.VerificationTaskMapper;
 import at.kk.msc.hcov.core.service.mapper.VerificationTaskSpecificationMapper;
 import at.kk.msc.hcov.core.service.verificationtask.IVerificationTaskCreator;
 import at.kk.msc.hcov.core.service.verificationtask.exception.VerificationTaskCreationFailedException;
@@ -31,6 +32,7 @@ public class RestVerificationTaskCreator {
   private IVerificationTaskCreator verificationTaskCreator;
 
   private VerificationTaskSpecificationMapper specificationMapper;
+  private VerificationTaskMapper verificationTaskMapper;
 
   @Operation(summary = "Endpoint to create verification tasks according to a given specification. This interface does not upload or persist the tasks.")
   @ApiResponses(value = {
@@ -40,12 +42,8 @@ public class RestVerificationTaskCreator {
           content = @Content(schema = @Schema(implementation = VerificationTaskResponseDto.class))
       ),
       @ApiResponse(
-          responseCode = "520",
+          responseCode = "500",
           description = "Something went wrong when processing the task creation request."
-      ),
-      @ApiResponse(
-          responseCode = "521",
-          description = "One of the request plugins is not available with the platform installation."
       )
   })
   @PostMapping("/create")
@@ -56,11 +54,16 @@ public class RestVerificationTaskCreator {
       List<VerificationTask> verificationTasks = verificationTaskCreator.createTasks(
           specificationMapper.toServiceObject(requestDto)
       );
-    } catch (VerificationTaskCreationFailedException e) {
-      throw new ResponseStatusException(HttpStatus.valueOf(520), e.getMessage(), e);
-    } catch (PluginLoadingError e) {
-      throw new ResponseStatusException(HttpStatus.valueOf(521), e.getMessage(), e);
+      return new ResponseEntity<>(
+          VerificationTaskResponseDto.builder()
+              .ontologyName(requestDto.getOntologyName())
+              .verificationName(requestDto.getVerificationName())
+              .verificationTasks(verificationTaskMapper.toDto(verificationTasks))
+              .build(),
+          HttpStatus.OK
+      );
+    } catch (VerificationTaskCreationFailedException | PluginLoadingError e) {
+      throw new ResponseStatusException(500, e.getMessage(), e);
     }
-    return null;
   }
 }
