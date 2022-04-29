@@ -35,7 +35,7 @@ public class IntegrationTestPlugins {
           Map<String, Object> templateValues = new HashMap<>();
           String subClassName = ontModel.listClasses().toList().get(0).getLocalName();
           templateValues.put("subclass", subClassName);
-          if (configuration != null && (boolean) configuration.get("CONTEXT_ENABLED")) {
+          if (configuration != null && (boolean) configuration.getOrDefault("CONTEXT_ENABLED", false)) {
             templateValues.put("context", providedContext.getContextString());
           }
           return templateValues;
@@ -44,7 +44,7 @@ public class IntegrationTestPlugins {
 
       @Override
       public String getTemplate() throws PluginConfigurationNotSetException {
-        if (configuration == null) {
+        if (!configuration.containsKey("CONTEXT_ENABLED")) {
           return """
               <html>
                 <body>    
