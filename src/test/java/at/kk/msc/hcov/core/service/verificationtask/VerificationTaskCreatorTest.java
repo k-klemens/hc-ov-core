@@ -6,6 +6,7 @@ import static at.kk.msc.hcov.core.util.VerificationTaskMockData.EXPECTED_TEMPLAT
 import static at.kk.msc.hcov.core.util.VerificationTaskMockData.EXPECTED_TEMPLATES_WITH_CONTEXT;
 import static at.kk.msc.hcov.core.util.VerificationTaskMockData.MOCKED_EXTRACTED_MODEL_ELEMENTS;
 import static at.kk.msc.hcov.core.util.VerificationTaskMockData.MOCKED_PROVIDED_CONTEXTS;
+import static at.kk.msc.hcov.core.util.VerificationTaskMockData.MOCKED_RESOLVED_VARIABLE_WRAPPERS_WITHOUT_CONTEXT;
 import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -22,6 +23,7 @@ import at.kk.msc.hcov.core.service.exception.PluginLoadingError;
 import at.kk.msc.hcov.core.service.ontology.data.IDataProvider;
 import at.kk.msc.hcov.core.service.plugin.IPluginLoader;
 import at.kk.msc.hcov.core.service.templating.ITemplatingService;
+import at.kk.msc.hcov.core.service.templating.model.ResolvedVariablesWrapper;
 import at.kk.msc.hcov.core.service.verificationtask.task.IVerificationTaskCreator;
 import at.kk.msc.hcov.core.service.verificationtask.task.exception.VerificationTaskCreationFailedException;
 import at.kk.msc.hcov.core.service.verificationtask.task.impl.VerificationTaskCreator;
@@ -157,7 +159,7 @@ public class VerificationTaskCreatorTest {
     // then
     verify(pluginLoaderMock, times(1))
         .loadPluginOrThrow(eq(IPluginLoader.PluginType.VERIFICATION_TASK_CREATOR), eq("VERIFICATION_MOCK"));
-    verify(pluginLoaderMock, times(0))
+    verify(pluginLoaderMock, never())
         .loadPluginOrThrow(eq(IPluginLoader.PluginType.CONTEXT_PROVIDER), any());
     verify(dataProviderMock, times(1))
         .extractAndStoreRequiredOntologyElements(
@@ -265,6 +267,35 @@ public class VerificationTaskCreatorTest {
     // when - then
     assertThatThrownBy(() -> target.createTasks(givenVerificationTaskSpecification))
         .isInstanceOf(VerificationTaskCreationFailedException.class);
+  }
+
+  @Test
+  void testCreateTasksWithResolvedVariables()
+      throws PluginConfigurationNotSetException, VerificationTaskCreationFailedException, PluginLoadingError, OntologyNotFoundException,
+      IOException {
+    // given
+    List<ResolvedVariablesWrapper> givenVariables = MOCKED_RESOLVED_VARIABLE_WRAPPERS_WITHOUT_CONTEXT();
+    VerificationTaskSpecification givenVerificationTaskSpecification = MOCKED_VERIFICATION_TASK_SPECIFICATION();
+    givenVerificationTaskSpecification.setContextProviderPluginId(null);
+    givenVerificationTaskSpecification.setContextProviderConfiguration(null);
+    when(templatingServiceMock.populateTemplatesWithResolvedVariables(
+        eq(givenVariables),
+        eq(verificationTaskPluginMock)
+    ))
+        .thenReturn(EXPECTED_TEMPLATES_WITHOUT_CONTEXT());
+    ((VerificationTaskPluginMock) verificationTaskPluginMock).setWithContext(false);
+
+    // when
+    List<VerificationTask> actual = target.createTasksWithResolvedVariables(
+        givenVerificationTaskSpecification, givenVariables
+    );
+
+    // then
+    verify(pluginLoaderMock, times(1)).loadPluginOrThrow(eq(IPluginLoader.PluginType.VERIFICATION_TASK_CREATOR), eq("VERIFICATION_MOCK"));
+    verify(pluginLoaderMock, never()).loadPluginOrThrow(eq(IPluginLoader.PluginType.CONTEXT_PROVIDER), any());
+    verify(dataProviderMock, never()).extractAndStoreRequiredOntologyElements(any(), any(), any());
+    assertThat(((ContextProviderPluginMock) contextProviderPluginMock).gotCalled()).isFalse();
+    assertThat(actual).containsExactlyInAnyOrderElementsOf(EXPECTED_TASKS_WITHOUT_CONTEXT());
   }
 
   private static Stream<Arguments> provideDataProviderExceptions() {

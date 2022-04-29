@@ -5,6 +5,7 @@ import at.kk.msc.hcov.core.service.exception.PluginLoadingError;
 import at.kk.msc.hcov.core.service.ontology.data.IDataProvider;
 import at.kk.msc.hcov.core.service.plugin.IPluginLoader;
 import at.kk.msc.hcov.core.service.templating.ITemplatingService;
+import at.kk.msc.hcov.core.service.templating.model.ResolvedVariablesWrapper;
 import at.kk.msc.hcov.core.service.verificationtask.task.IVerificationTaskCreator;
 import at.kk.msc.hcov.core.service.verificationtask.task.exception.VerificationTaskCreationFailedException;
 import at.kk.msc.hcov.sdk.plugin.PluginConfigurationNotSetException;
@@ -40,41 +41,33 @@ public class VerificationTaskCreator implements IVerificationTaskCreator {
   @Override
   public List<VerificationTask> createTasks(VerificationTaskSpecification specification)
       throws VerificationTaskCreationFailedException, PluginLoadingError {
-    String verificationName = specification.getVerificationName();
-    String ontologyName = specification.getOntologyName();
-    IVerificationTaskPlugin verificationTaskPlugin = (IVerificationTaskPlugin) pluginLoader.loadPluginOrThrow(
-        IPluginLoader.PluginType.VERIFICATION_TASK_CREATOR, specification.getVerificationTaskPluginId()
-    );
-    verificationTaskPlugin.setConfiguration(
-        specification.getVerificationTaskPluginConfiguration() == null ?
-            new HashMap<>() : specification.getVerificationTaskPluginConfiguration()
-    );
+    IVerificationTaskPlugin verificationTaskPlugin = setupVerificationTaskPlugin(specification);
 
     Map<UUID, OntModel> extractedModelElements = extractModelElementsOrThrow(verificationTaskPlugin, specification);
     LOGGER.debug("Extracted model elements of size: {}", extractedModelElements.size());
     Map<UUID, ProvidedContext> providedContexts = extractContextIfNeeded(extractedModelElements, specification);
     LOGGER.debug("Extracted context of size: {}", providedContexts.size());
 
-    // TODO: care for representation + eventual possibility to upload the pictures somewhere --> should be done by the task creator plugin
-    Map<UUID, String> questionHtmlDocuments = createHtmlDocumentsOrThrow(
+    Map<UUID, String> questionHtmlDocuments = createHtmlDocumentsWithVariableResolverOrThrow(
         extractedModelElements, providedContexts, verificationTaskPlugin, specification
     );
 
-    List<VerificationTask> verificationTasks = new ArrayList<>();
-    for (Map.Entry<UUID, String> questionHtmlEntry : questionHtmlDocuments.entrySet()) {
-      UUID currentModelElementId = questionHtmlEntry.getKey();
-      String currentQuestionHtmlDocument = questionHtmlEntry.getValue();
-      VerificationTask verificationTask = new VerificationTask();
-      verificationTask.setVerificationName(verificationName);
-      verificationTask.setOntologyName(ontologyName);
-      verificationTask.setOntologyElementId(currentModelElementId);
-      verificationTask.setTaskHtml(currentQuestionHtmlDocument);
-      verificationTasks.add(verificationTask);
-    }
-    return verificationTasks;
+    return toVerificationTasks(questionHtmlDocuments, specification);
   }
 
-  private Map<UUID, String> createHtmlDocumentsOrThrow(
+  @Override
+  public List<VerificationTask> createTasksWithResolvedVariables(
+      VerificationTaskSpecification specification,
+      List<ResolvedVariablesWrapper> resolvedVariables
+  ) throws VerificationTaskCreationFailedException, PluginLoadingError {
+    IVerificationTaskPlugin verificationTaskPlugin = setupVerificationTaskPlugin(specification);
+
+    Map<UUID, String> questionHtmlDocuments = createHtmlDocumentsOrThrow(resolvedVariables, verificationTaskPlugin);
+
+    return toVerificationTasks(questionHtmlDocuments, specification);
+  }
+
+  private Map<UUID, String> createHtmlDocumentsWithVariableResolverOrThrow(
       Map<UUID, OntModel> extractedModelElements,
       Map<UUID, ProvidedContext> providedContexts,
       IVerificationTaskPlugin verificationTaskPlugin,
@@ -87,6 +80,34 @@ public class VerificationTaskCreator implements IVerificationTaskCreator {
     } catch (PluginConfigurationNotSetException e) {
       throw new VerificationTaskCreationFailedException(e);
     }
+  }
+
+  private Map<UUID, String> createHtmlDocumentsOrThrow(
+      List<ResolvedVariablesWrapper> resolvedVariables,
+      IVerificationTaskPlugin verificationTaskPlugin
+  ) throws VerificationTaskCreationFailedException {
+    try {
+      return templatingService.populateTemplatesWithResolvedVariables(resolvedVariables, verificationTaskPlugin);
+    } catch (PluginConfigurationNotSetException e) {
+      throw new VerificationTaskCreationFailedException(e);
+    }
+  }
+
+  private List<VerificationTask> toVerificationTasks(Map<UUID, String> questionHtmlDocuments, VerificationTaskSpecification specification) {
+    String verificationName = specification.getVerificationName();
+    String ontologyName = specification.getOntologyName();
+    List<VerificationTask> verificationTasks = new ArrayList<>();
+    for (Map.Entry<UUID, String> questionHtmlEntry : questionHtmlDocuments.entrySet()) {
+      UUID currentModelElementId = questionHtmlEntry.getKey();
+      String currentQuestionHtmlDocument = questionHtmlEntry.getValue();
+      VerificationTask verificationTask = new VerificationTask();
+      verificationTask.setVerificationName(verificationName);
+      verificationTask.setOntologyName(ontologyName);
+      verificationTask.setOntologyElementId(currentModelElementId);
+      verificationTask.setTaskHtml(currentQuestionHtmlDocument);
+      verificationTasks.add(verificationTask);
+    }
+    return verificationTasks;
   }
 
   private Map<UUID, ProvidedContext> extractContextIfNeeded(
@@ -114,6 +135,17 @@ public class VerificationTaskCreator implements IVerificationTaskCreator {
     } catch (OntologyNotFoundException | IOException | PluginConfigurationNotSetException e) {
       throw new VerificationTaskCreationFailedException(e);
     }
+  }
+
+  private IVerificationTaskPlugin setupVerificationTaskPlugin(VerificationTaskSpecification specification) throws PluginLoadingError {
+    IVerificationTaskPlugin verificationTaskPlugin = (IVerificationTaskPlugin) pluginLoader.loadPluginOrThrow(
+        IPluginLoader.PluginType.VERIFICATION_TASK_CREATOR, specification.getVerificationTaskPluginId()
+    );
+    verificationTaskPlugin.setConfiguration(
+        specification.getVerificationTaskPluginConfiguration() == null ?
+            new HashMap<>() : specification.getVerificationTaskPluginConfiguration()
+    );
+    return verificationTaskPlugin;
   }
 
 
