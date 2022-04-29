@@ -7,10 +7,13 @@ import java.util.HashMap;
 
 public class VerificationTaskSpecificationMockData {
 
+  public static final String MOCKED_VERIFICATION_NAME = "MOCK-Verification";
+  public static final String MOCKED_ONTOLOGY_NAME = "ONTOLOGY-TEST-NAME";
+
   public static final VerificationTaskSpecification MOCKED_VERIFICATION_TASK_SPECIFICATION() {
     return VerificationTaskSpecification.builder()
-        .verificationName("MOCK-Verification")
-        .ontologyName("ONTOLOGY-TEST-NAME")
+        .verificationName(MOCKED_VERIFICATION_NAME)
+        .ontologyName(MOCKED_ONTOLOGY_NAME)
         .verificationTaskPluginId("VERIFICATION_MOCK")
         .verificationTaskPluginConfiguration(new HashMap<>())
         .contextProviderPluginId("CONTEXT_MOCK")
@@ -24,8 +27,8 @@ public class VerificationTaskSpecificationMockData {
 
   public static VerificationTaskSpecificationRequestDto MOCKED_VERIFICATION_TASK_SPECIFICATION_DTO() {
     return VerificationTaskSpecificationRequestDto.builder()
-        .verificationName("MOCK-Verification")
-        .ontologyName("ONTOLOGY-TEST-NAME")
+        .verificationName(MOCKED_VERIFICATION_NAME)
+        .ontologyName(MOCKED_ONTOLOGY_NAME)
         .verificationTaskPluginId("VERIFICATION_MOCK")
         .verificationTaskPluginConfiguration(new HashMap<>())
         .contextProviderPluginId("CONTEXT_MOCK")

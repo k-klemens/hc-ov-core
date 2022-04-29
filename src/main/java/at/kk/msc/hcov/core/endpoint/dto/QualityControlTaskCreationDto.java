@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class QualityControlTaskDto {
+public class QualityControlTaskCreationDto {
 
   /**
    * Given UUID of the quality control task elements.
@@ -29,5 +29,5 @@ public class QualityControlTaskDto {
    * Correct answer to the given quality control task.
    */
   private String answer;
-  
+
 }

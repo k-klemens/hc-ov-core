@@ -1,14 +1,17 @@
 package at.kk.msc.hcov.core.service.verificationtask.task.model;
 
+import at.kk.msc.hcov.core.service.verificationtask.qualitycontrol.model.QualityControlTasksSpecification;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 /**
  * Configuration of a verification task.
  * Contains meta information about the verification as well as plugins to be loaded by the platform core.
@@ -59,4 +62,9 @@ public class VerificationTaskSpecification {
    * List of maps holding arbitrary configuration values of the processor plugins.
    */
   private List<Map<String, Object>> processorPluginConfigurations;
+
+  /**
+   * Specification on how to create quality control tasks. Can be null / optional.
+   */
+  private QualityControlTasksSpecification qualityControlTasksSpecification;
 }

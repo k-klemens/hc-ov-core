@@ -18,6 +18,6 @@ public class QualityControlTasksSpecDto {
   /**
    * List of the quality control tasks to be created.
    */
-  List<QualityControlTaskDto> qualityControlTasks;
+  List<QualityControlTaskCreationDto> qualityControlTasks;
 
 }

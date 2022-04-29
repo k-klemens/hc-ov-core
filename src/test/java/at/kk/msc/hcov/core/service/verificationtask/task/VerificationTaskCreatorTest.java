@@ -1,4 +1,4 @@
-package at.kk.msc.hcov.core.service.verificationtask;
+package at.kk.msc.hcov.core.service.verificationtask.task;
 
 import static at.kk.msc.hcov.core.util.VerificationTaskMockData.EXPECTED_TASKS_WITHOUT_CONTEXT;
 import static at.kk.msc.hcov.core.util.VerificationTaskMockData.EXPECTED_TASKS_WITH_CONTEXT;
@@ -24,7 +24,6 @@ import at.kk.msc.hcov.core.service.ontology.data.IDataProvider;
 import at.kk.msc.hcov.core.service.plugin.IPluginLoader;
 import at.kk.msc.hcov.core.service.templating.ITemplatingService;
 import at.kk.msc.hcov.core.service.templating.model.ResolvedVariablesWrapper;
-import at.kk.msc.hcov.core.service.verificationtask.task.IVerificationTaskCreator;
 import at.kk.msc.hcov.core.service.verificationtask.task.exception.VerificationTaskCreationFailedException;
 import at.kk.msc.hcov.core.service.verificationtask.task.impl.VerificationTaskCreator;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
