@@ -25,6 +25,7 @@ import lombok.AllArgsConstructor;
 import org.apache.jena.ontology.OntModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.plugin.core.Plugin;
 import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
@@ -36,7 +37,7 @@ public class VerificationTaskCreator implements IVerificationTaskCreator {
   private IDataProvider dataProvider;
   private ITemplatingService templatingService;
 
-  private IPluginLoader pluginLoader;
+  private IPluginLoader<Plugin<String>> pluginLoader;
 
   @Override
   public List<VerificationTask> createTasks(VerificationTaskSpecification specification)
