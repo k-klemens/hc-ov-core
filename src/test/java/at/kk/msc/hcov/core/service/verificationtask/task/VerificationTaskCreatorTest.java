@@ -19,6 +19,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import at.kk.msc.hcov.core.persistence.triples.exception.OntologyNotFoundException;
+import at.kk.msc.hcov.core.service.crowdsourcing.ICrowdsourcingManager;
 import at.kk.msc.hcov.core.service.exception.PluginLoadingError;
 import at.kk.msc.hcov.core.service.ontology.data.IDataProvider;
 import at.kk.msc.hcov.core.service.plugin.IPluginLoader;
@@ -63,6 +64,9 @@ public class VerificationTaskCreatorTest {
 
   @Mock
   IPluginLoader<Plugin<String>> pluginLoaderMock;
+
+  @Mock
+  ICrowdsourcingManager crowdsourcingManagerMock;
 
   IVerificationTaskPlugin verificationTaskPluginMock;
   IContextProviderPlugin contextProviderPluginMock;

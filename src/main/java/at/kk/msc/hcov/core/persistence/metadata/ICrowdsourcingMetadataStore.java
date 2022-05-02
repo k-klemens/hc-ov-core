@@ -1,8 +1,7 @@
 package at.kk.msc.hcov.core.persistence.metadata;
 
+import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedTaskIdMappings;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
-import at.kk.msc.hcov.sdk.crowdsourcing.platform.model.PublishedTask;
-import java.util.List;
 
 /**
  * Interface specifying operations to be supported for storing metadata of a published verification.
@@ -15,9 +14,9 @@ public interface ICrowdsourcingMetadataStore {
    * considerations.
    *
    * @param verificationTaskSpecification specification of the published verification tasks.
-   * @param publishedTasks                list of tasks published on the crowdsourcing platform.
+   * @param publishedTaskIdMappings       mappings between the extracted element ids and the ids provided by the crowdsourcing platform.
    */
-  void saveMetaData(VerificationTaskSpecification verificationTaskSpecification, List<PublishedTask> publishedTasks);
+  void saveMetaData(VerificationTaskSpecification verificationTaskSpecification, PublishedTaskIdMappings publishedTaskIdMappings);
 
 
 }

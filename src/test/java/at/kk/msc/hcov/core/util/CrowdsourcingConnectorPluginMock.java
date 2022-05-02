@@ -1,13 +1,12 @@
 package at.kk.msc.hcov.core.util;
 
-import static at.kk.msc.hcov.core.util.PublishedTaskMockData.MOCKED_PUBLISHED_TASKS;
 
 import at.kk.msc.hcov.sdk.crowdsourcing.platform.ICrowdsourcingConnectorPlugin;
-import at.kk.msc.hcov.sdk.crowdsourcing.platform.model.PublishedTask;
 import at.kk.msc.hcov.sdk.plugin.PluginConfigurationNotSetException;
 import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTask;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import lombok.Getter;
 
 @Getter
@@ -19,13 +18,16 @@ public class CrowdsourcingConnectorPluginMock implements ICrowdsourcingConnector
   private List<VerificationTask> mostRecentVerificationTaskListProvided;
 
   @Override
-  public List<PublishedTask> publishTasks(List<VerificationTask> list) throws PluginConfigurationNotSetException {
+  public Map<UUID, String> publishTasks(List<VerificationTask> list) throws PluginConfigurationNotSetException {
     // store mock information when method is called for verification / assertions
     this.mostRecentVerificationTaskListProvided = list;
     calledPublishTasks = true;
 
     validateConfigurationSetOrThrow();
-    return MOCKED_PUBLISHED_TASKS();
+    if (list.size() == 4) { // MOCK DATA size 4 -> with quality control
+      return PublishedTaskMockData.MOCKED_ID_MAPPINGS_WITH_QUALITY_CONTROL();
+    }
+    return PublishedTaskMockData.MOCKED_ID_MAPPINGS_WITHOUT_QUALITY_CONTROL();
   }
 
   @Override

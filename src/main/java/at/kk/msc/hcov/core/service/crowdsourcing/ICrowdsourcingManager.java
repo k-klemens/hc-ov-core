@@ -1,11 +1,9 @@
 package at.kk.msc.hcov.core.service.crowdsourcing;
 
 import at.kk.msc.hcov.core.service.crowdsourcing.exception.CrowdsourcingManagerException;
+import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedVerification;
 import at.kk.msc.hcov.core.service.exception.PluginLoadingError;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
-import at.kk.msc.hcov.sdk.crowdsourcing.platform.model.PublishedTask;
-import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTask;
-import java.util.List;
 
 /**
  * Interfaces specifying operations to be supported for connections to crowdsourcing platforms.
@@ -13,16 +11,16 @@ import java.util.List;
 public interface ICrowdsourcingManager {
 
   /**
-   * Publishes the given set of verification tasks according to the given specification on a crowdsourcing platform and stores the metadata
+   * Creates a set of verification tasks using a {@link at.kk.msc.hcov.core.service.verificationtask.task.IVerificationTaskCreator and
+   * publishes the given set of verification tasks according to the given specification on a crowdsourcing platform and stores the metadata
    * using a {@link at.kk.msc.hcov.core.persistence.metadata.ICrowdsourcingMetadataStore}.
+   * Depending on the specification this also includes creating quality control questions using a IQualityControlgProvider.
    *
-   * @param verificationTasks a List of {@link VerificationTask} objects (=HITs) to be published.
-   * @param specification     @apiNote {@link VerificationTaskSpecification} specifying the configuration for the crowdsourcing tasks.
-   * @return a list of the {@link PublishedTask} objects
+   * @param specification {@link VerificationTaskSpecification} specifying the configuration for the crowdsourcing tasks.
+   * @return a PublishedVerification object describing the verification as well as the tasks created.
    * @throws PluginLoadingError            if loading a required plugins failed
    * @throws CrowdsourcingManagerException if creation of the quality control tasks failed.
    */
-  List<PublishedTask> publishCrowdsourcingTasks(
-      List<VerificationTask> verificationTasks, VerificationTaskSpecification specification
-  ) throws PluginLoadingError, CrowdsourcingManagerException;
+  PublishedVerification createAndPublishVerification(VerificationTaskSpecification specification)
+      throws PluginLoadingError, CrowdsourcingManagerException;
 }
