@@ -63,4 +63,9 @@ public class VerificationTaskSpecificationRequestDto {
    */
   private List<Map<String, Object>> processorPluginConfigurations;
 
+  /**
+   * Specification on how to create quality control tasks. Can be null / optional.
+   */
+  private QualityControlTasksSpecificationDto qualityControlTasksSpecification;
+
 }

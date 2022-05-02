@@ -1,7 +1,11 @@
 package at.kk.msc.hcov.core.service.crowdsourcing.model;
 
 import at.kk.msc.hcov.core.service.verificationtask.qualitycontrol.model.QualityControlTask;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 /**
  * Data class holding information of published quality control tasks.
  */

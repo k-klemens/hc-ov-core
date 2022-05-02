@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class QualityControlTasksSpecDto {
+public class QualityControlTasksSpecificationDto {
 
   /**
    * List of the quality control tasks to be created.

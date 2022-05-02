@@ -87,6 +87,18 @@ public class VerificationTaskMockData {
     return expectedTasksWithContext;
   }
 
+  public static final List<VerificationTaskDto> EXPECTED_TASKS_WITH_CONTEXT_DTOS() {
+    List<VerificationTaskDto> expectedTasksWithContext = new ArrayList<>();
+    expectedTasksWithContext.add(
+        VERIFICATION_TASK_DTO_BUILDER.ontologyElementId(FIRST_MOCK_UUID).taskHtml(EXPECTED_FIRST_TEMPLATE_WITH_CONTEXT).build()
+    );
+    expectedTasksWithContext.add(
+        VERIFICATION_TASK_DTO_BUILDER.ontologyElementId(SECOND_MOCK_UUID).taskHtml(EXPECTED_SECOND_TEMPLATE_WITH_CONTEXT).build()
+    );
+
+    return expectedTasksWithContext;
+  }
+
   public static final List<VerificationTask> EXPECTED_TASKS_WITHOUT_CONTEXT() {
     List<VerificationTask> expectedTasksWithoutContext = new ArrayList<>();
     expectedTasksWithoutContext.add(

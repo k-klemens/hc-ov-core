@@ -30,7 +30,7 @@ public class PublishedTaskIdMappings {
   }
 
   public String getQualityControlTaskId(UUID elementId) {
-    return ontologyVerificationTaskIdMappings.get(elementId);
+    return qualityControlTaskIdMappings.get(elementId);
   }
 
 }

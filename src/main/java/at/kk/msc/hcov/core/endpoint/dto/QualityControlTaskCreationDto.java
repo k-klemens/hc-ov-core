@@ -20,11 +20,11 @@ public class QualityControlTaskCreationDto {
    * Given UUID of the quality control task elements.
    * This is required as the elements are typcially not provided by any data provider.
    */
-  private UUID qualityControlElementsUUID;
+  private UUID qualityControlModelElementId;
   /**
    * Set of values for the variables used by the template to be used.
    */
-  private Map<String, Object> templatingVariables;
+  private Map<String, Object> resolvedVariables;
   /**
    * Correct answer to the given quality control task.
    */

@@ -1,9 +1,11 @@
 package at.kk.msc.hcov.core.util;
 
+import at.kk.msc.hcov.sdk.crowdsourcing.platform.ICrowdsourcingConnectorPlugin;
 import at.kk.msc.hcov.sdk.plugin.PluginConfigurationNotSetException;
 import at.kk.msc.hcov.sdk.verificationtask.IContextProviderPlugin;
 import at.kk.msc.hcov.sdk.verificationtask.IVerificationTaskPlugin;
 import at.kk.msc.hcov.sdk.verificationtask.model.ProvidedContext;
+import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTask;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +13,8 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import org.apache.jena.ontology.OntModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
@@ -103,6 +107,59 @@ public class IntegrationTestPlugins {
       @Override
       public boolean supports(String s) {
         return "MOVIE_VERIFICATION_CONTEXT".equalsIgnoreCase(s);
+      }
+    };
+  }
+
+  @Bean
+  public ICrowdsourcingConnectorPlugin sampleCrowdsourcingConnectorPlugin() {
+    return new ICrowdsourcingConnectorPlugin() {
+      private static final Logger LOGGER = LoggerFactory.getLogger("sampleCrowdsourcingConnectorPlugin");
+      private Map<String, Object> configuration;
+
+      @Override
+      public Map<UUID, String> publishTasks(List<VerificationTask> list) throws PluginConfigurationNotSetException {
+        validateConfigurationSetOrThrow();
+
+        Map<UUID, String> returnMap = new HashMap<>();
+        for (VerificationTask task : list) {
+          if (task.getTaskHtml().contains("<span>Writer</span>")) {
+            returnMap.put(task.getOntologyElementId(), "WriterExternalId");
+          } else if (task.getTaskHtml().contains("<span>Person</span>")) {
+            returnMap.put(task.getOntologyElementId(), "PersonExternalId");
+          } else if (task.getTaskHtml().contains("<span>MovieDirector</span>")) {
+            returnMap.put(task.getOntologyElementId(), "MovieDirectorExternalId");
+          } else if (task.getTaskHtml().contains("<span>Actor</span>")) {
+            returnMap.put(task.getOntologyElementId(), "ActorExternalId");
+          } else if (task.getTaskHtml().contains("<span>QualityControl</span>")) {
+            returnMap.put(task.getOntologyElementId(), "QualityControlExternalId");
+          }
+          LOGGER.info("Published task for element id {}", task.getOntologyElementId());
+        }
+        return returnMap;
+      }
+
+      @Override
+      public void validateConfigurationSetOrThrow() throws PluginConfigurationNotSetException {
+        ICrowdsourcingConnectorPlugin.super.validateConfigurationSetOrThrow();
+        if (!configuration.containsKey("REQUIRED_CONFIGURATION")) {
+          throw new PluginConfigurationNotSetException("Configuration with key REQUIRED_CONFIGURATION not set!");
+        }
+      }
+
+      @Override
+      public void setConfiguration(Map<String, Object> map) {
+        configuration = map;
+      }
+
+      @Override
+      public Map<String, Object> getConfiguration() {
+        return configuration;
+      }
+
+      @Override
+      public boolean supports(String s) {
+        return "CROWDSOURCING_MOCK".equalsIgnoreCase(s);
       }
     };
   }

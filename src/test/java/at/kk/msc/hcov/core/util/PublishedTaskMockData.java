@@ -2,11 +2,17 @@ package at.kk.msc.hcov.core.util;
 
 import static at.kk.msc.hcov.core.util.QualityControlTaskMockData.FIRST_QC_MOCK_UUID;
 import static at.kk.msc.hcov.core.util.QualityControlTaskMockData.SECOND_QC_MOCK_UUID;
+import static at.kk.msc.hcov.core.util.VerificationTaskMockData.EXPECTED_TASKS_WITHOUT_CONTEXT;
+import static at.kk.msc.hcov.core.util.VerificationTaskMockData.EXPECTED_TASKS_WITHOUT_CONTEXT_DTOS;
+import static at.kk.msc.hcov.core.util.VerificationTaskMockData.EXPECTED_TASKS_WITH_CONTEXT_DTOS;
 import static at.kk.msc.hcov.core.util.VerificationTaskMockData.FIRST_MOCK_UUID;
 import static at.kk.msc.hcov.core.util.VerificationTaskMockData.SECOND_MOCK_UUID;
 
+import at.kk.msc.hcov.core.endpoint.dto.PublishedVerificationTaskDto;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedTaskIdMappings;
+import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedVerificationTask;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -50,5 +56,59 @@ public class PublishedTaskMockData {
     return taskIdMappings;
   }
 
+
+  public static List<PublishedVerificationTaskDto> EXPECTED_PUBLISHED_TASKS_WITHOUT_CONTEXT_DTOS() {
+    return
+        EXPECTED_TASKS_WITHOUT_CONTEXT_DTOS()
+            .stream().map(
+                verificationTaskDto -> new PublishedVerificationTaskDto(
+                    verificationTaskDto.getVerificationName(),
+                    verificationTaskDto.getOntologyName(),
+                    verificationTaskDto.getOntologyElementId(),
+                    verificationTaskDto.getTaskHtml(),
+                    getExternalCrowdsourcingId(verificationTaskDto.getOntologyElementId())
+                )
+            )
+            .toList();
+  }
+
+  public static List<PublishedVerificationTask> EXPECTED_PUBLISHED_TASKS_WITHOUT_CONTEXT() {
+    return
+        EXPECTED_TASKS_WITHOUT_CONTEXT()
+            .stream().map(
+                verificationTask -> new PublishedVerificationTask(
+                    verificationTask.getVerificationName(),
+                    verificationTask.getOntologyName(),
+                    verificationTask.getOntologyElementId(),
+                    verificationTask.getTaskHtml(),
+                    getExternalCrowdsourcingId(verificationTask.getOntologyElementId())
+                )
+            )
+            .toList();
+  }
+
+  public static List<PublishedVerificationTaskDto> EXPECTED_PUBLISHED_TASKS_DTOS_WITH_CONTEXT() {
+    return
+        EXPECTED_TASKS_WITH_CONTEXT_DTOS()
+            .stream().map(
+                verificationTask -> new PublishedVerificationTaskDto(
+                    verificationTask.getVerificationName(),
+                    verificationTask.getOntologyName(),
+                    verificationTask.getOntologyElementId(),
+                    verificationTask.getTaskHtml(),
+                    getExternalCrowdsourcingId(verificationTask.getOntologyElementId())
+                )
+            )
+            .toList();
+  }
+
+  private static String getExternalCrowdsourcingId(UUID extracedModelElements) {
+    if (extracedModelElements.equals(FIRST_MOCK_UUID)) {
+      return "FIRST-CS-ID";
+    } else if (extracedModelElements.equals(SECOND_MOCK_UUID)) {
+      return "SECOND-CS-ID";
+    }
+    return null;
+  }
 
 }
