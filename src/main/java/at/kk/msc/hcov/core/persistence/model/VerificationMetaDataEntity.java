@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class VerificationTaskSpecificationEntity {
+public class VerificationMetaDataEntity {
 
   @Id
   private String verificationName;

@@ -3,7 +3,7 @@ package at.kk.msc.hcov.core.util;
 import at.kk.msc.hcov.core.endpoint.dto.VerificationTaskSpecificationRequestDto;
 import at.kk.msc.hcov.core.persistence.model.ProcessorPluginConfigurationEntity;
 import at.kk.msc.hcov.core.persistence.model.QualityControlMetaDataEntity;
-import at.kk.msc.hcov.core.persistence.model.VerificationTaskSpecificationEntity;
+import at.kk.msc.hcov.core.persistence.model.VerificationMetaDataEntity;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
 import java.util.HashMap;
 import java.util.List;
@@ -44,8 +44,8 @@ public class VerificationTaskSpecificationMockData {
         .build();
   }
 
-  public static VerificationTaskSpecificationEntity EXPECTED_VERIFICATION_TASK_SPECIFICATION_WITH_QUALITY_CONTROL() {
-    return VerificationTaskSpecificationEntity.builder()
+  public static VerificationMetaDataEntity EXPECTED_VERIFICATION_TASK_SPECIFICATION_WITH_QUALITY_CONTROL() {
+    return VerificationMetaDataEntity.builder()
         .verificationName(MOCKED_VERIFICATION_NAME)
         .ontologyName(MOCKED_ONTOLOGY_NAME)
         .verificationTaskPluginId("VERIFICATION_MOCK")

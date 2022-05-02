@@ -1,5 +1,6 @@
 package at.kk.msc.hcov.core.persistence.metadata;
 
+import at.kk.msc.hcov.core.persistence.model.VerificationMetaDataEntity;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedTaskIdMappings;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
 
@@ -15,8 +16,11 @@ public interface ICrowdsourcingMetadataStore {
    *
    * @param verificationTaskSpecification specification of the published verification tasks.
    * @param publishedTaskIdMappings       mappings between the extracted element ids and the ids provided by the crowdsourcing platform.
+   * @return a the persisted meta-data of the verification.
    */
-  void saveMetaData(VerificationTaskSpecification verificationTaskSpecification, PublishedTaskIdMappings publishedTaskIdMappings);
+  VerificationMetaDataEntity saveMetaData(
+      VerificationTaskSpecification verificationTaskSpecification, PublishedTaskIdMappings publishedTaskIdMappings
+  );
 
 
 }
