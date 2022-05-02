@@ -16,14 +16,14 @@ public class QualityControlTasksSpecificationMockData {
     qualityControlTaskCreations.add(
         new QualityControlTaskCreation(
             FIRST_QC_MOCK_UUID,
-            Map.of("ontologyName", "ONTOLOGY-TEST-NAME", "element", "FIRST-QC-ELEMENT"),
+            Map.of("ontologyName", "ONTOLOGY-TEST-NAME", "element", "FIRST-QC-ELEMENT", "context", "FIRST-QC-CONTEXT"),
             "FIRST-ANSWER"
         )
     );
     qualityControlTaskCreations.add(
         new QualityControlTaskCreation(
             SECOND_QC_MOCK_UUID,
-            Map.of("ontologyName", "ONTOLOGY-TEST-NAME", "element", "SECOND-QC-ELEMENT"),
+            Map.of("ontologyName", "ONTOLOGY-TEST-NAME", "element", "SECOND-QC-ELEMENT", "context", "SECOND-QC-CONTEXT"),
             "SECOND-ANSWER"
         )
     );

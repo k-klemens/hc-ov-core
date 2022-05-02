@@ -20,6 +20,12 @@ public class QualityControlTaskMockData {
   private static final String EXPECTED_SECOND_QC_TEMPLATE_WITHOUT_CONTEXT =
       "Ontology with name <span>ONTOLOGY-TEST-NAME</span> requires verification for <span>SECOND-QC-ELEMENT</span>  is verified";
 
+  private static final String EXPECTED_FIRST_QC_TEMPLATE_WITH_CONTEXT =
+      "Ontology with name <span>ONTOLOGY-TEST-NAME</span> from <span>FIRST-QC-CONTEXT</span> requires verification for <span>FIRST-QC-ELEMENT</span>  is verified";
+
+  private static final String EXPECTED_SECOND_QC_TEMPLATE_WITH_CONTEXT =
+      "Ontology with name <span>ONTOLOGY-TEST-NAME</span> from <span>SECOND-QC-CONTEXT</span> requires verification for <span>SECOND-QC-ELEMENT</span>  is verified";
+
   public static List<QualityControlTask> EXPECTED_QC_TASKS_WITHOUT_CONTEXT() {
     List<QualityControlTask> expectedQualityControlTasks = new ArrayList<>();
     expectedQualityControlTasks.add(
@@ -36,6 +42,27 @@ public class QualityControlTaskMockData {
             MOCKED_ONTOLOGY_NAME,
             SECOND_QC_MOCK_UUID,
             EXPECTED_SECOND_QC_TEMPLATE_WITHOUT_CONTEXT,
+            "SECOND-ANSWER")
+    );
+    return expectedQualityControlTasks;
+  }
+
+  public static List<QualityControlTask> EXPECTED_QC_TASKS_WITH_CONTEXT() {
+    List<QualityControlTask> expectedQualityControlTasks = new ArrayList<>();
+    expectedQualityControlTasks.add(
+        new QualityControlTask(
+            MOCKED_VERIFICATION_NAME,
+            MOCKED_ONTOLOGY_NAME,
+            FIRST_QC_MOCK_UUID,
+            EXPECTED_FIRST_QC_TEMPLATE_WITH_CONTEXT,
+            "FIRST-ANSWER")
+    );
+    expectedQualityControlTasks.add(
+        new QualityControlTask(
+            MOCKED_VERIFICATION_NAME,
+            MOCKED_ONTOLOGY_NAME,
+            SECOND_QC_MOCK_UUID,
+            EXPECTED_SECOND_QC_TEMPLATE_WITH_CONTEXT,
             "SECOND-ANSWER")
     );
     return expectedQualityControlTasks;
