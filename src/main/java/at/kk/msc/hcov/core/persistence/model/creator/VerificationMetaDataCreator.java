@@ -1,12 +1,13 @@
 package at.kk.msc.hcov.core.persistence.model.creator;
 
+import at.kk.msc.hcov.core.persistence.model.ConfigurationEntity;
 import at.kk.msc.hcov.core.persistence.model.ProcessorPluginConfigurationEntity;
 import at.kk.msc.hcov.core.persistence.model.QualityControlMetaDataEntity;
 import at.kk.msc.hcov.core.persistence.model.VerificationMetaDataEntity;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedTaskIdMappings;
 import at.kk.msc.hcov.core.service.verificationtask.qualitycontrol.model.QualityControlTasksSpecification;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -25,11 +26,12 @@ public class VerificationMetaDataCreator {
     entity.setVerificationName(serviceObject.getVerificationName());
     entity.setOntologyName(serviceObject.getOntologyName());
     entity.setVerificationTaskPluginId(serviceObject.getVerificationTaskPluginId());
-    entity.setVerificationTaskPluginConfiguration(toStringMap(serviceObject.getVerificationTaskPluginConfiguration()));
+    entity.setVerificationTaskPluginConfiguration(toConfigurationEntities(serviceObject.getVerificationTaskPluginConfiguration()));
     entity.setContextProviderPluginId(serviceObject.getContextProviderPluginId());
-    entity.setContextProviderConfiguration(toStringMap(serviceObject.getContextProviderConfiguration()));
+    entity.setContextProviderConfiguration(toConfigurationEntities(serviceObject.getContextProviderConfiguration()));
     entity.setCrowdsourcingConnectorPluginId(serviceObject.getCrowdsourcingConnectorPluginId());
-    entity.setCrowdsourcingConnectorPluginConfiguration(toStringMap(serviceObject.getCrowdsourcingConnectorPluginConfiguration()));
+    entity.setCrowdsourcingConnectorPluginConfiguration(
+        toConfigurationEntities(serviceObject.getCrowdsourcingConnectorPluginConfiguration()));
     entity.setProcessorPluginIds(serviceObject.getProcessorPluginIds());
     entity.setProcessorPluginConfigurationEntities(
         toProcessorPluginConfigurationEntities(serviceObject.getProcessorPluginConfigurations())
@@ -46,19 +48,20 @@ public class VerificationMetaDataCreator {
 
   List<ProcessorPluginConfigurationEntity> toProcessorPluginConfigurationEntities(List<Map<String, Object>> mapList) {
     return mapList != null ? mapList.stream()
-        .map(this::toStringMap)
+        .map(this::toConfigurationEntities)
         .map(ProcessorPluginConfigurationEntity::new)
         .collect(Collectors.toList()) : null;
   }
 
-  Map<String, String> toStringMap(Map<String, Object> objectMap) {
-    Map<String, String> returnMap = new HashMap<>();
+  List<ConfigurationEntity> toConfigurationEntities(Map<String, Object> objectMap) {
+    List<ConfigurationEntity> configurationEntities = null;
     if (objectMap != null) {
+      configurationEntities = new ArrayList<>();
       for (Map.Entry<String, Object> entry : objectMap.entrySet()) {
-        returnMap.put(entry.getKey(), entry.getValue().toString());
+        configurationEntities.add(new ConfigurationEntity(entry.getKey(), entry.getValue().toString()));
       }
     }
-    return returnMap;
+    return configurationEntities;
   }
 
   List<QualityControlMetaDataEntity> toQualityControlMetaDataEntities(

@@ -1,14 +1,12 @@
 package at.kk.msc.hcov.core.persistence.model;
 
-import java.util.Map;
+import java.util.List;
 import javax.persistence.CollectionTable;
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MapKeyColumn;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProcessorPluginConfigurationEntity {
 
-  public ProcessorPluginConfigurationEntity(Map<String, String> processorPluginConfiguration) {
+  public ProcessorPluginConfigurationEntity(List<ConfigurationEntity> processorPluginConfiguration) {
     this.processorPluginConfiguration = processorPluginConfiguration;
   }
 
@@ -28,8 +26,6 @@ public class ProcessorPluginConfigurationEntity {
   private Long id;
 
   @ElementCollection
-  @MapKeyColumn
-  @Column(name = "PROCESSOR_PLUGIN_CONFIG")
   @CollectionTable(name = "PROCESSOR_PLUGIN_CONFIG_MAPPING")
-  private Map<String, String> processorPluginConfiguration;
+  private List<ConfigurationEntity> processorPluginConfiguration;
 }

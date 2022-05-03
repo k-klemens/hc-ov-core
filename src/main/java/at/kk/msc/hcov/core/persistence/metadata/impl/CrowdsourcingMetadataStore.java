@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
 @Component
-public class CrowdsourcingMetadataStoreStub implements ICrowdsourcingMetadataStore {
+public class CrowdsourcingMetadataStore implements ICrowdsourcingMetadataStore {
 
   private VerificationMetaDataRepository repository;
   private VerificationMetaDataCreator entityCreator;
@@ -20,8 +20,7 @@ public class CrowdsourcingMetadataStoreStub implements ICrowdsourcingMetadataSto
   public VerificationMetaDataEntity saveMetaData(
       VerificationTaskSpecification verificationTaskSpecification, PublishedTaskIdMappings publishedTaskIdMappings
   ) {
-    //VerificationMetaDataEntity entity = entityCreator.toEntity(verificationTaskSpecification, publishedTaskIdMappings);
-    //return repository.save(entity);
-    return null;
+    VerificationMetaDataEntity entity = entityCreator.toEntity(verificationTaskSpecification, publishedTaskIdMappings);
+    return repository.save(entity);
   }
 }

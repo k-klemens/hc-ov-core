@@ -1,6 +1,6 @@
 package at.kk.msc.hcov.core.persistence.model.creator;
 
-import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.EXPECTED_VERIFICATION_TASK_SPECIFICATION_WITH_QUALITY_CONTROL;
+import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.EXPECTED_VERIFICATION_META_DATA_WITH_QUALITY_CONTROL;
 import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,6 +30,6 @@ public class VerificationTaskMetaDataCreatorTest {
     );
 
     // then
-    assertThat(actual).isEqualTo(EXPECTED_VERIFICATION_TASK_SPECIFICATION_WITH_QUALITY_CONTROL());
+    assertThat(actual).isEqualTo(EXPECTED_VERIFICATION_META_DATA_WITH_QUALITY_CONTROL());
   }
 }

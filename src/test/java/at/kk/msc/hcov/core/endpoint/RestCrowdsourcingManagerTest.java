@@ -6,6 +6,10 @@ import at.kk.msc.hcov.core.endpoint.dto.PublishedVerificationDto;
 import at.kk.msc.hcov.core.endpoint.dto.QualityControlTaskCreationDto;
 import at.kk.msc.hcov.core.endpoint.dto.QualityControlTasksSpecificationDto;
 import at.kk.msc.hcov.core.endpoint.dto.VerificationTaskSpecificationRequestDto;
+import at.kk.msc.hcov.core.persistence.model.ConfigurationEntity;
+import at.kk.msc.hcov.core.persistence.model.QualityControlMetaDataEntity;
+import at.kk.msc.hcov.core.persistence.model.VerificationMetaDataEntity;
+import at.kk.msc.hcov.core.persistence.repository.VerificationMetaDataRepository;
 import at.kk.msc.hcov.core.util.IntegrationTestPlugins;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
@@ -46,6 +50,9 @@ public class RestCrowdsourcingManagerTest {
   @Autowired
   private ObjectMapper jacksonObjectMapper;
 
+  @Autowired
+  VerificationMetaDataRepository metaDataRepository;
+
   @AfterEach
   void tearDown() throws IOException {
     FileUtils.deleteDirectory(new File("src/test/resources/integration-filestore/"));
@@ -74,7 +81,7 @@ public class RestCrowdsourcingManagerTest {
 
     VerificationTaskSpecificationRequestDto givenRequest = VerificationTaskSpecificationRequestDto.builder()
         .ontologyName("movie")
-        .verificationName("movie-person-verification")
+        .verificationName("movie-person-verification-1")
         .verificationTaskPluginId("MOVIE_VERIFICATION")
         .verificationTaskPluginConfiguration(Map.of("CONTEXT_ENABLED", true))
         .contextProviderPluginId("MOVIE_VERIFICATION_CONTEXT")
@@ -97,7 +104,7 @@ public class RestCrowdsourcingManagerTest {
 
     PublishedVerificationDto actual = responseEntity.getBody();
     assertThat(actual).isNotNull();
-    assertThat(actual.getVerificationName()).isEqualTo("movie-person-verification");
+    assertThat(actual.getVerificationName()).isEqualTo("movie-person-verification-1");
     assertThat(actual.getOntologyName()).isEqualTo("movie");
     assertThat(actual.getSamplePublishedVerificationTask()).isNotNull();
 
@@ -111,6 +118,28 @@ public class RestCrowdsourcingManagerTest {
     assertThat(actual.getQualitiyControlTaskIdMappings())
         .hasSize(1)
         .containsKey(UUID.fromString("f7e924fc-a94d-4ca1-bbb8-19b254bf83aa"));
+
+    assertThat(metaDataRepository.existsById("movie-person-verification-1")).isTrue();
+    VerificationMetaDataEntity acutalEntity = metaDataRepository.findById("movie-person-verification-1").get();
+    assertThat(acutalEntity.getOntologyName()).isEqualTo("movie");
+    assertThat(acutalEntity.getVerificationName()).isEqualTo("movie-person-verification-1");
+    assertThat(acutalEntity.getVerificationTaskPluginId()).isEqualTo("MOVIE_VERIFICATION");
+    assertThat(acutalEntity.getVerificationTaskPluginConfiguration())
+        .hasSize(1)
+        .contains(new ConfigurationEntity("CONTEXT_ENABLED", "true"));
+    assertThat(acutalEntity.getContextProviderPluginId()).isEqualTo("MOVIE_VERIFICATION_CONTEXT");
+    assertThat(acutalEntity.getContextProviderConfiguration()).isNullOrEmpty();
+    assertThat(acutalEntity.getCrowdsourcingConnectorPluginId()).isEqualTo("CROWDSOURCING_MOCK");
+    assertThat(acutalEntity.getCrowdsourcingConnectorPluginConfiguration())
+        .hasSize(1)
+        .contains(new ConfigurationEntity("REQUIRED_CONFIGURATION", "true"));
+    assertThat(acutalEntity.getQualityControlMetaData())
+        .hasSize(1)
+        .contains(new QualityControlMetaDataEntity(
+            UUID.fromString("f7e924fc-a94d-4ca1-bbb8-19b254bf83aa"),
+            "QualityControlExternalId",
+            "Correct Answer")
+        );
   }
 
   @Test
