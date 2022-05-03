@@ -39,7 +39,7 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @Import(IntegrationTestPlugins.class)
-public class RestCrowdsourcingManagerTest {
+public class RestCrowdsourcingManagerIntegrationTest {
 
   @LocalServerPort
   private int port;

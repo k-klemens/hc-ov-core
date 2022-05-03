@@ -1,5 +1,7 @@
 package at.kk.msc.hcov.core.util;
 
+import at.kk.msc.hcov.core.endpoint.dto.QualityControlMetaDataDto;
+import at.kk.msc.hcov.core.endpoint.dto.VerificationMetaDataDto;
 import at.kk.msc.hcov.core.endpoint.dto.VerificationTaskSpecificationRequestDto;
 import at.kk.msc.hcov.core.persistence.model.ConfigurationEntity;
 import at.kk.msc.hcov.core.persistence.model.ProcessorPluginConfigurationEntity;
@@ -65,6 +67,31 @@ public class VerificationTaskSpecificationMockData {
             List.of(
                 new QualityControlMetaDataEntity(QualityControlTaskMockData.FIRST_QC_MOCK_UUID, "FIRST-QC-CS-ID", "FIRST-ANSWER"),
                 new QualityControlMetaDataEntity(QualityControlTaskMockData.SECOND_QC_MOCK_UUID, "SECOND-QC-CS-ID", "SECOND-ANSWER")
+            )
+        )
+        .ontologyVerificationTaskIdMappings(PublishedTaskMockData.MOCKED_ID_MAPPINGS_WITHOUT_QUALITY_CONTROL())
+        .build();
+  }
+
+  public static VerificationMetaDataDto EXPECTED_VERIFICATION_META_DATA_WITH_QUALITY_CONTROL_DTO() {
+    return VerificationMetaDataDto.builder()
+        .verificationName(MOCKED_VERIFICATION_NAME)
+        .ontologyName(MOCKED_ONTOLOGY_NAME)
+        .createdAt(TimeProviderMock.MOCK_TIME)
+        .verificationTaskPluginId("VERIFICATION_MOCK")
+        .verificationTaskPluginConfiguration(new HashMap<>())
+        .contextProviderPluginId("CONTEXT_MOCK")
+        .contextProviderConfiguration(new HashMap<>())
+        .crowdsourcingConnectorPluginId("CROWDSOURCING_MOCK")
+        .crowdsourcingConnectorPluginConfiguration(new HashMap<>())
+        .processorPluginIds(List.of("FirstProcessor"))
+        .processorPluginConfigurations(
+            List.of(Map.of("P1_Config", "IS_SET"))
+        )
+        .qualityControlMetaData(
+            List.of(
+                new QualityControlMetaDataDto(QualityControlTaskMockData.FIRST_QC_MOCK_UUID, "FIRST-QC-CS-ID", "FIRST-ANSWER"),
+                new QualityControlMetaDataDto(QualityControlTaskMockData.SECOND_QC_MOCK_UUID, "SECOND-QC-CS-ID", "SECOND-ANSWER")
             )
         )
         .ontologyVerificationTaskIdMappings(PublishedTaskMockData.MOCKED_ID_MAPPINGS_WITHOUT_QUALITY_CONTROL())
