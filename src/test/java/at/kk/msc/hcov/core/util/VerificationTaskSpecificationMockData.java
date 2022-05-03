@@ -50,6 +50,7 @@ public class VerificationTaskSpecificationMockData {
     return VerificationMetaDataEntity.builder()
         .verificationName(MOCKED_VERIFICATION_NAME)
         .ontologyName(MOCKED_ONTOLOGY_NAME)
+        .createdAt(TimeProviderMock.MOCK_TIME)
         .verificationTaskPluginId("VERIFICATION_MOCK")
         .verificationTaskPluginConfiguration(new ArrayList<>())
         .contextProviderPluginId("CONTEXT_MOCK")

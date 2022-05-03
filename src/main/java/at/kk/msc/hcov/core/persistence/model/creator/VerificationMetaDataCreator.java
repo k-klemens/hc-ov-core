@@ -5,6 +5,7 @@ import at.kk.msc.hcov.core.persistence.model.ProcessorPluginConfigurationEntity;
 import at.kk.msc.hcov.core.persistence.model.QualityControlMetaDataEntity;
 import at.kk.msc.hcov.core.persistence.model.VerificationMetaDataEntity;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedTaskIdMappings;
+import at.kk.msc.hcov.core.service.util.ITimeProvider;
 import at.kk.msc.hcov.core.service.verificationtask.qualitycontrol.model.QualityControlTasksSpecification;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
 import java.util.ArrayList;
@@ -12,10 +13,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class VerificationMetaDataCreator {
+
+  private ITimeProvider timeProvider;
 
   public VerificationMetaDataEntity toEntity(
       VerificationTaskSpecification serviceObject,
@@ -25,6 +30,7 @@ public class VerificationMetaDataCreator {
 
     entity.setVerificationName(serviceObject.getVerificationName());
     entity.setOntologyName(serviceObject.getOntologyName());
+    entity.setCreatedAt(timeProvider.now());
     entity.setVerificationTaskPluginId(serviceObject.getVerificationTaskPluginId());
     entity.setVerificationTaskPluginConfiguration(toConfigurationEntities(serviceObject.getVerificationTaskPluginConfiguration()));
     entity.setContextProviderPluginId(serviceObject.getContextProviderPluginId());

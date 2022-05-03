@@ -1,5 +1,6 @@
 package at.kk.msc.hcov.core.persistence.metadata;
 
+import at.kk.msc.hcov.core.persistence.metadata.exception.VerificationDoesNotExistException;
 import at.kk.msc.hcov.core.persistence.model.VerificationMetaDataEntity;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedTaskIdMappings;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
@@ -21,6 +22,14 @@ public interface ICrowdsourcingMetadataStore {
   VerificationMetaDataEntity saveMetaData(
       VerificationTaskSpecification verificationTaskSpecification, PublishedTaskIdMappings publishedTaskIdMappings
   );
+
+  /**
+   * Returns the {@link VerificationMetaDataEntity} from the persisted storage
+   *
+   * @param verificationName name of the verification
+   * @return a {@link VerificationMetaDataEntity} object
+   */
+  VerificationMetaDataEntity getMetaData(String verificationName) throws VerificationDoesNotExistException;
 
 
 }

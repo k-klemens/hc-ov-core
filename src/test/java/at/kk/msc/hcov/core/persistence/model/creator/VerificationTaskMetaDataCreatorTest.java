@@ -9,11 +9,19 @@ import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedTaskIdMappings;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
 import at.kk.msc.hcov.core.util.PublishedTaskMockData;
 import at.kk.msc.hcov.core.util.QualityControlTasksSpecificationMockData;
+import at.kk.msc.hcov.core.util.TimeProviderMock;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 
 public class VerificationTaskMetaDataCreatorTest {
 
-  VerificationMetaDataCreator target = new VerificationMetaDataCreator();
+  VerificationMetaDataCreator target;
+
+  @BeforeEach
+  void setUp() {
+    target = new VerificationMetaDataCreator(new TimeProviderMock());
+  }
 
   @Test
   void testToEntity() {

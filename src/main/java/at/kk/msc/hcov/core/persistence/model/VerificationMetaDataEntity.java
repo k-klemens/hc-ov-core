@@ -1,5 +1,6 @@
 package at.kk.msc.hcov.core.persistence.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -29,6 +30,8 @@ public class VerificationMetaDataEntity {
   @Id
   private String verificationName;
   private String ontologyName;
+
+  private LocalDateTime createdAt;
 
   private String verificationTaskPluginId;
   @ElementCollection
