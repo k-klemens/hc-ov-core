@@ -1,12 +1,16 @@
 package at.kk.msc.hcov.core.service.crowdsourcing.impl;
 
 import at.kk.msc.hcov.core.persistence.metadata.ICrowdsourcingMetadataStore;
+import at.kk.msc.hcov.core.persistence.metadata.exception.VerificationDoesNotExistException;
+import at.kk.msc.hcov.core.persistence.model.VerificationMetaDataEntity;
 import at.kk.msc.hcov.core.service.crowdsourcing.ICrowdsourcingManager;
 import at.kk.msc.hcov.core.service.crowdsourcing.exception.CrowdsourcingManagerException;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedQualityControlTask;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedTaskIdMappings;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedVerification;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedVerificationTask;
+import at.kk.msc.hcov.core.service.crowdsourcing.model.TaskProgressDetail;
+import at.kk.msc.hcov.core.service.crowdsourcing.model.VerificationProgress;
 import at.kk.msc.hcov.core.service.exception.PluginLoadingError;
 import at.kk.msc.hcov.core.service.plugin.IPluginLoader;
 import at.kk.msc.hcov.core.service.verificationtask.qualitycontrol.IQualityControlProvider;
@@ -17,6 +21,7 @@ import at.kk.msc.hcov.core.service.verificationtask.task.IVerificationTaskCreato
 import at.kk.msc.hcov.core.service.verificationtask.task.exception.VerificationTaskCreationFailedException;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
 import at.kk.msc.hcov.sdk.crowdsourcing.platform.ICrowdsourcingConnectorPlugin;
+import at.kk.msc.hcov.sdk.crowdsourcing.platform.model.HitStatus;
 import at.kk.msc.hcov.sdk.plugin.PluginConfigurationNotSetException;
 import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTask;
 import java.util.ArrayList;
@@ -54,6 +59,54 @@ public class CrowdsourcingManager implements ICrowdsourcingManager {
     PublishedTaskIdMappings publishedTaskIdMappings = publishTasksAndStoreMetadata(specification, verificationTasks, qualityControlTasks);
 
     return toPublishedVerification(publishedTaskIdMappings, verificationTasks, qualityControlTasks);
+  }
+
+  @Override
+  public VerificationProgress getStatusOfVerification(String verificationName) throws CrowdsourcingManagerException, PluginLoadingError {
+    VerificationMetaDataEntity metaData = loadMetaDataOrThrow(verificationName);
+    ICrowdsourcingConnectorPlugin connectorPlugin = setupCrowdsourcingConnectorPlugin(
+        metaData.getCrowdsourcingConnectorPluginId(),
+        metaData.getCrowdsourcingConfigurationAsMap()
+    );
+
+    VerificationProgress verificationProgress = new VerificationProgress();
+    verificationProgress.setVerificationName(metaData.getVerificationName());
+    verificationProgress.setCreatedAt(metaData.getCreatedAt());
+    VerificationProgress.Status verificationStatus = VerificationProgress.Status.ALL_TASKS_COMPLETED;
+    List<String> crowdsourcingIds = new ArrayList<>(metaData.getOntologyVerificationTaskIdMappings().values());
+    try {
+      Map<String, HitStatus> hitStatusMap = connectorPlugin.getStatusForHits(crowdsourcingIds);
+      verificationProgress.setTotalHits(hitStatusMap.size());
+      verificationProgress.setCompletedHits(0);
+      verificationProgress.setOpenHits(0);
+      verificationProgress.setTaskProgressDetails(new ArrayList<>());
+      Map<String, UUID> crowdsourcingIdMappings = metaData.getCrowdsourcingTaskIdMappings();
+      for (Map.Entry<String, HitStatus> hitStatusMapEntry : hitStatusMap.entrySet()) {
+        UUID ontologyElementId = crowdsourcingIdMappings.get(hitStatusMapEntry.getKey());
+        TaskProgressDetail taskProgressDetail = new TaskProgressDetail(ontologyElementId, hitStatusMapEntry.getValue());
+        verificationProgress.getTaskProgressDetails().add(taskProgressDetail);
+        if (taskProgressDetail.getNumOpen() > 0) {
+          verificationStatus = VerificationProgress.Status.PUBLISHED;
+          verificationProgress.incrementOpenHits();
+        } else {
+          verificationProgress.incrementCompetedHits();
+        }
+      }
+      verificationProgress.setStatus(verificationStatus);
+
+    } catch (PluginConfigurationNotSetException e) {
+      throw new CrowdsourcingManagerException("Connector plugin configuration not set correctly!", e);
+    }
+
+    return verificationProgress;
+  }
+
+  private VerificationMetaDataEntity loadMetaDataOrThrow(String verificationName) throws CrowdsourcingManagerException {
+    try {
+      return metadataStore.getMetaData(verificationName);
+    } catch (VerificationDoesNotExistException e) {
+      throw new CrowdsourcingManagerException(e.getMessage(), e);
+    }
   }
 
   private List<VerificationTask> createVerificationTasksOrThrow(VerificationTaskSpecification specification)
@@ -159,11 +212,19 @@ public class CrowdsourcingManager implements ICrowdsourcingManager {
 
   private ICrowdsourcingConnectorPlugin setupCrowdsourcingConnectorPlugin(VerificationTaskSpecification specification)
       throws PluginLoadingError {
+    return setupCrowdsourcingConnectorPlugin(
+        specification.getCrowdsourcingConnectorPluginId(),
+        specification.getCrowdsourcingConnectorPluginConfiguration()
+    );
+  }
+
+  private ICrowdsourcingConnectorPlugin setupCrowdsourcingConnectorPlugin(String pluginId, Map<String, Object> pluginConfiguration)
+      throws PluginLoadingError {
     ICrowdsourcingConnectorPlugin crowdsourcingConnectorPlugin = (ICrowdsourcingConnectorPlugin) pluginLoader.loadPluginOrThrow(
-        IPluginLoader.PluginType.CROWDSOURCING_CONNECTOR, specification.getCrowdsourcingConnectorPluginId()
+        IPluginLoader.PluginType.CROWDSOURCING_CONNECTOR, pluginId
     );
     crowdsourcingConnectorPlugin.setConfiguration(
-        specification.getCrowdsourcingConnectorPluginConfiguration()
+        pluginConfiguration
     );
     return crowdsourcingConnectorPlugin;
   }

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -72,5 +74,31 @@ public class VerificationMetaDataEntity {
   @Column(name = "ONTOLOGY_VERIFICATION_CS_ID")
   @CollectionTable(name = "ONTOLOGY_VERIFICATION_TASK_ID_MAPPING", joinColumns = @JoinColumn(name = "verification_name"))
   private Map<UUID, String> ontologyVerificationTaskIdMappings;
+
+  @Transient
+  public Map<String, UUID> getCrowdsourcingTaskIdMappings() {
+    return
+        ontologyVerificationTaskIdMappings.entrySet().stream()
+            .collect(
+                Collectors.toMap(
+                    Map.Entry::getValue,
+                    Map.Entry::getKey
+                )
+            );
+  }
+
+  @Transient
+  public Map<String, Object> getCrowdsourcingConfigurationAsMap() {
+    if (crowdsourcingConnectorPluginConfiguration != null) {
+      return crowdsourcingConnectorPluginConfiguration.stream()
+          .collect(
+              Collectors.toMap(
+                  ConfigurationEntity::getConfigurationKey,
+                  ConfigurationEntity::getConfigurationValue
+              )
+          );
+    }
+    return null;
+  }
 }
 

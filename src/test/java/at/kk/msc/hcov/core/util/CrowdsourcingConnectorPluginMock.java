@@ -2,6 +2,7 @@ package at.kk.msc.hcov.core.util;
 
 
 import at.kk.msc.hcov.sdk.crowdsourcing.platform.ICrowdsourcingConnectorPlugin;
+import at.kk.msc.hcov.sdk.crowdsourcing.platform.model.HitStatus;
 import at.kk.msc.hcov.sdk.plugin.PluginConfigurationNotSetException;
 import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTask;
 import java.util.List;
@@ -14,8 +15,13 @@ public class CrowdsourcingConnectorPluginMock implements ICrowdsourcingConnector
 
   private Map<String, Object> configuration;
 
+  private Map<String, HitStatus> mockedHitStatusMap;
+
   private boolean calledPublishTasks = false;
   private List<VerificationTask> mostRecentVerificationTaskListProvided;
+
+  private boolean calledGetStatusForHits = false;
+  private List<String> mostRecentGetStatusForHitsList;
 
   @Override
   public Map<UUID, String> publishTasks(List<VerificationTask> list) throws PluginConfigurationNotSetException {
@@ -28,6 +34,17 @@ public class CrowdsourcingConnectorPluginMock implements ICrowdsourcingConnector
       return PublishedTaskMockData.MOCKED_ID_MAPPINGS_WITH_QUALITY_CONTROL();
     }
     return PublishedTaskMockData.MOCKED_ID_MAPPINGS_WITHOUT_QUALITY_CONTROL();
+  }
+
+  @Override
+  public Map<String, HitStatus> getStatusForHits(List<String> list) throws PluginConfigurationNotSetException {
+    calledGetStatusForHits = true;
+    mostRecentGetStatusForHitsList = list;
+    return getMockedHitStatusMap();
+  }
+
+  public void setHitStatusMapMockData(Map<String, HitStatus> mockedHitStatusMap) {
+    this.mockedHitStatusMap = mockedHitStatusMap;
   }
 
   @Override

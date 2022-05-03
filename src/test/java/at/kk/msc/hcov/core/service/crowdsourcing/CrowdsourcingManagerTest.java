@@ -1,10 +1,19 @@
 package at.kk.msc.hcov.core.service.crowdsourcing;
 
 
+import static at.kk.msc.hcov.core.util.PublishedTaskMockData.FIRST_CS_ID;
 import static at.kk.msc.hcov.core.util.PublishedTaskMockData.MOCKED_PUBLISHED_TASK_ID_MAPPINGS_WITHOUT_QUALITY_CONTROL;
 import static at.kk.msc.hcov.core.util.PublishedTaskMockData.MOCKED_PUBLISHED_TASK_ID_MAPPINGS_WITH_QUALITY_CONTROL;
+import static at.kk.msc.hcov.core.util.PublishedTaskMockData.SECOND_CS_ID;
 import static at.kk.msc.hcov.core.util.QualityControlTasksSpecificationMockData.MOCKED_QUALITY_CONTROL_TASK_SPECIFICATION;
+import static at.kk.msc.hcov.core.util.VerificationProgressMockData.EXPECTED_VERIFICATION_PROGRESS_ALL_COMPLETED;
+import static at.kk.msc.hcov.core.util.VerificationProgressMockData.EXPECTED_VERIFICATION_PROGRESS_ALL_IN_PROGRESS;
+import static at.kk.msc.hcov.core.util.VerificationProgressMockData.EXPECTED_VERIFICATION_PROGRESS_MIXED_IN_PROGRESS;
+import static at.kk.msc.hcov.core.util.VerificationProgressMockData.MOCKED_HIT_STATUS_MAP_ALL_COMPLETED;
+import static at.kk.msc.hcov.core.util.VerificationProgressMockData.MOCKED_HIT_STATUS_MAP_ALL_IN_PROGRESS;
+import static at.kk.msc.hcov.core.util.VerificationProgressMockData.MOCKED_HIT_STATUS_MAP_MIXED_IN_PROGRESS;
 import static at.kk.msc.hcov.core.util.VerificationTaskMockData.EXPECTED_TASKS_WITH_CONTEXT;
+import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_NAME;
 import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -16,9 +25,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import at.kk.msc.hcov.core.persistence.metadata.ICrowdsourcingMetadataStore;
+import at.kk.msc.hcov.core.persistence.metadata.exception.VerificationDoesNotExistException;
 import at.kk.msc.hcov.core.service.crowdsourcing.exception.CrowdsourcingManagerException;
 import at.kk.msc.hcov.core.service.crowdsourcing.impl.CrowdsourcingManager;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedVerification;
+import at.kk.msc.hcov.core.service.crowdsourcing.model.VerificationProgress;
 import at.kk.msc.hcov.core.service.exception.PluginLoadingError;
 import at.kk.msc.hcov.core.service.plugin.IPluginLoader;
 import at.kk.msc.hcov.core.service.verificationtask.qualitycontrol.IQualityControlProvider;
@@ -29,7 +40,9 @@ import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskS
 import at.kk.msc.hcov.core.util.CrowdsourcingConnectorPluginMock;
 import at.kk.msc.hcov.core.util.PublishedVerificationMockData;
 import at.kk.msc.hcov.core.util.QualityControlTaskMockData;
+import at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData;
 import at.kk.msc.hcov.sdk.crowdsourcing.platform.ICrowdsourcingConnectorPlugin;
+import at.kk.msc.hcov.sdk.crowdsourcing.platform.model.HitStatus;
 import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTask;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +50,9 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.plugin.core.Plugin;
@@ -225,5 +241,65 @@ public class CrowdsourcingManagerTest {
     assertThat(connectorPluginMock.isCalledPublishTasks()).isFalse();
 
     verify(metadataStoreMock, never()).saveMetaData(any(), any());
+  }
+
+  @ParameterizedTest
+  @MethodSource("provideGetStatusOfVerificationTestData")
+  void testGetStatusOfVerification(Map<String, HitStatus> givenHitStatusMap, VerificationProgress expected)
+      throws CrowdsourcingManagerException, VerificationDoesNotExistException, PluginLoadingError {
+    // given
+    when(metadataStoreMock.getMetaData(eq(MOCKED_VERIFICATION_NAME)))
+        .thenReturn(VerificationTaskSpecificationMockData.EXPECTED_VERIFICATION_META_DATA_WITH_QUALITY_CONTROL());
+    CrowdsourcingConnectorPluginMock csPluginMock = (CrowdsourcingConnectorPluginMock) crowdsourcingConnectorPluginMock;
+    when(pluginLoaderMock.loadPluginOrThrow(eq(IPluginLoader.PluginType.CROWDSOURCING_CONNECTOR), eq("CROWDSOURCING_MOCK")))
+        .thenReturn(csPluginMock);
+    csPluginMock.setHitStatusMapMockData(givenHitStatusMap);
+
+    // when
+    VerificationProgress actual = target.getStatusOfVerification(MOCKED_VERIFICATION_NAME);
+
+    // then
+    assertThat(csPluginMock.getMostRecentGetStatusForHitsList())
+        .containsExactlyInAnyOrderElementsOf(List.of(FIRST_CS_ID, SECOND_CS_ID));
+    assertThat(csPluginMock.isCalledGetStatusForHits()).isTrue();
+    verify(metadataStoreMock, times(1)).getMetaData(eq(MOCKED_VERIFICATION_NAME));
+
+    assertVerificationProgressIsEqual(actual, expected);
+  }
+
+  @Test
+  void testGetStatusOfVerification_givenVerificationNameNotKnown_expectException()
+      throws VerificationDoesNotExistException, PluginLoadingError {
+    // given
+    CrowdsourcingConnectorPluginMock csPluginMock = (CrowdsourcingConnectorPluginMock) crowdsourcingConnectorPluginMock;
+    when(metadataStoreMock.getMetaData(eq("UNKNOWN_VERIFICATION")))
+        .thenThrow(new VerificationDoesNotExistException("UNKNOWN_VERIFICATION"));
+
+    // when
+    assertThatThrownBy(() -> target.getStatusOfVerification("UNKNOWN_VERIFICATION"))
+        .isInstanceOf(CrowdsourcingManagerException.class);
+
+    // then
+    assertThat(csPluginMock.getMostRecentGetStatusForHitsList()).isNull();
+    assertThat(csPluginMock.isCalledGetStatusForHits()).isFalse();
+    verify(metadataStoreMock, times(1)).getMetaData(eq("UNKNOWN_VERIFICATION"));
+  }
+
+  private static Stream<Arguments> provideGetStatusOfVerificationTestData() {
+    return Stream.of(
+        Arguments.of(MOCKED_HIT_STATUS_MAP_ALL_IN_PROGRESS(), EXPECTED_VERIFICATION_PROGRESS_ALL_IN_PROGRESS()),
+        Arguments.of(MOCKED_HIT_STATUS_MAP_ALL_COMPLETED(), EXPECTED_VERIFICATION_PROGRESS_ALL_COMPLETED()),
+        Arguments.of(MOCKED_HIT_STATUS_MAP_MIXED_IN_PROGRESS(), EXPECTED_VERIFICATION_PROGRESS_MIXED_IN_PROGRESS())
+    );
+  }
+
+  private static void assertVerificationProgressIsEqual(VerificationProgress actual, VerificationProgress expected) {
+    assertThat(actual.getVerificationName()).isEqualTo(expected.getVerificationName());
+    assertThat(actual.getCreatedAt()).isEqualTo(expected.getCreatedAt());
+    assertThat(actual.getStatus()).isEqualTo(expected.getStatus());
+    assertThat(actual.getTotalHits()).isEqualTo(expected.getTotalHits());
+    assertThat(actual.getCompletedHits()).isEqualTo(expected.getCompletedHits());
+    assertThat(actual.getOpenHits()).isEqualTo(expected.getOpenHits());
+    assertThat(actual.getTaskProgressDetails()).containsExactlyInAnyOrderElementsOf(expected.getTaskProgressDetails());
   }
 }

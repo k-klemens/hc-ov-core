@@ -18,40 +18,45 @@ import java.util.UUID;
 
 public class PublishedTaskMockData {
 
+  public static final String FIRST_CS_ID = "FIRST-CS-ID";
+  public static final String SECOND_CS_ID = "SECOND-CS-ID";
+  public static final String FIRST_QC_CS_ID = "FIRST-QC-CS-ID";
+  public static final String SECOND_QC_CS_ID = "SECOND-QC-CS-ID";
+
   public static Map<UUID, String> MOCKED_ID_MAPPINGS_WITHOUT_QUALITY_CONTROL() {
     Map<UUID, String> taskIdMappings = new HashMap<>();
-    taskIdMappings.put(FIRST_MOCK_UUID, "FIRST-CS-ID");
-    taskIdMappings.put(SECOND_MOCK_UUID, "SECOND-CS-ID");
+    taskIdMappings.put(FIRST_MOCK_UUID, FIRST_CS_ID);
+    taskIdMappings.put(SECOND_MOCK_UUID, SECOND_CS_ID);
 
     return taskIdMappings;
   }
 
   public static Map<UUID, String> MOCKED_ID_MAPPINGS_WITH_QUALITY_CONTROL() {
     Map<UUID, String> taskIdMappings = new HashMap<>();
-    taskIdMappings.put(FIRST_MOCK_UUID, "FIRST-CS-ID");
-    taskIdMappings.put(SECOND_MOCK_UUID, "SECOND-CS-ID");
+    taskIdMappings.put(FIRST_MOCK_UUID, FIRST_CS_ID);
+    taskIdMappings.put(SECOND_MOCK_UUID, SECOND_CS_ID);
 
-    taskIdMappings.put(FIRST_QC_MOCK_UUID, "FIRST-QC-CS-ID");
-    taskIdMappings.put(SECOND_QC_MOCK_UUID, "SECOND-QC-CS-ID");
+    taskIdMappings.put(FIRST_QC_MOCK_UUID, FIRST_QC_CS_ID);
+    taskIdMappings.put(SECOND_QC_MOCK_UUID, SECOND_QC_CS_ID);
 
     return taskIdMappings;
   }
 
   public static PublishedTaskIdMappings MOCKED_PUBLISHED_TASK_ID_MAPPINGS_WITHOUT_QUALITY_CONTROL() {
     PublishedTaskIdMappings taskIdMappings = new PublishedTaskIdMappings(new HashMap<>(), new HashMap<>());
-    taskIdMappings.getOntologyVerificationTaskIdMappings().put(FIRST_MOCK_UUID, "FIRST-CS-ID");
-    taskIdMappings.getOntologyVerificationTaskIdMappings().put(SECOND_MOCK_UUID, "SECOND-CS-ID");
+    taskIdMappings.getOntologyVerificationTaskIdMappings().put(FIRST_MOCK_UUID, FIRST_CS_ID);
+    taskIdMappings.getOntologyVerificationTaskIdMappings().put(SECOND_MOCK_UUID, SECOND_CS_ID);
 
     return taskIdMappings;
   }
 
   public static PublishedTaskIdMappings MOCKED_PUBLISHED_TASK_ID_MAPPINGS_WITH_QUALITY_CONTROL() {
     PublishedTaskIdMappings taskIdMappings = new PublishedTaskIdMappings(new HashMap<>(), new HashMap<>());
-    taskIdMappings.getOntologyVerificationTaskIdMappings().put(FIRST_MOCK_UUID, "FIRST-CS-ID");
-    taskIdMappings.getOntologyVerificationTaskIdMappings().put(SECOND_MOCK_UUID, "SECOND-CS-ID");
+    taskIdMappings.getOntologyVerificationTaskIdMappings().put(FIRST_MOCK_UUID, FIRST_CS_ID);
+    taskIdMappings.getOntologyVerificationTaskIdMappings().put(SECOND_MOCK_UUID, SECOND_CS_ID);
 
-    taskIdMappings.getQualityControlTaskIdMappings().put(FIRST_QC_MOCK_UUID, "FIRST-QC-CS-ID");
-    taskIdMappings.getQualityControlTaskIdMappings().put(SECOND_QC_MOCK_UUID, "SECOND-QC-CS-ID");
+    taskIdMappings.getQualityControlTaskIdMappings().put(FIRST_QC_MOCK_UUID, FIRST_QC_CS_ID);
+    taskIdMappings.getQualityControlTaskIdMappings().put(SECOND_QC_MOCK_UUID, SECOND_QC_CS_ID);
 
     return taskIdMappings;
   }
@@ -104,9 +109,9 @@ public class PublishedTaskMockData {
 
   private static String getExternalCrowdsourcingId(UUID extracedModelElements) {
     if (extracedModelElements.equals(FIRST_MOCK_UUID)) {
-      return "FIRST-CS-ID";
+      return FIRST_CS_ID;
     } else if (extracedModelElements.equals(SECOND_MOCK_UUID)) {
-      return "SECOND-CS-ID";
+      return SECOND_CS_ID;
     }
     return null;
   }

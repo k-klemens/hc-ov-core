@@ -2,6 +2,7 @@ package at.kk.msc.hcov.core.service.crowdsourcing;
 
 import at.kk.msc.hcov.core.service.crowdsourcing.exception.CrowdsourcingManagerException;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedVerification;
+import at.kk.msc.hcov.core.service.crowdsourcing.model.VerificationProgress;
 import at.kk.msc.hcov.core.service.exception.PluginLoadingError;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
 
@@ -23,4 +24,16 @@ public interface ICrowdsourcingManager {
    */
   PublishedVerification createAndPublishVerification(VerificationTaskSpecification specification)
       throws PluginLoadingError, CrowdsourcingManagerException;
+
+  /**
+   * Uses a {@link at.kk.msc.hcov.sdk.crowdsourcing.platform.ICrowdsourcingConnectorPlugin} and the {@link at.kk.msc.hcov.core.persistence.metadata.ICrowdsourcingMetadataStore}
+   * to obtain the status / progress of a published verification.
+   *
+   * @param verificationName name of the verification to obtain the status.
+   * @return a {@link VerificationProgress} object describing the status of the verification
+   * @throws if the request cannot be processed.
+   */
+  VerificationProgress getStatusOfVerification(String verificationName)
+      throws CrowdsourcingManagerException, PluginLoadingError;
+
 }

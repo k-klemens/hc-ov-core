@@ -1,5 +1,9 @@
 package at.kk.msc.hcov.core.util;
 
+import static at.kk.msc.hcov.core.util.PublishedTaskMockData.FIRST_QC_CS_ID;
+import static at.kk.msc.hcov.core.util.PublishedTaskMockData.MOCKED_ID_MAPPINGS_WITHOUT_QUALITY_CONTROL;
+import static at.kk.msc.hcov.core.util.PublishedTaskMockData.SECOND_QC_CS_ID;
+
 import at.kk.msc.hcov.core.endpoint.dto.QualityControlMetaDataDto;
 import at.kk.msc.hcov.core.endpoint.dto.VerificationMetaDataDto;
 import at.kk.msc.hcov.core.endpoint.dto.VerificationTaskSpecificationRequestDto;
@@ -65,11 +69,13 @@ public class VerificationTaskSpecificationMockData {
         )
         .qualityControlMetaData(
             List.of(
-                new QualityControlMetaDataEntity(QualityControlTaskMockData.FIRST_QC_MOCK_UUID, "FIRST-QC-CS-ID", "FIRST-ANSWER"),
-                new QualityControlMetaDataEntity(QualityControlTaskMockData.SECOND_QC_MOCK_UUID, "SECOND-QC-CS-ID", "SECOND-ANSWER")
+                new QualityControlMetaDataEntity(QualityControlTaskMockData.FIRST_QC_MOCK_UUID, FIRST_QC_CS_ID,
+                    "FIRST-ANSWER"),
+                new QualityControlMetaDataEntity(QualityControlTaskMockData.SECOND_QC_MOCK_UUID, SECOND_QC_CS_ID,
+                    "SECOND-ANSWER")
             )
         )
-        .ontologyVerificationTaskIdMappings(PublishedTaskMockData.MOCKED_ID_MAPPINGS_WITHOUT_QUALITY_CONTROL())
+        .ontologyVerificationTaskIdMappings(MOCKED_ID_MAPPINGS_WITHOUT_QUALITY_CONTROL())
         .build();
   }
 
@@ -90,11 +96,13 @@ public class VerificationTaskSpecificationMockData {
         )
         .qualityControlMetaData(
             List.of(
-                new QualityControlMetaDataDto(QualityControlTaskMockData.FIRST_QC_MOCK_UUID, "FIRST-QC-CS-ID", "FIRST-ANSWER"),
-                new QualityControlMetaDataDto(QualityControlTaskMockData.SECOND_QC_MOCK_UUID, "SECOND-QC-CS-ID", "SECOND-ANSWER")
+                new QualityControlMetaDataDto(QualityControlTaskMockData.FIRST_QC_MOCK_UUID, FIRST_QC_CS_ID,
+                    "FIRST-ANSWER"),
+                new QualityControlMetaDataDto(QualityControlTaskMockData.SECOND_QC_MOCK_UUID, SECOND_QC_CS_ID,
+                    "SECOND-ANSWER")
             )
         )
-        .ontologyVerificationTaskIdMappings(PublishedTaskMockData.MOCKED_ID_MAPPINGS_WITHOUT_QUALITY_CONTROL())
+        .ontologyVerificationTaskIdMappings(MOCKED_ID_MAPPINGS_WITHOUT_QUALITY_CONTROL())
         .build();
   }
 
@@ -112,7 +120,7 @@ public class VerificationTaskSpecificationMockData {
         .processorPluginConfigurationEntities(
             List.of(new ProcessorPluginConfigurationEntity(List.of(new ConfigurationEntity("P1_Config", "IS_SET"))))
         )
-        .ontologyVerificationTaskIdMappings(PublishedTaskMockData.MOCKED_ID_MAPPINGS_WITHOUT_QUALITY_CONTROL())
+        .ontologyVerificationTaskIdMappings(MOCKED_ID_MAPPINGS_WITHOUT_QUALITY_CONTROL())
         .build();
   }
 }
