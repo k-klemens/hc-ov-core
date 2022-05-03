@@ -1,6 +1,7 @@
 package at.kk.msc.hcov.core.util;
 
 import at.kk.msc.hcov.sdk.crowdsourcing.platform.ICrowdsourcingConnectorPlugin;
+import at.kk.msc.hcov.sdk.crowdsourcing.platform.model.HitStatus;
 import at.kk.msc.hcov.sdk.plugin.PluginConfigurationNotSetException;
 import at.kk.msc.hcov.sdk.verificationtask.IContextProviderPlugin;
 import at.kk.msc.hcov.sdk.verificationtask.IVerificationTaskPlugin;
@@ -137,6 +138,16 @@ public class IntegrationTestPlugins {
           LOGGER.info("Published task for element id {}", task.getOntologyElementId());
         }
         return returnMap;
+      }
+
+      @Override
+      public Map<String, HitStatus> getStatusForHits(List<String> list) throws PluginConfigurationNotSetException {
+        return Map.of(
+            "WriterExternalId", new HitStatus("WriterExternalId", 5, 5),
+            "PersonExternalId", new HitStatus("PersonExternalId", 5, 5),
+            "MovieDirectorExternalId", new HitStatus("MovieDirectorExternalId", 5, 5),
+            "ActorExternalId", new HitStatus("ActorExternalId", 5, 5)
+        );
       }
 
       @Override

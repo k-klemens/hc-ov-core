@@ -109,6 +109,7 @@ public class VerificationTaskSpecificationMockData {
   public static VerificationMetaDataEntity EXPECTED_VERIFICATION_META_DATA_WITHOUT_QUALITY_CONTROL() {
     return VerificationMetaDataEntity.builder()
         .verificationName(MOCKED_VERIFICATION_NAME)
+        .createdAt(TimeProviderMock.MOCK_TIME)
         .ontologyName(MOCKED_ONTOLOGY_NAME)
         .verificationTaskPluginId("VERIFICATION_MOCK")
         .verificationTaskPluginConfiguration(new ArrayList<>())

@@ -1,5 +1,6 @@
 package at.kk.msc.hcov.core.service.crowdsourcing;
 
+import at.kk.msc.hcov.core.persistence.metadata.exception.VerificationDoesNotExistException;
 import at.kk.msc.hcov.core.service.crowdsourcing.exception.CrowdsourcingManagerException;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedVerification;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.VerificationProgress;
@@ -34,6 +35,6 @@ public interface ICrowdsourcingManager {
    * @throws if the request cannot be processed.
    */
   VerificationProgress getStatusOfVerification(String verificationName)
-      throws CrowdsourcingManagerException, PluginLoadingError;
+      throws CrowdsourcingManagerException, PluginLoadingError, VerificationDoesNotExistException;
 
 }

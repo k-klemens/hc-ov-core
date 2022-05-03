@@ -277,7 +277,7 @@ public class CrowdsourcingManagerTest {
 
     // when
     assertThatThrownBy(() -> target.getStatusOfVerification("UNKNOWN_VERIFICATION"))
-        .isInstanceOf(CrowdsourcingManagerException.class);
+        .isInstanceOf(VerificationDoesNotExistException.class);
 
     // then
     assertThat(csPluginMock.getMostRecentGetStatusForHitsList()).isNull();

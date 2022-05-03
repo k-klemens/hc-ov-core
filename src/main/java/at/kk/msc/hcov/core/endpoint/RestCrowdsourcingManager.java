@@ -1,12 +1,16 @@
 package at.kk.msc.hcov.core.endpoint;
 
 import at.kk.msc.hcov.core.endpoint.dto.PublishedVerificationDto;
+import at.kk.msc.hcov.core.endpoint.dto.VerificationProgressDto;
 import at.kk.msc.hcov.core.endpoint.dto.VerificationTaskSpecificationRequestDto;
+import at.kk.msc.hcov.core.persistence.metadata.exception.VerificationDoesNotExistException;
 import at.kk.msc.hcov.core.service.crowdsourcing.ICrowdsourcingManager;
 import at.kk.msc.hcov.core.service.crowdsourcing.exception.CrowdsourcingManagerException;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedVerification;
+import at.kk.msc.hcov.core.service.crowdsourcing.model.VerificationProgress;
 import at.kk.msc.hcov.core.service.exception.PluginLoadingError;
 import at.kk.msc.hcov.core.service.mapper.PublishedVerificationMapper;
+import at.kk.msc.hcov.core.service.mapper.VerificationProgressMapper;
 import at.kk.msc.hcov.core.service.mapper.VerificationTaskSpecificationMapper;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,6 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +41,7 @@ public class RestCrowdsourcingManager {
 
   private VerificationTaskSpecificationMapper verificationTaskSpecificationMapper;
   private PublishedVerificationMapper publishedVerificationMapper;
+  private VerificationProgressMapper verificationProgressMapper;
   private ICrowdsourcingManager crowdsourcingManager;
 
   @Operation(summary = "Endpoint to create and publish verification tasks according to a given specification.")
@@ -62,4 +69,28 @@ public class RestCrowdsourcingManager {
       throw new ResponseStatusException(500, e.getMessage(), e);
     }
   }
+
+  @Operation(summary = "Endpoint to obtain the current status of a published verification.")
+  @ApiResponses(value = {
+      @ApiResponse(
+          responseCode = "200",
+          content = @Content(schema = @Schema(implementation = VerificationProgressDto.class))
+      ),
+      @ApiResponse(responseCode = "404", description = "No verification for the given name found!"),
+      @ApiResponse(responseCode = "500", description = "A problem when processing the request occurred.")
+  })
+  @GetMapping("/progress/{verification-name}")
+  public ResponseEntity<VerificationProgressDto> getVerificationProgress(@PathVariable("verification-name") String verificationName) {
+
+    try {
+      VerificationProgress serviceLayerObject = crowdsourcingManager.getStatusOfVerification(verificationName);
+      VerificationProgressDto dto = verificationProgressMapper.toDto(serviceLayerObject);
+      return new ResponseEntity<>(dto, HttpStatus.OK);
+    } catch (CrowdsourcingManagerException | PluginLoadingError e) {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    } catch (VerificationDoesNotExistException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+  }
+
 }

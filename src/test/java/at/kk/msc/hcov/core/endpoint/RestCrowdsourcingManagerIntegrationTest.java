@@ -5,12 +5,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import at.kk.msc.hcov.core.endpoint.dto.PublishedVerificationDto;
 import at.kk.msc.hcov.core.endpoint.dto.QualityControlTaskCreationDto;
 import at.kk.msc.hcov.core.endpoint.dto.QualityControlTasksSpecificationDto;
+import at.kk.msc.hcov.core.endpoint.dto.TaskProgressDetailDto;
+import at.kk.msc.hcov.core.endpoint.dto.VerificationProgressDto;
 import at.kk.msc.hcov.core.endpoint.dto.VerificationTaskSpecificationRequestDto;
 import at.kk.msc.hcov.core.persistence.model.ConfigurationEntity;
 import at.kk.msc.hcov.core.persistence.model.QualityControlMetaDataEntity;
 import at.kk.msc.hcov.core.persistence.model.VerificationMetaDataEntity;
 import at.kk.msc.hcov.core.persistence.repository.VerificationMetaDataRepository;
+import at.kk.msc.hcov.core.service.crowdsourcing.model.VerificationProgress;
 import at.kk.msc.hcov.core.util.IntegrationTestPlugins;
+import at.kk.msc.hcov.core.util.TimeProviderMock;
+import at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
@@ -185,6 +190,64 @@ public class RestCrowdsourcingManagerIntegrationTest {
 
     // then
     assertThat(responseEntity.getStatusCode()).isEqualByComparingTo(HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @Test
+  public void testGetVerificationProgress() throws URISyntaxException {
+    // given
+    String givenVerificationName = "testGetVerificationProgress_VERIFICATION";
+    VerificationMetaDataEntity givenEntity =
+        VerificationTaskSpecificationMockData.EXPECTED_VERIFICATION_META_DATA_WITHOUT_QUALITY_CONTROL();
+    givenEntity.setVerificationName(givenVerificationName);
+
+    givenEntity.setOntologyVerificationTaskIdMappings(
+        Map.of(
+            UUID.fromString("ca38ed48-c756-420d-b4a8-170b05d064f5"), "WriterExternalId",
+            UUID.fromString("417d5f0d-20d7-49e6-92f2-e4a3bb2a49b5"), "PersonExternalId",
+            UUID.fromString("00725aab-7c10-4ef8-837d-70571ae67fa3"), "ActorExternalId",
+            UUID.fromString("1855cf64-9033-46e5-9776-7b5c0ab713d7"), "MovieDirectorExternalId"
+        )
+    );
+    metaDataRepository.save(givenEntity);
+
+    // when
+    ResponseEntity<VerificationProgressDto> responseEntity = restTemplate.getForEntity(
+        new URI("http://localhost:" + port + "/crowdsourcing/progress/" + givenVerificationName),
+        VerificationProgressDto.class
+    );
+
+    // then
+    assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
+
+    VerificationProgressDto expected = new VerificationProgressDto();
+    expected.setVerificationName(givenVerificationName);
+    expected.setCreatedAt(TimeProviderMock.MOCK_TIME);
+    expected.setStatus(VerificationProgress.Status.ALL_TASKS_COMPLETED);
+    expected.setTotalHits(4);
+    expected.setCompletedHits(4);
+    expected.setOpenHits(0);
+    expected.setTaskProgressDetails(
+        List.of(
+            new TaskProgressDetailDto(UUID.fromString("ca38ed48-c756-420d-b4a8-170b05d064f5"), "WriterExternalId", 5, 5, 0),
+            new TaskProgressDetailDto(UUID.fromString("417d5f0d-20d7-49e6-92f2-e4a3bb2a49b5"), "PersonExternalId", 5, 5, 0),
+            new TaskProgressDetailDto(UUID.fromString("00725aab-7c10-4ef8-837d-70571ae67fa3"), "ActorExternalId", 5, 5, 0),
+            new TaskProgressDetailDto(UUID.fromString("1855cf64-9033-46e5-9776-7b5c0ab713d7"), "MovieDirectorExternalId", 5, 5, 0)
+        )
+    );
+
+    assertThat(responseEntity.getBody()).isNotNull();
+    VerificationProgressDto actual = responseEntity.getBody();
+    assertThatVerificationProgressDtoAreEqual(actual, expected);
+  }
+
+  public static void assertThatVerificationProgressDtoAreEqual(VerificationProgressDto actual, VerificationProgressDto expected) {
+    assertThat(actual.getVerificationName()).isEqualTo(expected.getVerificationName());
+    assertThat(actual.getCreatedAt()).isEqualTo(expected.getCreatedAt());
+    assertThat(actual.getStatus()).isEqualTo(expected.getStatus());
+    assertThat(actual.getTotalHits()).isEqualTo(expected.getTotalHits());
+    assertThat(actual.getCompletedHits()).isEqualTo(expected.getCompletedHits());
+    assertThat(actual.getOpenHits()).isEqualTo(expected.getOpenHits());
+    assertThat(actual.getTaskProgressDetails()).containsExactlyInAnyOrderElementsOf(expected.getTaskProgressDetails());
   }
 
 }

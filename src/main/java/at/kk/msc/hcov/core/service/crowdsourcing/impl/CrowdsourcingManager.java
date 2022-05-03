@@ -62,13 +62,20 @@ public class CrowdsourcingManager implements ICrowdsourcingManager {
   }
 
   @Override
-  public VerificationProgress getStatusOfVerification(String verificationName) throws CrowdsourcingManagerException, PluginLoadingError {
+  public VerificationProgress getStatusOfVerification(String verificationName)
+      throws CrowdsourcingManagerException, PluginLoadingError, VerificationDoesNotExistException {
     VerificationMetaDataEntity metaData = loadMetaDataOrThrow(verificationName);
     ICrowdsourcingConnectorPlugin connectorPlugin = setupCrowdsourcingConnectorPlugin(
         metaData.getCrowdsourcingConnectorPluginId(),
         metaData.getCrowdsourcingConfigurationAsMap()
     );
 
+    return createVerificationProgress(metaData, connectorPlugin);
+  }
+
+  private VerificationProgress createVerificationProgress(VerificationMetaDataEntity metaData,
+                                                          ICrowdsourcingConnectorPlugin connectorPlugin)
+      throws CrowdsourcingManagerException {
     VerificationProgress verificationProgress = new VerificationProgress();
     verificationProgress.setVerificationName(metaData.getVerificationName());
     verificationProgress.setCreatedAt(metaData.getCreatedAt());
@@ -80,33 +87,36 @@ public class CrowdsourcingManager implements ICrowdsourcingManager {
       verificationProgress.setCompletedHits(0);
       verificationProgress.setOpenHits(0);
       verificationProgress.setTaskProgressDetails(new ArrayList<>());
-      Map<String, UUID> crowdsourcingIdMappings = metaData.getCrowdsourcingTaskIdMappings();
-      for (Map.Entry<String, HitStatus> hitStatusMapEntry : hitStatusMap.entrySet()) {
-        UUID ontologyElementId = crowdsourcingIdMappings.get(hitStatusMapEntry.getKey());
-        TaskProgressDetail taskProgressDetail = new TaskProgressDetail(ontologyElementId, hitStatusMapEntry.getValue());
-        verificationProgress.getTaskProgressDetails().add(taskProgressDetail);
-        if (taskProgressDetail.getNumOpen() > 0) {
-          verificationStatus = VerificationProgress.Status.PUBLISHED;
-          verificationProgress.incrementOpenHits();
-        } else {
-          verificationProgress.incrementCompetedHits();
-        }
-      }
+      verificationStatus = createTaskProgressDetailsAndCalculateStatus(metaData, verificationProgress, verificationStatus, hitStatusMap);
       verificationProgress.setStatus(verificationStatus);
 
     } catch (PluginConfigurationNotSetException e) {
       throw new CrowdsourcingManagerException("Connector plugin configuration not set correctly!", e);
     }
-
     return verificationProgress;
   }
 
-  private VerificationMetaDataEntity loadMetaDataOrThrow(String verificationName) throws CrowdsourcingManagerException {
-    try {
-      return metadataStore.getMetaData(verificationName);
-    } catch (VerificationDoesNotExistException e) {
-      throw new CrowdsourcingManagerException(e.getMessage(), e);
+  private VerificationProgress.Status createTaskProgressDetailsAndCalculateStatus(VerificationMetaDataEntity metaData,
+                                                                                  VerificationProgress verificationProgress,
+                                                                                  VerificationProgress.Status verificationStatus,
+                                                                                  Map<String, HitStatus> hitStatusMap) {
+    Map<String, UUID> crowdsourcingIdMappings = metaData.getCrowdsourcingTaskIdMappings();
+    for (Map.Entry<String, HitStatus> hitStatusMapEntry : hitStatusMap.entrySet()) {
+      UUID ontologyElementId = crowdsourcingIdMappings.get(hitStatusMapEntry.getKey());
+      TaskProgressDetail taskProgressDetail = new TaskProgressDetail(ontologyElementId, hitStatusMapEntry.getValue());
+      verificationProgress.getTaskProgressDetails().add(taskProgressDetail);
+      if (taskProgressDetail.getNumOpen() > 0) {
+        verificationStatus = VerificationProgress.Status.PUBLISHED;
+        verificationProgress.incrementOpenHits();
+      } else {
+        verificationProgress.incrementCompetedHits();
+      }
     }
+    return verificationStatus;
+  }
+
+  private VerificationMetaDataEntity loadMetaDataOrThrow(String verificationName) throws VerificationDoesNotExistException {
+    return metadataStore.getMetaData(verificationName);
   }
 
   private List<VerificationTask> createVerificationTasksOrThrow(VerificationTaskSpecification specification)
