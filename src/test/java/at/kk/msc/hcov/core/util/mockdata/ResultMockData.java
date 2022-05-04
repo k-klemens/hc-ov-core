@@ -5,6 +5,8 @@ import static at.kk.msc.hcov.core.util.mockdata.PublishedTaskMockData.SECOND_CS_
 import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskMockData.FIRST_MOCK_UUID;
 import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskMockData.SECOND_MOCK_UUID;
 
+import at.kk.msc.hcov.core.endpoint.dto.DataProcessorResultsDto;
+import at.kk.msc.hcov.core.endpoint.dto.ProcessingResultDto;
 import at.kk.msc.hcov.core.service.processing.model.DataProcessorResults;
 import at.kk.msc.hcov.sdk.crowdsourcing.platform.model.RawResult;
 import at.kk.msc.hcov.sdk.crowdsourcing.processing.ProcessingResult;
@@ -274,9 +276,120 @@ public class ResultMockData {
     );
   }
 
+  public static List<ProcessingResultDto> EXPECTED_PROCESSING_RESULT_RAW_RESULT_PROCESSOR_DTO() {
+    return List.of(
+        new ProcessingResultDto(
+            FIRST_CS_ID,
+            Map.of(
+                "EXTRACTED_ELEMENTS_ID", FIRST_MOCK_UUID.toString(),
+                "RESULT_ID", FIRST_CS_ID + "-R1",
+                "WORKER_ID", "W1",
+                "ANSWER", "Y"
+            ),
+            "Results as obtained from the crowdsourcing platform."
+        ),
+        new ProcessingResultDto(
+            FIRST_CS_ID,
+            Map.of(
+                "EXTRACTED_ELEMENTS_ID", FIRST_MOCK_UUID.toString(),
+                "RESULT_ID", FIRST_CS_ID + "-R2",
+                "WORKER_ID", "W2",
+                "ANSWER", "Y"
+            ),
+            "Results as obtained from the crowdsourcing platform."
+        ),
+        new ProcessingResultDto(
+            FIRST_CS_ID,
+            Map.of(
+                "EXTRACTED_ELEMENTS_ID", FIRST_MOCK_UUID.toString(),
+                "RESULT_ID", FIRST_CS_ID + "-R3",
+                "WORKER_ID", "W3",
+                "ANSWER", "Y"
+            ),
+            "Results as obtained from the crowdsourcing platform."
+        ),
+        new ProcessingResultDto(
+            FIRST_CS_ID,
+            Map.of(
+                "EXTRACTED_ELEMENTS_ID", FIRST_MOCK_UUID.toString(),
+                "RESULT_ID", FIRST_CS_ID + "-R4",
+                "WORKER_ID", "W4",
+                "ANSWER", "Y"
+            ),
+            "Results as obtained from the crowdsourcing platform."
+        ),
+        new ProcessingResultDto(
+            FIRST_CS_ID,
+            Map.of(
+                "EXTRACTED_ELEMENTS_ID", FIRST_MOCK_UUID.toString(),
+                "RESULT_ID", FIRST_CS_ID + "-R5",
+                "WORKER_ID", "W5",
+                "ANSWER", "Y"
+            ),
+            "Results as obtained from the crowdsourcing platform."
+        ),
+        new ProcessingResultDto(
+            SECOND_CS_ID,
+            Map.of(
+                "EXTRACTED_ELEMENTS_ID", SECOND_MOCK_UUID.toString(),
+                "RESULT_ID", SECOND_CS_ID + "-R1",
+                "WORKER_ID", "W1",
+                "ANSWER", "Y"
+            ),
+            "Results as obtained from the crowdsourcing platform."
+        ),
+        new ProcessingResultDto(
+            SECOND_CS_ID,
+            Map.of(
+                "EXTRACTED_ELEMENTS_ID", SECOND_MOCK_UUID.toString(),
+                "RESULT_ID", SECOND_CS_ID + "-R2",
+                "WORKER_ID", "W2",
+                "ANSWER", "Y"
+            ),
+            "Results as obtained from the crowdsourcing platform."
+        ),
+        new ProcessingResultDto(
+            SECOND_CS_ID,
+            Map.of(
+                "EXTRACTED_ELEMENTS_ID", SECOND_MOCK_UUID.toString(),
+                "RESULT_ID", SECOND_CS_ID + "-R3",
+                "WORKER_ID", "W3",
+                "ANSWER", "N"
+            ),
+            "Results as obtained from the crowdsourcing platform."
+        ),
+        new ProcessingResultDto(
+            SECOND_CS_ID,
+            Map.of(
+                "EXTRACTED_ELEMENTS_ID", SECOND_MOCK_UUID.toString(),
+                "RESULT_ID", SECOND_CS_ID + "-R4",
+                "WORKER_ID", "W4",
+                "ANSWER", "N"
+            ),
+            "Results as obtained from the crowdsourcing platform."
+        ),
+        new ProcessingResultDto(
+            SECOND_CS_ID,
+            Map.of(
+                "EXTRACTED_ELEMENTS_ID", SECOND_MOCK_UUID.toString(),
+                "RESULT_ID", SECOND_CS_ID + "-R5",
+                "WORKER_ID", "W5",
+                "ANSWER", "Y"
+            ),
+            "Results as obtained from the crowdsourcing platform."
+        )
+    );
+  }
+
   public static List<DataProcessorResults> EXPECTED_DATA_PROCESSOR_RESULTS_ONLY_RAW() {
     return List.of(
         new DataProcessorResults("RAW_DATA_PROCESSOR", EXPECTED_PROCESSING_RESULT_RAW_RESULT_PROCESSOR())
+    );
+  }
+
+  public static List<DataProcessorResultsDto> EXPECTED_DATA_PROCESSOR_RESULTS_ONLY_RAW_DTO() {
+    return List.of(
+        new DataProcessorResultsDto("RAW_DATA_PROCESSOR", EXPECTED_PROCESSING_RESULT_RAW_RESULT_PROCESSOR_DTO())
     );
   }
 }

@@ -63,14 +63,18 @@ public class DataProcessorTest {
         .thenReturn(new RawDataProcessorPlugin());
 
     // when
-    List<DataProcessorResults> actual = target.loadResultsAndProcess(givenVerificationName);
+    List<DataProcessorResults> actualList = target.loadResultsAndProcess(givenVerificationName);
 
     // then
     verify(metaDataStoreMock, times(1)).getMetaData(eq(givenVerificationName));
     verify(crowdsourcingManagerMock, times(1)).getAllResultsForVerification(eq(givenVerificationName));
     verify(pluginLoaderMock, times(1)).loadPluginOrThrow(eq(IPluginLoader.PluginType.PROCESSOR), eq("RAW_DATA_PROCESSOR"));
 
-    assertThat(actual).isEqualTo(ResultMockData.EXPECTED_DATA_PROCESSOR_RESULTS_ONLY_RAW());
+    assertThat(actualList).hasSize(1);
+    DataProcessorResults actual = actualList.get(0);
+    DataProcessorResults expected = ResultMockData.EXPECTED_DATA_PROCESSOR_RESULTS_ONLY_RAW().get(0);
+    assertThat(actual.getPluginId()).isEqualTo(expected.getPluginId());
+    assertThat(actual.getProcessingResult()).containsExactlyInAnyOrderElementsOf(expected.getProcessingResult());
   }
 
   @Test
