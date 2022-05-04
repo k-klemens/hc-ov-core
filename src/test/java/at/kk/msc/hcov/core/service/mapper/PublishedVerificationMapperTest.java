@@ -1,12 +1,12 @@
 package at.kk.msc.hcov.core.service.mapper;
 
-import static at.kk.msc.hcov.core.util.PublishedVerificationMockData.EXPECTED_PUBLISHED_VERIFICATION_DTO_WITH_QUALITY_CONTROL;
-import static at.kk.msc.hcov.core.util.PublishedVerificationMockData.MOCKED_PUBLISHED_VERIFICATION_WITH_QUALITY_CONTROL;
+import static at.kk.msc.hcov.core.util.mockdata.PublishedVerificationMockData.EXPECTED_PUBLISHED_VERIFICATION_DTO_WITH_QUALITY_CONTROL;
+import static at.kk.msc.hcov.core.util.mockdata.PublishedVerificationMockData.MOCKED_PUBLISHED_VERIFICATION_WITH_QUALITY_CONTROL;
 
 import at.kk.msc.hcov.core.endpoint.dto.PublishedVerificationDto;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedVerification;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
-import at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData;
+import at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMockData;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;

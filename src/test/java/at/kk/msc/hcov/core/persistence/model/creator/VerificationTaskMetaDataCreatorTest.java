@@ -1,15 +1,15 @@
 package at.kk.msc.hcov.core.persistence.model.creator;
 
-import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.EXPECTED_VERIFICATION_META_DATA_WITH_QUALITY_CONTROL;
-import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMockData.EXPECTED_VERIFICATION_META_DATA_WITH_QUALITY_CONTROL;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import at.kk.msc.hcov.core.persistence.model.VerificationMetaDataEntity;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedTaskIdMappings;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
-import at.kk.msc.hcov.core.util.PublishedTaskMockData;
-import at.kk.msc.hcov.core.util.QualityControlTasksSpecificationMockData;
 import at.kk.msc.hcov.core.util.TimeProviderMock;
+import at.kk.msc.hcov.core.util.mockdata.PublishedTaskMockData;
+import at.kk.msc.hcov.core.util.mockdata.QualityControlTasksSpecificationMockData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

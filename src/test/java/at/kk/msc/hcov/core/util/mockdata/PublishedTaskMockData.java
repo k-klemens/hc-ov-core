@@ -1,12 +1,12 @@
-package at.kk.msc.hcov.core.util;
+package at.kk.msc.hcov.core.util.mockdata;
 
-import static at.kk.msc.hcov.core.util.QualityControlTaskMockData.FIRST_QC_MOCK_UUID;
-import static at.kk.msc.hcov.core.util.QualityControlTaskMockData.SECOND_QC_MOCK_UUID;
-import static at.kk.msc.hcov.core.util.VerificationTaskMockData.EXPECTED_TASKS_WITHOUT_CONTEXT;
-import static at.kk.msc.hcov.core.util.VerificationTaskMockData.EXPECTED_TASKS_WITHOUT_CONTEXT_DTOS;
-import static at.kk.msc.hcov.core.util.VerificationTaskMockData.EXPECTED_TASKS_WITH_CONTEXT_DTOS;
-import static at.kk.msc.hcov.core.util.VerificationTaskMockData.FIRST_MOCK_UUID;
-import static at.kk.msc.hcov.core.util.VerificationTaskMockData.SECOND_MOCK_UUID;
+import static at.kk.msc.hcov.core.util.mockdata.QualityControlTaskMockData.FIRST_QC_MOCK_UUID;
+import static at.kk.msc.hcov.core.util.mockdata.QualityControlTaskMockData.SECOND_QC_MOCK_UUID;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskMockData.EXPECTED_TASKS_WITHOUT_CONTEXT;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskMockData.EXPECTED_TASKS_WITHOUT_CONTEXT_DTOS;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskMockData.EXPECTED_TASKS_WITH_CONTEXT_DTOS;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskMockData.FIRST_MOCK_UUID;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskMockData.SECOND_MOCK_UUID;
 
 import at.kk.msc.hcov.core.endpoint.dto.PublishedVerificationTaskDto;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedTaskIdMappings;

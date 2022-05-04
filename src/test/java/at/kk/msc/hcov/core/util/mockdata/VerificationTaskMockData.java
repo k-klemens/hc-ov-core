@@ -1,6 +1,6 @@
-package at.kk.msc.hcov.core.util;
+package at.kk.msc.hcov.core.util.mockdata;
 
-import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
 
 import at.kk.msc.hcov.core.endpoint.dto.VerificationTaskDto;
 import at.kk.msc.hcov.core.service.templating.model.ResolvedVariablesWrapper;

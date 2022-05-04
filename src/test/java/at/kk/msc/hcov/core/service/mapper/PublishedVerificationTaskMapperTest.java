@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import at.kk.msc.hcov.core.endpoint.dto.PublishedVerificationTaskDto;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedVerificationTask;
-import at.kk.msc.hcov.core.util.PublishedTaskMockData;
+import at.kk.msc.hcov.core.util.mockdata.PublishedTaskMockData;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 

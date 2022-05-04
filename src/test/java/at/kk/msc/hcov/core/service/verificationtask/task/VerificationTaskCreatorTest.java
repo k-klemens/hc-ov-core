@@ -1,13 +1,13 @@
 package at.kk.msc.hcov.core.service.verificationtask.task;
 
-import static at.kk.msc.hcov.core.util.VerificationTaskMockData.EXPECTED_TASKS_WITHOUT_CONTEXT;
-import static at.kk.msc.hcov.core.util.VerificationTaskMockData.EXPECTED_TASKS_WITH_CONTEXT;
-import static at.kk.msc.hcov.core.util.VerificationTaskMockData.EXPECTED_TEMPLATES_WITHOUT_CONTEXT;
-import static at.kk.msc.hcov.core.util.VerificationTaskMockData.EXPECTED_TEMPLATES_WITH_CONTEXT;
-import static at.kk.msc.hcov.core.util.VerificationTaskMockData.MOCKED_EXTRACTED_MODEL_ELEMENTS;
-import static at.kk.msc.hcov.core.util.VerificationTaskMockData.MOCKED_PROVIDED_CONTEXTS;
-import static at.kk.msc.hcov.core.util.VerificationTaskMockData.MOCKED_RESOLVED_VARIABLE_WRAPPERS_WITHOUT_CONTEXT;
-import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskMockData.EXPECTED_TASKS_WITHOUT_CONTEXT;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskMockData.EXPECTED_TASKS_WITH_CONTEXT;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskMockData.EXPECTED_TEMPLATES_WITHOUT_CONTEXT;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskMockData.EXPECTED_TEMPLATES_WITH_CONTEXT;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskMockData.MOCKED_EXTRACTED_MODEL_ELEMENTS;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskMockData.MOCKED_PROVIDED_CONTEXTS;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskMockData.MOCKED_RESOLVED_VARIABLE_WRAPPERS_WITHOUT_CONTEXT;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;

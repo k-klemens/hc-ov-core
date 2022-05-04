@@ -22,6 +22,7 @@ import at.kk.msc.hcov.core.service.verificationtask.task.exception.VerificationT
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
 import at.kk.msc.hcov.sdk.crowdsourcing.platform.ICrowdsourcingConnectorPlugin;
 import at.kk.msc.hcov.sdk.crowdsourcing.platform.model.HitStatus;
+import at.kk.msc.hcov.sdk.crowdsourcing.platform.model.RawResult;
 import at.kk.msc.hcov.sdk.plugin.PluginConfigurationNotSetException;
 import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTask;
 import java.util.ArrayList;
@@ -73,9 +74,40 @@ public class CrowdsourcingManager implements ICrowdsourcingManager {
     return createVerificationProgress(metaData, connectorPlugin);
   }
 
-  private VerificationProgress createVerificationProgress(VerificationMetaDataEntity metaData,
-                                                          ICrowdsourcingConnectorPlugin connectorPlugin)
-      throws CrowdsourcingManagerException {
+  @Override
+  public Map<UUID, List<RawResult>> getAllResultsForVerification(String verificationName)
+      throws CrowdsourcingManagerException, PluginLoadingError, VerificationDoesNotExistException {
+    VerificationMetaDataEntity metaData = loadMetaDataOrThrow(verificationName);
+    ICrowdsourcingConnectorPlugin connectorPlugin = setupCrowdsourcingConnectorPlugin(
+        metaData.getCrowdsourcingConnectorPluginId(),
+        metaData.getCrowdsourcingConfigurationAsMap()
+    );
+
+    return createRawResultMap(metaData, connectorPlugin);
+  }
+
+  private Map<UUID, List<RawResult>> createRawResultMap(
+      VerificationMetaDataEntity metaData, ICrowdsourcingConnectorPlugin connectorPlugin
+  ) throws CrowdsourcingManagerException {
+    List<String> crowdsourcingIds = new ArrayList<>(metaData.getOntologyVerificationTaskIdMappings().values());
+    try {
+      Map<String, UUID> crowdsourcingIdMappings = metaData.getCrowdsourcingTaskIdMappings();
+      Map<String, List<RawResult>> resultFromConnector = connectorPlugin.getResultsForHits(crowdsourcingIds);
+      Map<UUID, List<RawResult>> returnMap = new HashMap<>();
+      for (Map.Entry<String, List<RawResult>> resultEntry : resultFromConnector.entrySet()) {
+        UUID crowdsourcingId = crowdsourcingIdMappings.get(resultEntry.getKey());
+        returnMap.put(crowdsourcingId, resultEntry.getValue());
+
+      }
+      return returnMap;
+    } catch (PluginConfigurationNotSetException e) {
+      throw new CrowdsourcingManagerException("Connector plugin configuration not set correctly!", e);
+    }
+  }
+
+  private VerificationProgress createVerificationProgress(
+      VerificationMetaDataEntity metaData, ICrowdsourcingConnectorPlugin connectorPlugin
+  ) throws CrowdsourcingManagerException {
     VerificationProgress verificationProgress = new VerificationProgress();
     verificationProgress.setVerificationName(metaData.getVerificationName());
     verificationProgress.setCreatedAt(metaData.getCreatedAt());

@@ -1,8 +1,8 @@
 package at.kk.msc.hcov.core.service.verificationtask.qualitycontrol;
 
-import static at.kk.msc.hcov.core.util.QualityControlTaskMockData.EXPECTED_QC_TASKS_AS_VERIFICATION_WITHOUT_CONTEXT;
-import static at.kk.msc.hcov.core.util.QualityControlTasksSpecificationMockData.MOCKED_QUALITY_CONTROL_TASK_SPECIFICATION;
-import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
+import static at.kk.msc.hcov.core.util.mockdata.QualityControlTaskMockData.EXPECTED_QC_TASKS_AS_VERIFICATION_WITHOUT_CONTEXT;
+import static at.kk.msc.hcov.core.util.mockdata.QualityControlTasksSpecificationMockData.MOCKED_QUALITY_CONTROL_TASK_SPECIFICATION;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.eq;
@@ -17,7 +17,7 @@ import at.kk.msc.hcov.core.service.verificationtask.qualitycontrol.model.Quality
 import at.kk.msc.hcov.core.service.verificationtask.task.IVerificationTaskCreator;
 import at.kk.msc.hcov.core.service.verificationtask.task.exception.VerificationTaskCreationFailedException;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
-import at.kk.msc.hcov.core.util.QualityControlTaskMockData;
+import at.kk.msc.hcov.core.util.mockdata.QualityControlTaskMockData;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -2,6 +2,7 @@ package at.kk.msc.hcov.core.util;
 
 import at.kk.msc.hcov.sdk.crowdsourcing.platform.ICrowdsourcingConnectorPlugin;
 import at.kk.msc.hcov.sdk.crowdsourcing.platform.model.HitStatus;
+import at.kk.msc.hcov.sdk.crowdsourcing.platform.model.RawResult;
 import at.kk.msc.hcov.sdk.plugin.PluginConfigurationNotSetException;
 import at.kk.msc.hcov.sdk.verificationtask.IContextProviderPlugin;
 import at.kk.msc.hcov.sdk.verificationtask.IVerificationTaskPlugin;
@@ -147,6 +148,40 @@ public class IntegrationTestPlugins {
             "PersonExternalId", new HitStatus("PersonExternalId", 5, 5),
             "MovieDirectorExternalId", new HitStatus("MovieDirectorExternalId", 5, 5),
             "ActorExternalId", new HitStatus("ActorExternalId", 5, 5)
+        );
+      }
+
+      @Override
+      public Map<String, List<RawResult>> getResultsForHits(List<String> list) throws PluginConfigurationNotSetException {
+        return Map.of(
+            "WriterExternalId", List.of(
+                new RawResult("WriterResultId1", "WriterExternalId", "W1", "A"),
+                new RawResult("WriterResultId2", "WriterExternalId", "W2", "A"),
+                new RawResult("WriterResultId3", "WriterExternalId", "W3", "B"),
+                new RawResult("WriterResultId4", "WriterExternalId", "W4", "A"),
+                new RawResult("WriterResultId5", "WriterExternalId", "W5", "A")
+            ),
+            "PersonExternalId", List.of(
+                new RawResult("PersonResultId1", "PersonExternalId", "W1", "A"),
+                new RawResult("PersonResultId2", "PersonExternalId", "W2", "B"),
+                new RawResult("PersonResultId3", "PersonExternalId", "W3", "B"),
+                new RawResult("PersonResultId4", "PersonExternalId", "W4", "B"),
+                new RawResult("PersonResultId5", "PersonExternalId", "W5", "C")
+            ),
+            "MovieDirectorExternalId", List.of(
+                new RawResult("MovieDirectorResultId", "MovieDirectorExternalId", "W1", "C"),
+                new RawResult("MovieDirectorResultId", "MovieDirectorExternalId", "W2", "B"),
+                new RawResult("MovieDirectorResultId", "MovieDirectorExternalId", "W3", "B"),
+                new RawResult("MovieDirectorResultId", "MovieDirectorExternalId", "W4", "C"),
+                new RawResult("MovieDirectorResultId", "MovieDirectorExternalId", "W5", "C")
+            ),
+            "ActorExternalId", List.of(
+                new RawResult("ActorResultId", "ActorExternalId", "W1", "A"),
+                new RawResult("ActorResultId", "ActorExternalId", "W2", "A"),
+                new RawResult("ActorResultId", "ActorExternalId", "W3", "A"),
+                new RawResult("ActorResultId", "ActorExternalId", "W4", "A"),
+                new RawResult("ActorResultId", "ActorExternalId", "W5", "A")
+            )
         );
       }
 

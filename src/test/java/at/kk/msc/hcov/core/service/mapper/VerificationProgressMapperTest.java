@@ -1,7 +1,7 @@
 package at.kk.msc.hcov.core.service.mapper;
 
-import static at.kk.msc.hcov.core.util.VerificationProgressMockData.EXPECTED_VERIFICATION_PROGRESS_MIXED_IN_PROGRESS;
-import static at.kk.msc.hcov.core.util.VerificationProgressMockData.EXPECTED_VERIFICATION_PROGRESS_MIXED_IN_PROGRESS_DTO;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationProgressMockData.EXPECTED_VERIFICATION_PROGRESS_MIXED_IN_PROGRESS;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationProgressMockData.EXPECTED_VERIFICATION_PROGRESS_MIXED_IN_PROGRESS_DTO;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import at.kk.msc.hcov.core.endpoint.dto.VerificationProgressDto;

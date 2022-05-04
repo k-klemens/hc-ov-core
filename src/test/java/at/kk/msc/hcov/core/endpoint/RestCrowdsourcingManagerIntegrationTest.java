@@ -15,7 +15,7 @@ import at.kk.msc.hcov.core.persistence.repository.VerificationMetaDataRepository
 import at.kk.msc.hcov.core.service.crowdsourcing.model.VerificationProgress;
 import at.kk.msc.hcov.core.util.IntegrationTestPlugins;
 import at.kk.msc.hcov.core.util.TimeProviderMock;
-import at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData;
+import at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMockData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;

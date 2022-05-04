@@ -1,7 +1,7 @@
 package at.kk.msc.hcov.core.persistence.metadata;
 
-import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.EXPECTED_VERIFICATION_META_DATA_WITHOUT_QUALITY_CONTROL;
-import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMockData.EXPECTED_VERIFICATION_META_DATA_WITHOUT_QUALITY_CONTROL;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -12,7 +12,7 @@ import at.kk.msc.hcov.core.persistence.model.creator.VerificationMetaDataCreator
 import at.kk.msc.hcov.core.persistence.repository.VerificationMetaDataRepository;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedTaskIdMappings;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
-import at.kk.msc.hcov.core.util.PublishedTaskMockData;
+import at.kk.msc.hcov.core.util.mockdata.PublishedTaskMockData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

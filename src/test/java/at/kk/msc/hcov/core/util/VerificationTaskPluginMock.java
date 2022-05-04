@@ -1,7 +1,7 @@
 package at.kk.msc.hcov.core.util;
 
-import static at.kk.msc.hcov.core.util.VerificationTaskMockData.FIRST_MOCK_EXTRACTED_ELEMENTS;
-import static at.kk.msc.hcov.core.util.VerificationTaskMockData.SECOND_MOCK_EXTRACTED_ELEMENTS;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskMockData.FIRST_MOCK_EXTRACTED_ELEMENTS;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskMockData.SECOND_MOCK_EXTRACTED_ELEMENTS;
 
 import at.kk.msc.hcov.sdk.verificationtask.IVerificationTaskPlugin;
 import at.kk.msc.hcov.sdk.verificationtask.model.ProvidedContext;

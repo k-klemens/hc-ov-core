@@ -3,7 +3,7 @@ package at.kk.msc.hcov.core.service.mapper;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import at.kk.msc.hcov.core.endpoint.dto.VerificationTaskDto;
-import at.kk.msc.hcov.core.util.VerificationTaskMockData;
+import at.kk.msc.hcov.core.util.mockdata.VerificationTaskMockData;
 import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTask;
 import java.util.List;
 import org.junit.jupiter.api.Test;

@@ -6,6 +6,10 @@ import at.kk.msc.hcov.core.service.crowdsourcing.model.PublishedVerification;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.VerificationProgress;
 import at.kk.msc.hcov.core.service.exception.PluginLoadingError;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
+import at.kk.msc.hcov.sdk.crowdsourcing.platform.model.RawResult;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Interfaces specifying operations to be supported for connections to crowdsourcing platforms.
@@ -32,9 +36,23 @@ public interface ICrowdsourcingManager {
    *
    * @param verificationName name of the verification to obtain the status.
    * @return a {@link VerificationProgress} object describing the status of the verification
-   * @throws if the request cannot be processed.
+   * @throws CrowdsourcingManagerException     if the request cannot be processed.
+   * @throws PluginLoadingError                if a required plugin cannot be loaded.
+   * @throws VerificationDoesNotExistException if a given verification does not exist.
    */
   VerificationProgress getStatusOfVerification(String verificationName)
+      throws CrowdsourcingManagerException, PluginLoadingError, VerificationDoesNotExistException;
+
+  /**
+   * Uses a {@link at.kk.msc.hcov.sdk.crowdsourcing.platform.ICrowdsourcingConnectorPlugin} to obtain all the results for a given verification.
+   *
+   * @param verificationName
+   * @return a Map of {@link RawResult} objects keyed by the extraced element ids.
+   * @throws CrowdsourcingManagerException     if the request cannot be processed.
+   * @throws PluginLoadingError                if a required plugin cannot be loaded.
+   * @throws VerificationDoesNotExistException if a given verification does not exist.
+   */
+  Map<UUID, List<RawResult>> getAllResultsForVerification(String verificationName)
       throws CrowdsourcingManagerException, PluginLoadingError, VerificationDoesNotExistException;
 
 }

@@ -1,12 +1,13 @@
-package at.kk.msc.hcov.core.util;
+package at.kk.msc.hcov.core.util.mockdata;
 
-import static at.kk.msc.hcov.core.util.PublishedTaskMockData.FIRST_CS_ID;
-import static at.kk.msc.hcov.core.util.PublishedTaskMockData.SECOND_CS_ID;
+import static at.kk.msc.hcov.core.util.mockdata.PublishedTaskMockData.FIRST_CS_ID;
+import static at.kk.msc.hcov.core.util.mockdata.PublishedTaskMockData.SECOND_CS_ID;
 
 import at.kk.msc.hcov.core.endpoint.dto.TaskProgressDetailDto;
 import at.kk.msc.hcov.core.endpoint.dto.VerificationProgressDto;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.TaskProgressDetail;
 import at.kk.msc.hcov.core.service.crowdsourcing.model.VerificationProgress;
+import at.kk.msc.hcov.core.util.TimeProviderMock;
 import at.kk.msc.hcov.sdk.crowdsourcing.platform.model.HitStatus;
 import java.util.List;
 import java.util.Map;

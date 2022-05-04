@@ -1,8 +1,11 @@
 package at.kk.msc.hcov.core.util;
 
 
+import at.kk.msc.hcov.core.util.mockdata.PublishedTaskMockData;
+import at.kk.msc.hcov.core.util.mockdata.ResultMockData;
 import at.kk.msc.hcov.sdk.crowdsourcing.platform.ICrowdsourcingConnectorPlugin;
 import at.kk.msc.hcov.sdk.crowdsourcing.platform.model.HitStatus;
+import at.kk.msc.hcov.sdk.crowdsourcing.platform.model.RawResult;
 import at.kk.msc.hcov.sdk.plugin.PluginConfigurationNotSetException;
 import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTask;
 import java.util.List;
@@ -23,6 +26,8 @@ public class CrowdsourcingConnectorPluginMock implements ICrowdsourcingConnector
   private boolean calledGetStatusForHits = false;
   private List<String> mostRecentGetStatusForHitsList;
 
+  private boolean calledGetResultsForHits = false;
+
   @Override
   public Map<UUID, String> publishTasks(List<VerificationTask> list) throws PluginConfigurationNotSetException {
     // store mock information when method is called for verification / assertions
@@ -41,6 +46,12 @@ public class CrowdsourcingConnectorPluginMock implements ICrowdsourcingConnector
     calledGetStatusForHits = true;
     mostRecentGetStatusForHitsList = list;
     return getMockedHitStatusMap();
+  }
+
+  @Override
+  public Map<String, List<RawResult>> getResultsForHits(List<String> list) throws PluginConfigurationNotSetException {
+    calledGetResultsForHits = true;
+    return ResultMockData.MOCKED_RAW_RESULT_MAP();
   }
 
   public void setHitStatusMapMockData(Map<String, HitStatus> mockedHitStatusMap) {

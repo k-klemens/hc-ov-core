@@ -1,12 +1,12 @@
 package at.kk.msc.hcov.core.service.mapper;
 
-import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
-import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION_DTO;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION_DTO;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import at.kk.msc.hcov.core.endpoint.dto.VerificationTaskSpecificationRequestDto;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
-import at.kk.msc.hcov.core.util.QualityControlTasksSpecificationMockData;
+import at.kk.msc.hcov.core.util.mockdata.QualityControlTasksSpecificationMockData;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 

@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import at.kk.msc.hcov.core.endpoint.dto.VerificationMetaDataDto;
 import at.kk.msc.hcov.core.persistence.model.VerificationMetaDataEntity;
 import at.kk.msc.hcov.core.persistence.repository.VerificationMetaDataRepository;
-import at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData;
+import at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMockData;
 import java.net.URI;
 import java.net.URISyntaxException;
 import org.junit.jupiter.api.Test;

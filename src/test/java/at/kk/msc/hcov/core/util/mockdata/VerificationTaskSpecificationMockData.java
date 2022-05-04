@@ -1,8 +1,8 @@
-package at.kk.msc.hcov.core.util;
+package at.kk.msc.hcov.core.util.mockdata;
 
-import static at.kk.msc.hcov.core.util.PublishedTaskMockData.FIRST_QC_CS_ID;
-import static at.kk.msc.hcov.core.util.PublishedTaskMockData.MOCKED_ID_MAPPINGS_WITHOUT_QUALITY_CONTROL;
-import static at.kk.msc.hcov.core.util.PublishedTaskMockData.SECOND_QC_CS_ID;
+import static at.kk.msc.hcov.core.util.mockdata.PublishedTaskMockData.FIRST_QC_CS_ID;
+import static at.kk.msc.hcov.core.util.mockdata.PublishedTaskMockData.MOCKED_ID_MAPPINGS_WITHOUT_QUALITY_CONTROL;
+import static at.kk.msc.hcov.core.util.mockdata.PublishedTaskMockData.SECOND_QC_CS_ID;
 
 import at.kk.msc.hcov.core.endpoint.dto.QualityControlMetaDataDto;
 import at.kk.msc.hcov.core.endpoint.dto.VerificationMetaDataDto;
@@ -12,6 +12,7 @@ import at.kk.msc.hcov.core.persistence.model.ProcessorPluginConfigurationEntity;
 import at.kk.msc.hcov.core.persistence.model.QualityControlMetaDataEntity;
 import at.kk.msc.hcov.core.persistence.model.VerificationMetaDataEntity;
 import at.kk.msc.hcov.core.service.verificationtask.task.model.VerificationTaskSpecification;
+import at.kk.msc.hcov.core.util.TimeProviderMock;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

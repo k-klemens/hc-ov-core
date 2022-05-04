@@ -1,7 +1,7 @@
-package at.kk.msc.hcov.core.util;
+package at.kk.msc.hcov.core.util.mockdata;
 
-import static at.kk.msc.hcov.core.util.QualityControlTaskMockData.FIRST_QC_MOCK_UUID;
-import static at.kk.msc.hcov.core.util.QualityControlTaskMockData.SECOND_QC_MOCK_UUID;
+import static at.kk.msc.hcov.core.util.mockdata.QualityControlTaskMockData.FIRST_QC_MOCK_UUID;
+import static at.kk.msc.hcov.core.util.mockdata.QualityControlTaskMockData.SECOND_QC_MOCK_UUID;
 
 import at.kk.msc.hcov.core.endpoint.dto.QualityControlTaskCreationDto;
 import at.kk.msc.hcov.core.endpoint.dto.QualityControlTasksSpecificationDto;

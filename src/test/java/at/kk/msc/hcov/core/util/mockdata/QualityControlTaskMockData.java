@@ -1,7 +1,7 @@
-package at.kk.msc.hcov.core.util;
+package at.kk.msc.hcov.core.util.mockdata;
 
-import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.MOCKED_ONTOLOGY_NAME;
-import static at.kk.msc.hcov.core.util.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_NAME;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMockData.MOCKED_ONTOLOGY_NAME;
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_NAME;
 
 import at.kk.msc.hcov.core.service.verificationtask.qualitycontrol.model.QualityControlTask;
 import at.kk.msc.hcov.sdk.verificationtask.model.VerificationTask;
