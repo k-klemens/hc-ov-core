@@ -33,7 +33,7 @@ public class VerificationTaskSpecificationMockData {
         .contextProviderConfiguration(new HashMap<>())
         .crowdsourcingConnectorPluginId("CROWDSOURCING_MOCK")
         .crowdsourcingConnectorPluginConfiguration(new HashMap<>())
-        .processorPluginIds(List.of("FirstProcessor"))
+        .processorPluginIds(List.of("RAW_DATA_PROCESSOR"))
         .processorPluginConfigurations(List.of(Map.of("P1_Config", "IS_SET")))
         .build();
   }
@@ -48,7 +48,7 @@ public class VerificationTaskSpecificationMockData {
         .contextProviderConfiguration(new HashMap<>())
         .crowdsourcingConnectorPluginId("CROWDSOURCING_MOCK")
         .crowdsourcingConnectorPluginConfiguration(new HashMap<>())
-        .processorPluginIds(List.of("FirstProcessor"))
+        .processorPluginIds(List.of("RAW_DATA_PROCESSOR"))
         .processorPluginConfigurations(List.of(Map.of("P1_Config", "IS_SET")))
         .build();
   }
@@ -64,9 +64,8 @@ public class VerificationTaskSpecificationMockData {
         .contextProviderConfiguration(new ArrayList<>())
         .crowdsourcingConnectorPluginId("CROWDSOURCING_MOCK")
         .crowdsourcingConnectorPluginConfiguration(new ArrayList<>())
-        .processorPluginIds(List.of("FirstProcessor"))
         .processorPluginConfigurationEntities(
-            List.of(new ProcessorPluginConfigurationEntity(List.of(new ConfigurationEntity("P1_Config", "IS_SET"))))
+            List.of(new ProcessorPluginConfigurationEntity("RAW_DATA_PROCESSOR", List.of(new ConfigurationEntity("P1_Config", "IS_SET"))))
         )
         .qualityControlMetaData(
             List.of(
@@ -91,7 +90,7 @@ public class VerificationTaskSpecificationMockData {
         .contextProviderConfiguration(new HashMap<>())
         .crowdsourcingConnectorPluginId("CROWDSOURCING_MOCK")
         .crowdsourcingConnectorPluginConfiguration(new HashMap<>())
-        .processorPluginIds(List.of("FirstProcessor"))
+        .processorPluginIds(List.of("RAW_DATA_PROCESSOR"))
         .processorPluginConfigurations(
             List.of(Map.of("P1_Config", "IS_SET"))
         )
@@ -118,9 +117,8 @@ public class VerificationTaskSpecificationMockData {
         .contextProviderConfiguration(new ArrayList<>())
         .crowdsourcingConnectorPluginId("CROWDSOURCING_MOCK")
         .crowdsourcingConnectorPluginConfiguration(new ArrayList<>())
-        .processorPluginIds(List.of("FirstProcessor"))
         .processorPluginConfigurationEntities(
-            List.of(new ProcessorPluginConfigurationEntity(List.of(new ConfigurationEntity("P1_Config", "IS_SET"))))
+            List.of(new ProcessorPluginConfigurationEntity("RAW_DATA_PROCESSOR", List.of(new ConfigurationEntity("P1_Config", "IS_SET"))))
         )
         .ontologyVerificationTaskIdMappings(MOCKED_ID_MAPPINGS_WITHOUT_QUALITY_CONTROL())
         .build();

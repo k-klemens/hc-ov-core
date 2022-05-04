@@ -54,11 +54,7 @@ public class VerificationMetaDataEntity {
   @LazyCollection(LazyCollectionOption.FALSE)
   //@CollectionTable(name = "CROWDSOURCING_CONNECTOR_PLUGIN_CONFIG_MAPPING", joinColumns = @JoinColumn(name = "verification_name"))
   private List<ConfigurationEntity> crowdsourcingConnectorPluginConfiguration;
-
-
-  @ElementCollection()
-  @LazyCollection(LazyCollectionOption.FALSE)
-  private List<String> processorPluginIds;
+  
 
   @OneToMany(cascade = CascadeType.ALL)
   @LazyCollection(LazyCollectionOption.FALSE)

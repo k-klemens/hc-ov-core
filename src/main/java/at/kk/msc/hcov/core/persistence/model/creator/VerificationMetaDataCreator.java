@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -38,9 +37,8 @@ public class VerificationMetaDataCreator {
     entity.setCrowdsourcingConnectorPluginId(serviceObject.getCrowdsourcingConnectorPluginId());
     entity.setCrowdsourcingConnectorPluginConfiguration(
         toConfigurationEntities(serviceObject.getCrowdsourcingConnectorPluginConfiguration()));
-    entity.setProcessorPluginIds(serviceObject.getProcessorPluginIds());
     entity.setProcessorPluginConfigurationEntities(
-        toProcessorPluginConfigurationEntities(serviceObject.getProcessorPluginConfigurations())
+        toProcessorPluginConfigurationEntities(serviceObject.getProcessorPluginIds(), serviceObject.getProcessorPluginConfigurations())
     );
     entity.setQualityControlMetaData(
         toQualityControlMetaDataEntities(
@@ -52,11 +50,25 @@ public class VerificationMetaDataCreator {
     return entity;
   }
 
-  List<ProcessorPluginConfigurationEntity> toProcessorPluginConfigurationEntities(List<Map<String, Object>> mapList) {
-    return mapList != null ? mapList.stream()
-        .map(this::toConfigurationEntities)
-        .map(ProcessorPluginConfigurationEntity::new)
-        .collect(Collectors.toList()) : null;
+  List<ProcessorPluginConfigurationEntity> toProcessorPluginConfigurationEntities(
+      List<String> processorPluginIds, List<Map<String, Object>> mapList
+  ) {
+    if (mapList != null && mapList.size() > 0 && processorPluginIds.size() != mapList.size()) {
+      throw new IllegalArgumentException("Process plugin configuration list is different to specified processor plugins");
+    }
+
+    if (mapList != null) {
+      List<ProcessorPluginConfigurationEntity> returnList = new ArrayList<>();
+      for (int i = 0; i < mapList.size(); i++) {
+        returnList.add(
+            new ProcessorPluginConfigurationEntity(
+                processorPluginIds.get(i), this.toConfigurationEntities(mapList.get(i))
+            )
+        );
+      }
+      return returnList;
+    }
+    return null;
   }
 
   List<ConfigurationEntity> toConfigurationEntities(Map<String, Object> objectMap) {

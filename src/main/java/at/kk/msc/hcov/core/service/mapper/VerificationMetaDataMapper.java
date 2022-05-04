@@ -18,6 +18,7 @@ public interface VerificationMetaDataMapper {
   @Mapping(source = "contextProviderConfiguration", target = "contextProviderConfiguration", qualifiedByName = "toConfigurationMap")
   @Mapping(source = "crowdsourcingConnectorPluginConfiguration", target = "crowdsourcingConnectorPluginConfiguration", qualifiedByName = "toConfigurationMap")
   @Mapping(source = "processorPluginConfigurationEntities", target = "processorPluginConfigurations", qualifiedByName = "toListOfConfigurationMaps")
+  @Mapping(source = "processorPluginConfigurationEntities", target = "processorPluginIds", qualifiedByName = "toProcessorPluginIds")
   VerificationMetaDataDto toDto(VerificationMetaDataEntity entity);
 
 
@@ -40,6 +41,16 @@ public interface VerificationMetaDataMapper {
       return configurationEntities.stream()
           .map(ProcessorPluginConfigurationEntity::getProcessorPluginConfiguration)
           .map(this::toConfigurationMap)
+          .toList();
+    }
+    return null;
+  }
+
+  @Named("toProcessorPluginIds")
+  default List<String> toProcessorPluginIds(List<ProcessorPluginConfigurationEntity> configurationEntities) {
+    if (configurationEntities != null) {
+      return configurationEntities.stream()
+          .map(ProcessorPluginConfigurationEntity::getPluginId)
           .toList();
     }
     return null;
