@@ -8,11 +8,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.plugin.core.config.EnablePluginRegistries;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"at.kk.msc.hcov.core", "at.kk.msc.hcov.plugin"})
 @EnablePluginRegistries(
     {IVerificationTaskPlugin.class, IContextProviderPlugin.class, ICrowdsourcingConnectorPlugin.class, IProcessorPlugin.class}
 )
-// TODO plugins need to be spring beans!
 public class PlatformCore {
 
   public static void main(String[] args) {

@@ -92,6 +92,7 @@
             <groupId>org.apache.jena</groupId>
             <artifactId>apache-jena-libs</artifactId>
             <version>4.4.0</version>
+            <type>pom</type>
         </dependency>
 
         <!-- PLUGIN DEVELOPMENT SDK -->
@@ -106,6 +107,13 @@
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf</artifactId>
             <version>3.0.15.RELEASE</version>
+        </dependency>
+
+        <!-- INCLUDE SAMPLE PLUGINS -->
+        <dependency>
+            <groupId>at.kk.msc</groupId>
+            <artifactId>hc-ov-sample-plugins</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
