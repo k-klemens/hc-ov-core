@@ -15,12 +15,13 @@ public interface IVerificationTaskCreator {
   /**
    * Creates a set of {@link VerificationTask} objects according to a given specification.
    *
-   * @param specification of the verification.
+   * @param specification            of the verification.
+   * @param persistExtractedElements specifies if the extracted model elements shall be persisted in a triplestore.
    * @return a list of {@link VerificationTask} objects containing the verification tasks.
    * @throws VerificationTaskCreationFailedException if something went wrong during creation of the verification tasks.
    * @throws PluginLoadingError                      if a specified plugin could not be loaded.
    */
-  List<VerificationTask> createTasks(VerificationTaskSpecification specification)
+  List<VerificationTask> createTasks(VerificationTaskSpecification specification, boolean persistExtractedElements)
       throws VerificationTaskCreationFailedException, PluginLoadingError;
 
   /**

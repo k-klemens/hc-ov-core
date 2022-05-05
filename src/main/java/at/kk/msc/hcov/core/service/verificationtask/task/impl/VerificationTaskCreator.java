@@ -40,11 +40,12 @@ public class VerificationTaskCreator implements IVerificationTaskCreator {
   private IPluginLoader<Plugin<String>> pluginLoader;
 
   @Override
-  public List<VerificationTask> createTasks(VerificationTaskSpecification specification)
+  public List<VerificationTask> createTasks(VerificationTaskSpecification specification, boolean persistExtractedElements)
       throws VerificationTaskCreationFailedException, PluginLoadingError {
     IVerificationTaskPlugin verificationTaskPlugin = setupVerificationTaskPlugin(specification);
 
-    Map<UUID, OntModel> extractedModelElements = extractModelElementsOrThrow(verificationTaskPlugin, specification);
+    Map<UUID, OntModel> extractedModelElements =
+        extractModelElementsOrThrow(verificationTaskPlugin, specification, persistExtractedElements);
     LOGGER.debug("Extracted model elements of size: {}", extractedModelElements.size());
     Map<UUID, ProvidedContext> providedContexts = extractContextIfNeeded(extractedModelElements, specification);
     LOGGER.debug("Extracted context of size: {}", providedContexts.size());
@@ -124,14 +125,14 @@ public class VerificationTaskCreator implements IVerificationTaskCreator {
   }
 
   private Map<UUID, OntModel> extractModelElementsOrThrow(
-      IVerificationTaskPlugin verificationTaskPlugin, VerificationTaskSpecification specification
+      IVerificationTaskPlugin verificationTaskPlugin, VerificationTaskSpecification specification, boolean persistExtractedElements
   ) throws VerificationTaskCreationFailedException {
 
     try {
       Function<OntModel, List<OntModel>> elementExtractor =
           verificationTaskPlugin.getElementExtractor();
       return dataProvider.extractAndStoreRequiredOntologyElements(
-          specification.getOntologyName(), specification.getVerificationName(), elementExtractor
+          specification.getOntologyName(), specification.getVerificationName(), elementExtractor, persistExtractedElements
       );
     } catch (OntologyNotFoundException | IOException | PluginConfigurationNotSetException e) {
       throw new VerificationTaskCreationFailedException(e);

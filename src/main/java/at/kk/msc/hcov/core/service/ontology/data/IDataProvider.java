@@ -24,9 +24,10 @@ public interface IDataProvider {
   /**
    * Method to Create sub-ontologies of the provided ontology from the repository. Each of the sub-ontologies corresponds to one HIT / unit of verification
    *
-   * @param ontologyName     name of hte ontology to loaded from the repository.
-   * @param verificationName name of the verfication the elements shall be extracted for.
-   * @param extractor        function to create the elements needed for one verification task.
+   * @param ontologyName             name of hte ontology to loaded from the repository.
+   * @param verificationName         name of the verfication the elements shall be extracted for.
+   * @param extractor                function to create the elements needed for one verification task.
+   * @param persistExtractedElements specifies if the extracted model elements shall be persisted in a triplestore.
    * @return a Map of UUID,OntModel pairs, where each of the models contains the elements needed for one verification task.
    * @throws OntologyNotFoundException if the ontology is not already uploaded to the ontology (see uploadOntologyFromFile).
    * @throws IOException               if some file handling causes an exception.
@@ -34,7 +35,8 @@ public interface IDataProvider {
   Map<UUID, OntModel> extractAndStoreRequiredOntologyElements(
       String ontologyName,
       String verificationName,
-      Function<OntModel, List<OntModel>> extractor
+      Function<OntModel, List<OntModel>> extractor,
+      boolean persistExtractedElements
   ) throws OntologyNotFoundException, IOException;
 
 }

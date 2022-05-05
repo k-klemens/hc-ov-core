@@ -52,7 +52,7 @@ public class RestVerificationTaskCreator {
   ) {
     try {
       List<VerificationTask> verificationTasks = verificationTaskCreator.createTasks(
-          specificationMapper.toServiceObject(requestDto)
+          specificationMapper.toServiceObject(requestDto), false
       );
       return new ResponseEntity<>(
           VerificationTaskResponseDto.builder()

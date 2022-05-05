@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -116,7 +117,8 @@ public class DataProviderTest {
     Map<UUID, OntModel> actual = target.extractAndStoreRequiredOntologyElements(
         givenOntologyName,
         givenVerificationName,
-        TestUtils.getSampleMovieModelExtrator()
+        TestUtils.getSampleMovieModelExtrator(),
+        true
     );
 
     // then
@@ -126,8 +128,32 @@ public class DataProviderTest {
     verify(tripleStoreRepositoryMock, times(1)).persistExtractedSubOntologies(
         eq(givenOntologyName), eq(givenVerificationName), any()
     );
+  }
 
+  @Test
+  public void testExtractAndSaveRequiredOntologyElements_givenExtractModelElementsFalse() throws OntologyNotFoundException, IOException {
+    // given
+    String givenOntologyName = "movie";
+    String givenVerificationName = "movie verification";
 
+    when(tripleStoreRepositoryMock.load("movie"))
+        .thenReturn(TestUtils.getMovieModel());
+
+    // when
+    Map<UUID, OntModel> actual = target.extractAndStoreRequiredOntologyElements(
+        givenOntologyName,
+        givenVerificationName,
+        TestUtils.getSampleMovieModelExtrator(),
+        false
+    );
+
+    // then
+    assertThat(actual).hasSize(4);
+    assertThat(actual.entrySet()).allMatch(entry -> entry.getValue().listClasses().toList().size() == 1);
+    verify(tripleStoreRepositoryMock, times(1)).load(eq(givenOntologyName));
+    verify(tripleStoreRepositoryMock, never()).persistExtractedSubOntologies(
+        any(), any(), any()
+    );
   }
 
 }

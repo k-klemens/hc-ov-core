@@ -145,6 +145,8 @@ public class RestCrowdsourcingManagerIntegrationTest {
             "QualityControlExternalId",
             "Correct Answer")
         );
+
+    assertThat(new File("src/test/resources/integration-filestore/.hcov-triplestore/movie/movie-person-verification-1")).exists();
   }
 
   @Test

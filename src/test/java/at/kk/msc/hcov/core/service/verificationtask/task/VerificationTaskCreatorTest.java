@@ -11,6 +11,7 @@ import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMoc
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.never;
@@ -107,13 +108,14 @@ public class VerificationTaskCreatorTest {
     when(dataProviderMock.extractAndStoreRequiredOntologyElements(
             eq(MOCKED_VERIFICATION_TASK_SPECIFICATION().getOntologyName()),
             eq(MOCKED_VERIFICATION_TASK_SPECIFICATION().getVerificationName()),
-            eq(verificationTaskPluginMock.getElementExtractor())
+            eq(verificationTaskPluginMock.getElementExtractor()),
+            eq(true)
         )
     ).thenReturn(MOCKED_EXTRACTED_MODEL_ELEMENTS());
 
 
     // when
-    List<VerificationTask> actual = target.createTasks(givenVerificationTaskSpecification);
+    List<VerificationTask> actual = target.createTasks(givenVerificationTaskSpecification, true);
 
     // then
     verify(pluginLoaderMock, times(1))
@@ -124,7 +126,47 @@ public class VerificationTaskCreatorTest {
         .extractAndStoreRequiredOntologyElements(
             eq(givenVerificationTaskSpecification.getOntologyName()),
             eq(givenVerificationTaskSpecification.getVerificationName()),
-            eq(verificationTaskPluginMock.getElementExtractor())
+            eq(verificationTaskPluginMock.getElementExtractor()),
+            eq(true)
+        );
+    assertThat(((ContextProviderPluginMock) contextProviderPluginMock).gotCalled()).isTrue();
+    assertThat(actual).containsExactlyInAnyOrderElementsOf(EXPECTED_TASKS_WITH_CONTEXT());
+  }
+
+  @Test
+  public void testCreateTasks_withContext_givenPeristExtractedElementsFalse()
+      throws VerificationTaskCreationFailedException, PluginLoadingError, PluginConfigurationNotSetException, OntologyNotFoundException,
+      IOException {
+    // given
+    VerificationTaskSpecification givenVerificationTaskSpecification = MOCKED_VERIFICATION_TASK_SPECIFICATION();
+    when(templatingServiceMock.populateTemplates(
+        eq(MOCKED_EXTRACTED_MODEL_ELEMENTS()),
+        eq(MOCKED_PROVIDED_CONTEXTS()),
+        eq(verificationTaskPluginMock),
+        eq(givenVerificationTaskSpecification)
+    )).thenReturn(EXPECTED_TEMPLATES_WITH_CONTEXT());
+    when(dataProviderMock.extractAndStoreRequiredOntologyElements(
+            eq(MOCKED_VERIFICATION_TASK_SPECIFICATION().getOntologyName()),
+            eq(MOCKED_VERIFICATION_TASK_SPECIFICATION().getVerificationName()),
+            eq(verificationTaskPluginMock.getElementExtractor()),
+            eq(false)
+        )
+    ).thenReturn(MOCKED_EXTRACTED_MODEL_ELEMENTS());
+
+    // when
+    List<VerificationTask> actual = target.createTasks(givenVerificationTaskSpecification, false);
+
+    // then
+    verify(pluginLoaderMock, times(1))
+        .loadPluginOrThrow(eq(IPluginLoader.PluginType.VERIFICATION_TASK_CREATOR), eq("VERIFICATION_MOCK"));
+    verify(pluginLoaderMock, times(1))
+        .loadPluginOrThrow(eq(IPluginLoader.PluginType.CONTEXT_PROVIDER), eq("CONTEXT_MOCK"));
+    verify(dataProviderMock, times(1))
+        .extractAndStoreRequiredOntologyElements(
+            eq(givenVerificationTaskSpecification.getOntologyName()),
+            eq(givenVerificationTaskSpecification.getVerificationName()),
+            eq(verificationTaskPluginMock.getElementExtractor()),
+            eq(false)
         );
     assertThat(((ContextProviderPluginMock) contextProviderPluginMock).gotCalled()).isTrue();
     assertThat(actual).containsExactlyInAnyOrderElementsOf(EXPECTED_TASKS_WITH_CONTEXT());
@@ -152,12 +194,13 @@ public class VerificationTaskCreatorTest {
     when(dataProviderMock.extractAndStoreRequiredOntologyElements(
             eq(MOCKED_VERIFICATION_TASK_SPECIFICATION().getOntologyName()),
             eq(MOCKED_VERIFICATION_TASK_SPECIFICATION().getVerificationName()),
-            eq(verificationTaskPluginMock.getElementExtractor())
+            eq(verificationTaskPluginMock.getElementExtractor()),
+            eq(true)
         )
     ).thenReturn(MOCKED_EXTRACTED_MODEL_ELEMENTS());
 
     // when
-    List<VerificationTask> actual = target.createTasks(givenVerificationTaskSpecification);
+    List<VerificationTask> actual = target.createTasks(givenVerificationTaskSpecification, true);
 
     // then
     verify(pluginLoaderMock, times(1))
@@ -168,7 +211,8 @@ public class VerificationTaskCreatorTest {
         .extractAndStoreRequiredOntologyElements(
             eq(givenVerificationTaskSpecification.getOntologyName()),
             eq(givenVerificationTaskSpecification.getVerificationName()),
-            eq(verificationTaskPluginMock.getElementExtractor())
+            eq(verificationTaskPluginMock.getElementExtractor()),
+            eq(true)
         );
     assertThat(((ContextProviderPluginMock) contextProviderPluginMock).gotCalled()).isFalse();
     assertThat(actual).containsExactlyInAnyOrderElementsOf(EXPECTED_TASKS_WITHOUT_CONTEXT());
@@ -184,7 +228,7 @@ public class VerificationTaskCreatorTest {
     givenVerificationTaskSpecification.setVerificationTaskPluginId("NOT_EXISTING");
 
     // when - then
-    assertThatThrownBy(() -> target.createTasks(givenVerificationTaskSpecification))
+    assertThatThrownBy(() -> target.createTasks(givenVerificationTaskSpecification, true))
         .isInstanceOf(PluginLoadingError.class);
 
 
@@ -192,7 +236,7 @@ public class VerificationTaskCreatorTest {
     verify(pluginLoaderMock, times(1))
         .loadPluginOrThrow(eq(IPluginLoader.PluginType.VERIFICATION_TASK_CREATOR), eq("NOT_EXISTING"));
     verify(pluginLoaderMock, never()).loadPluginOrThrow(eq(IPluginLoader.PluginType.CONTEXT_PROVIDER), any());
-    verify(dataProviderMock, never()).extractAndStoreRequiredOntologyElements(any(), any(), any());
+    verify(dataProviderMock, never()).extractAndStoreRequiredOntologyElements(any(), any(), any(), anyBoolean());
     assertThat(((ContextProviderPluginMock) contextProviderPluginMock).gotCalled()).isFalse();
   }
 
@@ -208,12 +252,13 @@ public class VerificationTaskCreatorTest {
     when(dataProviderMock.extractAndStoreRequiredOntologyElements(
             eq(MOCKED_VERIFICATION_TASK_SPECIFICATION().getOntologyName()),
             eq(MOCKED_VERIFICATION_TASK_SPECIFICATION().getVerificationName()),
-            eq(verificationTaskPluginMock.getElementExtractor())
+            eq(verificationTaskPluginMock.getElementExtractor()),
+            eq(true)
         )
     ).thenReturn(MOCKED_EXTRACTED_MODEL_ELEMENTS());
 
     // when - then
-    assertThatThrownBy(() -> target.createTasks(givenVerificationTaskSpecification))
+    assertThatThrownBy(() -> target.createTasks(givenVerificationTaskSpecification, true))
         .isInstanceOf(PluginLoadingError.class);
 
 
@@ -225,7 +270,8 @@ public class VerificationTaskCreatorTest {
         .extractAndStoreRequiredOntologyElements(
             eq(givenVerificationTaskSpecification.getOntologyName()),
             eq(givenVerificationTaskSpecification.getVerificationName()),
-            eq(verificationTaskPluginMock.getElementExtractor())
+            eq(verificationTaskPluginMock.getElementExtractor()),
+            eq(true)
         );
     assertThat(((ContextProviderPluginMock) contextProviderPluginMock).gotCalled()).isFalse();
   }
@@ -239,12 +285,13 @@ public class VerificationTaskCreatorTest {
     when(dataProviderMock.extractAndStoreRequiredOntologyElements(
             eq(MOCKED_VERIFICATION_TASK_SPECIFICATION().getOntologyName()),
             eq(MOCKED_VERIFICATION_TASK_SPECIFICATION().getVerificationName()),
-            eq(verificationTaskPluginMock.getElementExtractor())
+            eq(verificationTaskPluginMock.getElementExtractor()),
+            eq(true)
         )
     ).thenThrow(givenException);
 
     // when - then
-    assertThatThrownBy(() -> target.createTasks(givenSpecification))
+    assertThatThrownBy(() -> target.createTasks(givenSpecification, true))
         .isInstanceOf(VerificationTaskCreationFailedException.class);
   }
 
@@ -263,12 +310,13 @@ public class VerificationTaskCreatorTest {
     when(dataProviderMock.extractAndStoreRequiredOntologyElements(
             eq(MOCKED_VERIFICATION_TASK_SPECIFICATION().getOntologyName()),
             eq(MOCKED_VERIFICATION_TASK_SPECIFICATION().getVerificationName()),
-            eq(verificationTaskPluginMock.getElementExtractor())
+            eq(verificationTaskPluginMock.getElementExtractor()),
+            eq(true)
         )
     ).thenReturn(MOCKED_EXTRACTED_MODEL_ELEMENTS());
 
     // when - then
-    assertThatThrownBy(() -> target.createTasks(givenVerificationTaskSpecification))
+    assertThatThrownBy(() -> target.createTasks(givenVerificationTaskSpecification, true))
         .isInstanceOf(VerificationTaskCreationFailedException.class);
   }
 
@@ -296,7 +344,7 @@ public class VerificationTaskCreatorTest {
     // then
     verify(pluginLoaderMock, times(1)).loadPluginOrThrow(eq(IPluginLoader.PluginType.VERIFICATION_TASK_CREATOR), eq("VERIFICATION_MOCK"));
     verify(pluginLoaderMock, never()).loadPluginOrThrow(eq(IPluginLoader.PluginType.CONTEXT_PROVIDER), any());
-    verify(dataProviderMock, never()).extractAndStoreRequiredOntologyElements(any(), any(), any());
+    verify(dataProviderMock, never()).extractAndStoreRequiredOntologyElements(any(), any(), any(), anyBoolean());
     assertThat(((ContextProviderPluginMock) contextProviderPluginMock).gotCalled()).isFalse();
     assertThat(actual).containsExactlyInAnyOrderElementsOf(EXPECTED_TASKS_WITHOUT_CONTEXT());
   }

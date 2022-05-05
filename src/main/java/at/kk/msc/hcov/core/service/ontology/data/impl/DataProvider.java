@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.apache.jena.ontology.OntModel;
 import org.slf4j.Logger;
@@ -33,11 +34,22 @@ public class DataProvider implements IDataProvider {
 
   @Override
   public Map<UUID, OntModel> extractAndStoreRequiredOntologyElements(
-      String ontologyName, String verificationName, Function<OntModel, List<OntModel>> extractor
+      String ontologyName, String verificationName, Function<OntModel, List<OntModel>> extractor, boolean persistElements
   ) throws OntologyNotFoundException, IOException {
     OntModel ontModel = loadOntModelFromRepositoryOrThrow(ontologyName);
     List<OntModel> extractedElements = extractor.apply(ontModel);
-    return tripleStoreRepository.persistExtractedSubOntologies(ontologyName, verificationName, extractedElements);
+
+    if (persistElements) {
+      return tripleStoreRepository.persistExtractedSubOntologies(ontologyName, verificationName, extractedElements);
+    } else {
+      return extractedElements.stream().collect(
+          Collectors.toMap(
+              ontModel1 -> UUID.randomUUID(),
+              extractedElement -> extractedElement
+          )
+      );
+    }
+
   }
 
   private OntModel loadOntModelFromRepositoryOrThrow(String ontologyName) throws OntologyNotFoundException {

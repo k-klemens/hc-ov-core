@@ -84,6 +84,7 @@ public class RestVerificationTaskCreatorIntegrationTest {
         .areExactly(1, new Condition<>(task -> task.getTaskHtml().contains("<p>Is <span>Person</span> a type of Person?</p>"), null))
         .areExactly(1, new Condition<>(task -> task.getTaskHtml().contains("<p>Is <span>MovieDirector</span> a type of Person?</p>"), null))
         .areExactly(1, new Condition<>(task -> task.getTaskHtml().contains("<p>Is <span>Actor</span> a type of Person?</p>"), null));
+    assertThat(new File("src/test/resources/integration-filestore/.hcov-triplestore/movie/movie-person-verification")).doesNotExist();
   }
 
   @Test
@@ -129,6 +130,7 @@ public class RestVerificationTaskCreatorIntegrationTest {
             .contains("<p>Is <span>MovieDirector</span> from <span>MovieDirector-Context</span> a type of Person?</p>"), null))
         .areExactly(1, new Condition<>(
             task -> task.getTaskHtml().contains("<p>Is <span>Actor</span> from <span>Actor-Context</span> a type of Person?</p>"), null));
+    assertThat(new File("src/test/resources/integration-filestore/.hcov-triplestore/movie/movie-person-verification")).doesNotExist();
   }
 
   @Test

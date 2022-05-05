@@ -155,7 +155,7 @@ public class CrowdsourcingManager implements ICrowdsourcingManager {
       throws PluginLoadingError, CrowdsourcingManagerException {
     List<VerificationTask> verificationTasks;
     try {
-      verificationTasks = verificationTaskCreator.createTasks(specification);
+      verificationTasks = verificationTaskCreator.createTasks(specification, true);
     } catch (VerificationTaskCreationFailedException e) {
       throw new CrowdsourcingManagerException("Error while creating the verificationTasks!", e);
     }

@@ -96,7 +96,7 @@ public class CrowdsourcingManagerTest {
     givenSpecification.setCrowdsourcingConnectorPluginConfiguration(Map.of("REQUIRED_CONFIGURATION", "is_set"));
     when(pluginLoaderMock.loadPluginOrThrow(eq(IPluginLoader.PluginType.CROWDSOURCING_CONNECTOR), eq("CROWDSOURCING_MOCK")))
         .thenReturn(crowdsourcingConnectorPluginMock);
-    when(verificationTaskCreatorMock.createTasks(eq(givenSpecification))).thenReturn(givenVerificationTasks);
+    when(verificationTaskCreatorMock.createTasks(eq(givenSpecification), eq(true))).thenReturn(givenVerificationTasks);
     when(qualityControlProviderMock.createQualityControlTasks(eq(givenSpecification)))
         .thenReturn(QualityControlTaskMockData.EXPECTED_QC_TASKS_WITH_CONTEXT());
 
@@ -107,7 +107,7 @@ public class CrowdsourcingManagerTest {
     verify(pluginLoaderMock, times(1))
         .loadPluginOrThrow(eq(IPluginLoader.PluginType.CROWDSOURCING_CONNECTOR), eq("CROWDSOURCING_MOCK"));
     verify(verificationTaskCreatorMock, times(1))
-        .createTasks(eq(givenSpecification));
+        .createTasks(eq(givenSpecification), eq(true));
     verify(qualityControlProviderMock, times(1))
         .createQualityControlTasks(eq(givenSpecification));
 
@@ -133,7 +133,7 @@ public class CrowdsourcingManagerTest {
     List<VerificationTask> givenVerificationTasks = EXPECTED_TASKS_WITH_CONTEXT();
     VerificationTaskSpecification givenSpecification = MOCKED_VERIFICATION_TASK_SPECIFICATION();
     givenSpecification.setCrowdsourcingConnectorPluginConfiguration(Map.of("REQUIRED_CONFIGURATION", "is_set"));
-    when(verificationTaskCreatorMock.createTasks(eq(givenSpecification))).thenReturn(givenVerificationTasks);
+    when(verificationTaskCreatorMock.createTasks(eq(givenSpecification), eq(true))).thenReturn(givenVerificationTasks);
     when(pluginLoaderMock.loadPluginOrThrow(eq(IPluginLoader.PluginType.CROWDSOURCING_CONNECTOR), eq("CROWDSOURCING_MOCK")))
         .thenReturn(crowdsourcingConnectorPluginMock);
 
@@ -144,7 +144,7 @@ public class CrowdsourcingManagerTest {
     verify(pluginLoaderMock, times(1))
         .loadPluginOrThrow(eq(IPluginLoader.PluginType.CROWDSOURCING_CONNECTOR), eq("CROWDSOURCING_MOCK"));
     verify(verificationTaskCreatorMock, times(1))
-        .createTasks(eq(givenSpecification));
+        .createTasks(eq(givenSpecification), eq(true));
     verify(qualityControlProviderMock, never()).createQualityControlTasks(any());
 
     CrowdsourcingConnectorPluginMock connectorPluginMock = (CrowdsourcingConnectorPluginMock) crowdsourcingConnectorPluginMock;
@@ -164,7 +164,7 @@ public class CrowdsourcingManagerTest {
     List<VerificationTask> givenVerificationTasks = EXPECTED_TASKS_WITH_CONTEXT();
     VerificationTaskSpecification givenSpecification = MOCKED_VERIFICATION_TASK_SPECIFICATION();
     givenSpecification.setCrowdsourcingConnectorPluginConfiguration(Map.of("NOT_REQUIRED_CONFIGURATION", "is_set"));
-    when(verificationTaskCreatorMock.createTasks(eq(givenSpecification))).thenReturn(givenVerificationTasks);
+    when(verificationTaskCreatorMock.createTasks(eq(givenSpecification), eq(true))).thenReturn(givenVerificationTasks);
     when(pluginLoaderMock.loadPluginOrThrow(eq(IPluginLoader.PluginType.CROWDSOURCING_CONNECTOR), eq("CROWDSOURCING_MOCK")))
         .thenReturn(crowdsourcingConnectorPluginMock);
 
@@ -176,7 +176,7 @@ public class CrowdsourcingManagerTest {
     verify(pluginLoaderMock, times(1))
         .loadPluginOrThrow(eq(IPluginLoader.PluginType.CROWDSOURCING_CONNECTOR), eq("CROWDSOURCING_MOCK"));
     verify(verificationTaskCreatorMock, times(1))
-        .createTasks(eq(givenSpecification));
+        .createTasks(eq(givenSpecification), eq(true));
     verify(qualityControlProviderMock, never()).createQualityControlTasks(any());
 
     CrowdsourcingConnectorPluginMock connectorPluginMock = (CrowdsourcingConnectorPluginMock) crowdsourcingConnectorPluginMock;
@@ -196,7 +196,7 @@ public class CrowdsourcingManagerTest {
     VerificationTaskSpecification givenSpecification = MOCKED_VERIFICATION_TASK_SPECIFICATION();
     givenSpecification.setQualityControlTasksSpecification(MOCKED_QUALITY_CONTROL_TASK_SPECIFICATION());
     givenSpecification.setCrowdsourcingConnectorPluginConfiguration(Map.of("REQUIRED_CONFIGURATION", "is_set"));
-    when(verificationTaskCreatorMock.createTasks(eq(givenSpecification))).thenReturn(givenVerificationTasks);
+    when(verificationTaskCreatorMock.createTasks(eq(givenSpecification), eq(true))).thenReturn(givenVerificationTasks);
     when(qualityControlProviderMock.createQualityControlTasks(eq(givenSpecification)))
         .thenThrow(new QualityControlTaskCreationFailedException(new Exception()));
 
@@ -208,7 +208,7 @@ public class CrowdsourcingManagerTest {
     verify(pluginLoaderMock, never())
         .loadPluginOrThrow(any(), any());
     verify(verificationTaskCreatorMock, times(1))
-        .createTasks(eq(givenSpecification));
+        .createTasks(eq(givenSpecification), eq(true));
     verify(qualityControlProviderMock, times(1)).createQualityControlTasks(eq(givenSpecification));
 
     CrowdsourcingConnectorPluginMock connectorPluginMock = (CrowdsourcingConnectorPluginMock) crowdsourcingConnectorPluginMock;
@@ -226,7 +226,7 @@ public class CrowdsourcingManagerTest {
     VerificationTaskSpecification givenSpecification = MOCKED_VERIFICATION_TASK_SPECIFICATION();
     givenSpecification.setQualityControlTasksSpecification(MOCKED_QUALITY_CONTROL_TASK_SPECIFICATION());
     givenSpecification.setCrowdsourcingConnectorPluginConfiguration(Map.of("REQUIRED_CONFIGURATION", "is_set"));
-    when(verificationTaskCreatorMock.createTasks(eq(givenSpecification))).thenThrow(
+    when(verificationTaskCreatorMock.createTasks(eq(givenSpecification), eq(true))).thenThrow(
         new VerificationTaskCreationFailedException(new Exception()));
 
     // when
@@ -237,7 +237,7 @@ public class CrowdsourcingManagerTest {
     verify(pluginLoaderMock, never())
         .loadPluginOrThrow(any(), any());
     verify(verificationTaskCreatorMock, times(1))
-        .createTasks(eq(givenSpecification));
+        .createTasks(eq(givenSpecification), eq(true));
     verify(qualityControlProviderMock, never()).createQualityControlTasks(any());
 
     CrowdsourcingConnectorPluginMock connectorPluginMock = (CrowdsourcingConnectorPluginMock) crowdsourcingConnectorPluginMock;
