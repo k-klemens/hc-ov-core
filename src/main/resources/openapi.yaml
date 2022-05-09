@@ -1,0 +1,424 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /verification-task/create:
+    post:
+      tags:
+        - rest-verification-task-creator
+      summary: Endpoint to create verification tasks according to a given specification. This interface does not upload or persist the tasks.
+      operationId: createVerificationTasks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerificationTaskSpecificationRequestDto'
+        required: true
+      responses:
+        '200':
+          description: Returns the created verification tasks.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VerificationTaskResponseDto'
+        '500':
+          description: Something went wrong when processing the task creation request.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VerificationTaskResponseDto'
+  /provider/upload:
+    post:
+      tags:
+        - rest-ontology-provider
+      summary: Endpoint to upload and persist and ontology on the platform.
+      operationId: postUploadOntology
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadOntologyRequestDto'
+        required: true
+      responses:
+        '200':
+          description: The ontology was uploaded successfully.
+        '409':
+          description: The ontology name is already used for this or another ontology.
+        '500':
+          description: A problem when processing the ontology upload request occured.
+  /crowdsourcing/publish:
+    post:
+      tags:
+        - rest-crowdsourcing-manager
+      summary: Endpoint to create and publish verification tasks according to a given specification.
+      operationId: createAndPublishVerification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerificationTaskSpecificationRequestDto'
+        required: true
+      responses:
+        '200':
+          description: Returns the published verification tasks information.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PublishedVerificationDto'
+        '500':
+          description: Something went wrong when processing the publish request.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PublishedVerificationDto'
+  /metadata/{verification-name}:
+    get:
+      tags:
+        - rest-metadata-endpoint
+      summary: Endpoint to obtain metadata for a published verification.
+      operationId: getMetaData
+      parameters:
+        - name: verification-name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VerificationMetaDataDto'
+        '404':
+          description: No verification for the given name found!
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VerificationMetaDataDto'
+        '500':
+          description: A problem when processing the request occured.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VerificationMetaDataDto'
+  /data-processor/{verification-name}:
+    get:
+      tags:
+        - rest-data-processor
+      summary: Endpoint to obtain the results for a verification.
+      operationId: getResults
+      parameters:
+        - name: verification-name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataProcessorResultsDto'
+        '404':
+          description: No verification for the given name found!
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DataProcessorResultsWrapperDto'
+        '500':
+          description: A problem when processing the request occured.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DataProcessorResultsWrapperDto'
+  /crowdsourcing/progress/{verification-name}:
+    get:
+      tags:
+        - rest-crowdsourcing-manager
+      summary: Endpoint to obtain the current status of a published verification.
+      operationId: getVerificationProgress
+      parameters:
+        - name: verification-name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VerificationProgressDto'
+        '404':
+          description: No verification for the given name found!
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VerificationProgressDto'
+        '500':
+          description: A problem when processing the request occurred.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VerificationProgressDto'
+components:
+  schemas:
+    QualityControlTaskCreationDto:
+      type: object
+      properties:
+        qualityControlModelElementId:
+          type: string
+          format: uuid
+        resolvedVariables:
+          type: object
+          additionalProperties:
+            type: object
+        answer:
+          type: string
+    QualityControlTasksSpecificationDto:
+      type: object
+      properties:
+        qualityControlTasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/QualityControlTaskCreationDto'
+    VerificationTaskSpecificationRequestDto:
+      required:
+        - ontologyName
+        - verificationName
+        - verificationTaskPluginId
+      type: object
+      properties:
+        verificationName:
+          type: string
+        ontologyName:
+          type: string
+        verificationTaskPluginId:
+          type: string
+        verificationTaskPluginConfiguration:
+          type: object
+          additionalProperties:
+            type: object
+        contextProviderPluginId:
+          type: string
+        contextProviderConfiguration:
+          type: object
+          additionalProperties:
+            type: object
+        crowdsourcingConnectorPluginId:
+          type: string
+        crowdsourcingConnectorPluginConfiguration:
+          type: object
+          additionalProperties:
+            type: object
+        processorPluginIds:
+          type: array
+          items:
+            type: string
+        processorPluginConfigurations:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        qualityControlTasksSpecification:
+          $ref: '#/components/schemas/QualityControlTasksSpecificationDto'
+    VerificationTaskDto:
+      type: object
+      properties:
+        verificationName:
+          type: string
+        ontologyName:
+          type: string
+        ontologyElementId:
+          type: string
+          format: uuid
+        taskHtml:
+          type: string
+    VerificationTaskResponseDto:
+      type: object
+      properties:
+        verificationName:
+          type: string
+        ontologyName:
+          type: string
+        verificationTasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/VerificationTaskDto'
+    UploadOntologyRequestDto:
+      required:
+        - filePathToOntology
+        - ontologyName
+      type: object
+      properties:
+        ontologyName:
+          type: string
+        filePathToOntology:
+          type: string
+    PublishedVerificationDto:
+      type: object
+      properties:
+        verificationName:
+          type: string
+        ontologyName:
+          type: string
+        samplePublishedVerificationTask:
+          $ref: '#/components/schemas/PublishedVerificationTaskDto'
+        verificationTaskIdMappings:
+          type: object
+          additionalProperties:
+            type: string
+        qualitiyControlTaskIdMappings:
+          type: object
+          additionalProperties:
+            type: string
+    PublishedVerificationTaskDto:
+      type: object
+      properties:
+        verificationName:
+          type: string
+        ontologyName:
+          type: string
+        ontologyElementId:
+          type: string
+          format: uuid
+        taskHtml:
+          type: string
+        crowdsourcingId:
+          type: string
+    QualityControlMetaDataDto:
+      type: object
+      properties:
+        qualityControlModelElementId:
+          type: string
+          format: uuid
+        crowdsourcingId:
+          type: string
+        answer:
+          type: string
+    VerificationMetaDataDto:
+      type: object
+      properties:
+        verificationName:
+          type: string
+        ontologyName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        verificationTaskPluginId:
+          type: string
+        verificationTaskPluginConfiguration:
+          type: object
+          additionalProperties:
+            type: string
+        contextProviderPluginId:
+          type: string
+        contextProviderConfiguration:
+          type: object
+          additionalProperties:
+            type: string
+        crowdsourcingConnectorPluginId:
+          type: string
+        crowdsourcingConnectorPluginConfiguration:
+          type: object
+          additionalProperties:
+            type: string
+        processorPluginIds:
+          type: array
+          items:
+            type: string
+        processorPluginConfigurations:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: string
+        qualityControlMetaData:
+          type: array
+          items:
+            $ref: '#/components/schemas/QualityControlMetaDataDto'
+        ontologyVerificationTaskIdMappings:
+          type: object
+          additionalProperties:
+            type: string
+    DataProcessorResultsDto:
+      type: object
+      properties:
+        pluginId:
+          type: string
+        processingResult:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProcessingResultDto'
+    ProcessingResultDto:
+      type: object
+      properties:
+        crowdsourcingId:
+          type: string
+        resultData:
+          type: object
+          additionalProperties:
+            type: string
+        resultDescription:
+          type: string
+    DataProcessorResultsWrapperDto:
+      type: object
+      properties:
+        dataProcessorResultsDtos:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataProcessorResultsDto'
+    TaskProgressDetailDto:
+      type: object
+      properties:
+        ontologyElementId:
+          type: string
+          format: uuid
+        crowdsourcingId:
+          type: string
+        requestedCompletions:
+          type: integer
+          format: int32
+        numCompleted:
+          type: integer
+          format: int32
+        numOpen:
+          type: integer
+          format: int32
+    VerificationProgressDto:
+      type: object
+      properties:
+        verificationName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+            - PUBLISHED
+            - ALL_TASKS_COMPLETED
+        totalHits:
+          type: integer
+          format: int64
+        completedHits:
+          type: integer
+          format: int64
+        openHits:
+          type: integer
+          format: int64
+        taskProgressDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskProgressDetailDto'
