@@ -120,6 +120,11 @@
             <artifactId>hc-ov-pizza-verification-plugins</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>at.kk.msc</groupId>
+            <artifactId>hc-ov-amt-connector</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 

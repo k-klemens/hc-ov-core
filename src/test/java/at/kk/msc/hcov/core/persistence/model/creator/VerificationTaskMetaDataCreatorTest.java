@@ -1,5 +1,6 @@
 package at.kk.msc.hcov.core.persistence.model.creator;
 
+import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMockData.EXPECTED_VERIFICATION_META_DATA_WITHOUT_QUALITY_CONTROL;
 import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMockData.EXPECTED_VERIFICATION_META_DATA_WITH_QUALITY_CONTROL;
 import static at.kk.msc.hcov.core.util.mockdata.VerificationTaskSpecificationMockData.MOCKED_VERIFICATION_TASK_SPECIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,5 +40,20 @@ public class VerificationTaskMetaDataCreatorTest {
 
     // then
     assertThat(actual).isEqualTo(EXPECTED_VERIFICATION_META_DATA_WITH_QUALITY_CONTROL());
+  }
+
+  @Test
+  void testToEntity_givenNoQualityControl() {
+    // given
+    VerificationTaskSpecification givenServiceObject = MOCKED_VERIFICATION_TASK_SPECIFICATION();
+    PublishedTaskIdMappings givenPublishedTaskIdMappings = PublishedTaskMockData.MOCKED_PUBLISHED_TASK_ID_MAPPINGS_WITH_QUALITY_CONTROL();
+
+    // when
+    VerificationMetaDataEntity actual = target.toEntity(
+        givenServiceObject, givenPublishedTaskIdMappings
+    );
+
+    // then
+    assertThat(actual).isEqualTo(EXPECTED_VERIFICATION_META_DATA_WITHOUT_QUALITY_CONTROL());
   }
 }

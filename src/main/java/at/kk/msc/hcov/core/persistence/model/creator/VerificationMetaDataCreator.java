@@ -40,11 +40,13 @@ public class VerificationMetaDataCreator {
     entity.setProcessorPluginConfigurationEntities(
         toProcessorPluginConfigurationEntities(serviceObject.getProcessorPluginIds(), serviceObject.getProcessorPluginConfigurations())
     );
-    entity.setQualityControlMetaData(
-        toQualityControlMetaDataEntities(
-            serviceObject.getQualityControlTasksSpecification(), publishedTaskIdMappings.getQualityControlTaskIdMappings()
-        )
-    );
+    if (serviceObject.getQualityControlTasksSpecification() != null) {
+      entity.setQualityControlMetaData(
+          toQualityControlMetaDataEntities(
+              serviceObject.getQualityControlTasksSpecification(), publishedTaskIdMappings.getQualityControlTaskIdMappings()
+          )
+      );
+    }
     entity.setOntologyVerificationTaskIdMappings(publishedTaskIdMappings.getOntologyVerificationTaskIdMappings());
 
     return entity;
