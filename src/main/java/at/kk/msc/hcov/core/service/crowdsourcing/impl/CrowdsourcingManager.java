@@ -181,7 +181,7 @@ public class CrowdsourcingManager implements ICrowdsourcingManager {
     ICrowdsourcingConnectorPlugin crowdsourcingConnectorPlugin = setupCrowdsourcingConnectorPlugin(specification);
     try {
       Map<UUID, String> idMap = crowdsourcingConnectorPlugin.publishTasks(tasksToBePublished);
-      LOGGER.info("Published tasks for verification: {}", specification.getVerificationName());
+      LOGGER.info("Published {} tasks for verification: {}", idMap.size(), specification.getVerificationName());
       return toPublishedTaskIdMappings(idMap, specification);
     } catch (PluginConfigurationNotSetException e) {
       throw new CrowdsourcingManagerException("Could not publish tasks as configuration for the crowdsourcing connector is not set.", e);
