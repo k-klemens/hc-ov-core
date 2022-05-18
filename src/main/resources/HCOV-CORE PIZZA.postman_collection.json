@@ -1,0 +1,703 @@
+{
+  "info": {
+    "_postman_id": "f1ea7f53-40b2-4d06-ad65-3a71c3c27b06",
+    "name": "HCOV-CORE PIZZA",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1-UPLOAD",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ontologyName\": \"pizza\",\n  \"filePathToOntology\": \"<LOCAL-PATH-TO-ONTOLOGY>\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/provider/upload",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "provider",
+            "upload"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "The ontology name is already used for this or another ontology.",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"filePathToOntology\": \"<string>\",\n    \"ontologyName\": \"<string>\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/provider/upload",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "provider",
+                "upload"
+              ]
+            }
+          },
+          "status": "Conflict",
+          "code": 409,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "A problem when processing the ontology upload request occured.",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"filePathToOntology\": \"<string>\",\n    \"ontologyName\": \"<string>\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/provider/upload",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "provider",
+                "upload"
+              ]
+            }
+          },
+          "status": "Internal Server Error",
+          "code": 500,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "The ontology was uploaded successfully.",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"filePathToOntology\": \"<string>\",\n    \"ontologyName\": \"<string>\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/provider/upload",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "provider",
+                "upload"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "2-PREVIEW",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"verificationName\": \"pizza-topping-restriction-verification-rectorqtt1\",\n  \"ontologyName\": \"pizza\",\n  \"verificationTaskPluginId\": \"RESTRICTION_TASK_CREATOR\",\n  \"verificationTaskPluginConfiguration\": {\n\t\t\"REPRESENTATION_MECHANISM\": \"WARREN\"\n  },\n  \"contextProviderPluginId\": \"PIZZA_MENU_CONTEXT_PROVIDER\",\n  \"crowdsourcingConnectorPluginId\": \"AMT_CROWDSOURCING_CONNECTOR\",\n  \"crowdsourcingConnectorPluginConfiguration\": {\n    \"SANDBOX\": true,\n    \"Description\": \"This is a test ontology verification of the restrictions in the pizza ontology\",\n    \"Reward\": \"0\",\n    \"AssignmentDurationInSeconds\": \"3600\",\n    \"Keywords\":\"ontology-verificaiton,ontology,ontology-restrictions,warren-new5\",\n    \"LifetimeInSeconds\": \"600\",\n    \"MaxAssignments\": 1,\n    \"QUALIFICATION_TEST_URI\": \"<LOCAL-PATH-TO-QUALIFICATION-TEST>\",\n    \"ANSWER_KEY_URI\": \"<LOCAL-PATH-TO-ANSWER-KEY>\"\n  },\n  \"processorPluginIds\": [\n    \"RAW_DATA_PROCESSOR\"\n  ],\n  \"processorPluginConfigurations\": [\n    {\n      \"EXAMPLE_PROPERTY\": true\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/verification-task/create",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "verification-task",
+            "create"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Something went wrong when processing the task creation request.",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"ontologyName\": \"<string>\",\n    \"verificationName\": \"<string>\",\n    \"verificationTaskPluginId\": \"<string>\",\n    \"verificationTaskPluginConfiguration\": \"<object>\",\n    \"contextProviderPluginId\": \"<string>\",\n    \"contextProviderConfiguration\": \"<object>\",\n    \"crowdsourcingConnectorPluginId\": \"<string>\",\n    \"crowdsourcingConnectorPluginConfiguration\": \"<object>\",\n    \"processorPluginIds\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"processorPluginConfigurations\": [\n        \"<object>\",\n        \"<object>\"\n    ],\n    \"qualityControlTasksSpecification\": {\n        \"qualityControlTasks\": [\n            {\n                \"qualityControlModelElementId\": \"<uuid>\",\n                \"resolvedVariables\": \"<object>\",\n                \"answer\": \"<string>\"\n            },\n            {\n                \"qualityControlModelElementId\": \"<uuid>\",\n                \"resolvedVariables\": \"<object>\",\n                \"answer\": \"<string>\"\n            }\n        ]\n    }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/verification-task/create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "verification-task",
+                "create"
+              ]
+            }
+          },
+          "status": "Internal Server Error",
+          "code": 500,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "Returns the created verification tasks.",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"ontologyName\": \"<string>\",\n    \"verificationName\": \"<string>\",\n    \"verificationTaskPluginId\": \"<string>\",\n    \"verificationTaskPluginConfiguration\": \"<object>\",\n    \"contextProviderPluginId\": \"<string>\",\n    \"contextProviderConfiguration\": \"<object>\",\n    \"crowdsourcingConnectorPluginId\": \"<string>\",\n    \"crowdsourcingConnectorPluginConfiguration\": \"<object>\",\n    \"processorPluginIds\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"processorPluginConfigurations\": [\n        \"<object>\",\n        \"<object>\"\n    ],\n    \"qualityControlTasksSpecification\": {\n        \"qualityControlTasks\": [\n            {\n                \"qualityControlModelElementId\": \"<uuid>\",\n                \"resolvedVariables\": \"<object>\",\n                \"answer\": \"<string>\"\n            },\n            {\n                \"qualityControlModelElementId\": \"<uuid>\",\n                \"resolvedVariables\": \"<object>\",\n                \"answer\": \"<string>\"\n            }\n        ]\n    }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/verification-task/create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "verification-task",
+                "create"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "3-PUBLISH",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"verificationName\": \"pizza-topping-restriction-verification-rectorqtt1\",\n  \"ontologyName\": \"pizza\",\n  \"verificationTaskPluginId\": \"RESTRICTION_TASK_CREATOR\",\n  \"verificationTaskPluginConfiguration\": {\n\t\t\"REPRESENTATION_MECHANISM\": \"WARREN\"\n  },\n  \"contextProviderPluginId\": \"PIZZA_MENU_CONTEXT_PROVIDER\",\n  \"crowdsourcingConnectorPluginId\": \"AMT_CROWDSOURCING_CONNECTOR\",\n  \"crowdsourcingConnectorPluginConfiguration\": {\n    \"SANDBOX\": true,\n    \"Description\": \"This is a test ontology verification of the restrictions in the pizza ontology\",\n    \"Reward\": \"0\",\n    \"AssignmentDurationInSeconds\": \"3600\",\n    \"Keywords\":\"ontology-verificaiton,ontology,ontology-restrictions,warren-new5\",\n    \"LifetimeInSeconds\": \"600\",\n    \"MaxAssignments\": 1,\n    \"QUALIFICATION_TEST_URI\": \"<LOCAL-PATH-TO-QUALIFICATION-TEST>\",\n    \"ANSWER_KEY_URI\": \"<LOCAL-PATH-TO-ANSWER-KEY>\"\n  },\n  \"processorPluginIds\": [\n    \"RAW_DATA_PROCESSOR\"\n  ],\n  \"processorPluginConfigurations\": [\n    {\n      \"EXAMPLE_PROPERTY\": true\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/crowdsourcing/publish",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "crowdsourcing",
+            "publish"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Something went wrong when processing the publish request.",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"ontologyName\": \"<string>\",\n    \"verificationName\": \"<string>\",\n    \"verificationTaskPluginId\": \"<string>\",\n    \"verificationTaskPluginConfiguration\": \"<object>\",\n    \"contextProviderPluginId\": \"<string>\",\n    \"contextProviderConfiguration\": \"<object>\",\n    \"crowdsourcingConnectorPluginId\": \"<string>\",\n    \"crowdsourcingConnectorPluginConfiguration\": \"<object>\",\n    \"processorPluginIds\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"processorPluginConfigurations\": [\n        \"<object>\",\n        \"<object>\"\n    ],\n    \"qualityControlTasksSpecification\": {\n        \"qualityControlTasks\": [\n            {\n                \"qualityControlModelElementId\": \"<uuid>\",\n                \"resolvedVariables\": \"<object>\",\n                \"answer\": \"<string>\"\n            },\n            {\n                \"qualityControlModelElementId\": \"<uuid>\",\n                \"resolvedVariables\": \"<object>\",\n                \"answer\": \"<string>\"\n            }\n        ]\n    }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/crowdsourcing/publish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "crowdsourcing",
+                "publish"
+              ]
+            }
+          },
+          "status": "Internal Server Error",
+          "code": 500,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "Returns the published verification tasks information.",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"ontologyName\": \"<string>\",\n    \"verificationName\": \"<string>\",\n    \"verificationTaskPluginId\": \"<string>\",\n    \"verificationTaskPluginConfiguration\": \"<object>\",\n    \"contextProviderPluginId\": \"<string>\",\n    \"contextProviderConfiguration\": \"<object>\",\n    \"crowdsourcingConnectorPluginId\": \"<string>\",\n    \"crowdsourcingConnectorPluginConfiguration\": \"<object>\",\n    \"processorPluginIds\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"processorPluginConfigurations\": [\n        \"<object>\",\n        \"<object>\"\n    ],\n    \"qualityControlTasksSpecification\": {\n        \"qualityControlTasks\": [\n            {\n                \"qualityControlModelElementId\": \"<uuid>\",\n                \"resolvedVariables\": \"<object>\",\n                \"answer\": \"<string>\"\n            },\n            {\n                \"qualityControlModelElementId\": \"<uuid>\",\n                \"resolvedVariables\": \"<object>\",\n                \"answer\": \"<string>\"\n            }\n        ]\n    }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/crowdsourcing/publish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "crowdsourcing",
+                "publish"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "4-METADATA",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/metadata/:verification-name",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "metadata",
+            ":verification-name"
+          ],
+          "variable": [
+            {
+              "key": "verification-name",
+              "value": "pizza-topping-restriction-verification-rectorqtt1",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "A problem when processing the request occured.",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/metadata/:verification-name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "metadata",
+                ":verification-name"
+              ],
+              "variable": [
+                {
+                  "key": "verification-name"
+                }
+              ]
+            }
+          },
+          "status": "Internal Server Error",
+          "code": 500,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "No verification for the given name found!",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/metadata/:verification-name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "metadata",
+                ":verification-name"
+              ],
+              "variable": [
+                {
+                  "key": "verification-name"
+                }
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/metadata/:verification-name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "metadata",
+                ":verification-name"
+              ],
+              "variable": [
+                {
+                  "key": "verification-name"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "5-PROGRESS",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/crowdsourcing/progress/:verification-name",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "crowdsourcing",
+            "progress",
+            ":verification-name"
+          ],
+          "variable": [
+            {
+              "key": "verification-name",
+              "value": "pizza-topping-restriction-verification-rectorqtt1",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "No verification for the given name found!",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/crowdsourcing/progress/:verification-name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "crowdsourcing",
+                "progress",
+                ":verification-name"
+              ],
+              "variable": [
+                {
+                  "key": "verification-name"
+                }
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/crowdsourcing/progress/:verification-name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "crowdsourcing",
+                "progress",
+                ":verification-name"
+              ],
+              "variable": [
+                {
+                  "key": "verification-name"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "A problem when processing the request occurred.",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/crowdsourcing/progress/:verification-name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "crowdsourcing",
+                "progress",
+                ":verification-name"
+              ],
+              "variable": [
+                {
+                  "key": "verification-name"
+                }
+              ]
+            }
+          },
+          "status": "Internal Server Error",
+          "code": 500,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "6-RESULTS",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/data-processor/:verification-name",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "data-processor",
+            ":verification-name"
+          ],
+          "variable": [
+            {
+              "key": "verification-name",
+              "value": "pizza-topping-restriction-verification-rectorqtt1",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/data-processor/:verification-name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "data-processor",
+                ":verification-name"
+              ],
+              "variable": [
+                {
+                  "key": "verification-name"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "A problem when processing the request occured.",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/data-processor/:verification-name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "data-processor",
+                ":verification-name"
+              ],
+              "variable": [
+                {
+                  "key": "verification-name"
+                }
+              ]
+            }
+          },
+          "status": "Internal Server Error",
+          "code": 500,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        },
+        {
+          "name": "No verification for the given name found!",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/data-processor/:verification-name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "data-processor",
+                ":verification-name"
+              ],
+              "variable": [
+                {
+                  "key": "verification-name"
+                }
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "body": ""
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
